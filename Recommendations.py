@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import scrolledtext
+import Contacts
 from PIL import ImageTk, Image
+import sqlite3
 
 class Recs_page(tk.Frame):
 
@@ -10,27 +12,27 @@ class Recs_page(tk.Frame):
         self.controller = controller
         #Toolbar
         #Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg='orange', borderwidth=2, relief='solid')
+        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#ff8c1a", borderwidth=2, relief='solid')
         def goto_recs():
             controller.show_frame('Recs_page')
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="orange", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Recs_page"))
+        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Recs_page"))
         def goto_search():
             controller.show_frame('Search_page')
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="orange", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Search_page"))
+        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Search_page"))
         def goto_events():
             controller.show_frame('Events_page')
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="orange", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Events_page"))
+        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Events_page"))
         def goto_contacts():
             controller.show_frame('Contacts_page')
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="orange", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Contacts_page"))
+        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Contacts_page"))
         def goto_profile():
             controller.show_frame('Profile_page')
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="orange", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Profile_page"))
+        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Profile_page"))
         #End of Toolbar
 
         #create elements/widgets

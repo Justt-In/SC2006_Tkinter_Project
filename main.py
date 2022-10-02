@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import scrolledtext
@@ -9,7 +11,20 @@ from Profile import Profile_page
 from Registration import Register_page
 from Register_Confirmation import Register_confirmation_page
 from PIL import ImageTk, Image
+from tkcalendar import Calendar
+import sqlite3
+from hashlib import blake2b
 
+connection = sqlite3.connect('Databases/User_database.db')
+cursor = connection.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS User(userid INTEGER PRIMARY KEY AUTOINCREMENT, profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, password TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT)''')
+connection.commit()
+connection.close()
+connection = sqlite3.connect('Databases/Event_database.db')
+cursor = connection.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS Events(eventid INTEGER PRIMARY KEY AUTOINCREMENT, event_pic TEXT, creation_date TEXT, event_date TEXT, eventname TEXT, location TEXT, event_type TEXT, short_Desc TEXT)''')
+connection.commit()
+connection.close()
 class BinaryApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -58,13 +73,6 @@ class Login(tk.Frame):
         label_img.image = photo
         label_img.pack()
 
-        """
-        heading_label1 = tk.Label(self, text="BINARY", font=('Karma Future', 60, 'bold'), foreground='Black', background='#ff8c1a')
-        heading_label1.pack(pady=10)
-        heading_label2 = tk.Label(self, text="Where Programmers Meet", font=('Karma Future', 25, 'bold'), foreground='Black', background='#ff8c1a')
-        heading_label2.pack()
-        """
-
         space_label2 = tk.Label(self, height=3, bg='#ff8c1a')
         space_label2.pack()
 
@@ -81,6 +89,10 @@ class Login(tk.Frame):
         password_box = tk.Entry(self, textvariable=password, font=('arial', 12), width=30)
         password_box.pack(ipady=7)
 
+        #ALL
+        login_username_label = tk.Label(font='Bahnschrift 20 underline bold', bg="#ff8c1a")
+        login_username_label.place(x=1175, y=50)
+
         def handleFocusIn(_):
             password_box.configure(fg='black', show='*')
 
@@ -90,7 +102,118 @@ class Login(tk.Frame):
         space_label3.pack()
 
         def check_login():
-            if username.get() == "abc" and password.get() == '123':
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            username = username_box.get()
+            password = password_box.get()
+            password_hash = password.encode()
+            h = blake2b()
+            h.update(password_hash)
+            password_hash = "[('" + h.hexdigest() + "',)]"
+            cursor.execute("SELECT password FROM User WHERE username = ?", [username])
+            db_password = str(cursor.fetchall())
+            if username == "abc" and password == '123':
+                file = open("Databases/logs.txt", "w")
+                file.write(username + "\n")
+                file.close()
+                file = open("Databases/logs.txt", "r").read()
+                login_username_label['text'] = "Logged in as:\n" + file[:-1]
+                login_username_label.tkraise()
+                controller.show_frame('Recs_page')
+            elif username == "admin" and password == "admin":
+                # Toplevel object which will
+                # be treated as a new window
+                newWindow = tk.Toplevel(parent)
+                # sets the title of the
+                # Toplevel widget
+                newWindow.title("New Window")
+                # sets the geometry of toplevel
+                newWindow.geometry("500x570")
+                tk.Label(newWindow,text="Add new event", font='Bahnschrift 20 underline bold').pack()
+                newWindow.load_event_pic = Image.open('images/default_profile_img.png')
+                newWindow.default_pic = ImageTk.PhotoImage(newWindow.load_event_pic.resize((150, 150), Image.ANTIALIAS))
+                newWindow.event_pic_label = tk.Label(newWindow, image=newWindow.default_pic)
+                newWindow.event_pic_label.place(x=30, y=50)
+                def change_pic():
+                    file = open("Databases/event.txt", "w")
+                    filename = filedialog.askopenfilename(initialdir="C:\\", filetypes=(
+                    ("PNG file", "*.png"), ("JPEG File", "*.jpeg"), ("JPG File", "*.jpg"), ("All File Types", "*.*")))
+                    file.write(filename)
+                    file.close()
+                    stgImg = ImageTk.PhotoImage(file=filename)
+                    newWindow.event_pic_label.configure(image=stgImg)
+                    newWindow.event_pic_label.image = stgImg
+                change_pic_btn = tk.Button(newWindow, text="Upload Image", width=20, font='Bahnschrift 12 bold', relief='solid', command=change_pic)
+                change_pic_btn.place(x=10, y=210)
+                event_name_label = tk.Label(newWindow,text='Event name', font='Bahnschrift 14')
+                event_name_label.place(x=275, y=50)
+                event_name_entry = tk.Entry(newWindow, width=45, relief='solid')
+                event_name_entry.place(x=200,y=85)
+                cal = Calendar(newWindow, selectmode='day',year=2022, month=9,day=29)
+                cal.place(x=210, y=115)
+                newWindow.location = tk.StringVar(newWindow)
+                newWindow.location.set("Location")
+                newWindow.location_dd = tk.OptionMenu(newWindow, newWindow.location, "Singapore", "Malaysia", "Indonesia", "China", "Vietnam")
+                newWindow.location_dd.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+                location1_menu = newWindow.nametowidget(newWindow.location_dd.menuname)
+                location1_menu.configure(font='Bahnschrift 12 bold')
+                newWindow.location_dd.place(x=220, y=310)
+                newWindow.eventType = tk.StringVar(newWindow)
+                newWindow.eventType.set("Event Type")
+                newWindow.evenType_dd = tk.OptionMenu(newWindow, newWindow.eventType, "Hackathon", "Codathon", "Bug Hunt", "Seminars & Olympiads")
+                newWindow.evenType_dd.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+                eventType_menu = newWindow.nametowidget(newWindow.evenType_dd.menuname)
+                eventType_menu.configure(font='Bahnschrift 12 bold')
+                newWindow.evenType_dd.place(x=330, y=310)
+                newWindow.short_desc_label = tk.Label(newWindow, text="Event Description", font='Bahnschrift 16 bold')
+                newWindow.short_desc_label.place(x=150, y=350)
+                newWindow.short_desc = scrolledtext.ScrolledText(newWindow, wrap=tk.WORD, width=35, height=3,
+                                                            font='Bahnschrift 16 bold', relief='solid')
+                newWindow.short_desc.place(x=20, y=380)
+                def submit_event():
+                    connection = sqlite3.connect('Databases/Event_database.db')
+                    cursor = connection.cursor()
+                    file = open("Databases/event.txt", "r")
+                    filename = file.read()
+                    file.close()
+                    date_time = str(datetime.now())
+                    event_date = str(cal.get_date())
+                    event_name = event_name_entry.get()
+                    location = newWindow.location.get()
+                    eventType = newWindow.eventType.get()
+                    shortDesc = newWindow.short_desc.get("1.0","end-1c")
+                    count = 0
+                    if event_name == '':
+                        count+=1
+                    if location == "Location":
+                        count+=1
+                    if event_name == "Event Type":
+                        count+=1
+                    if count == 0:
+                        cursor.execute('INSERT INTO Events(event_pic, creation_date, event_date, eventname, location, event_type, short_Desc) VALUES(?,?,?,?,?,?,?)',
+                            (filename, date_time, event_date, event_name, location, eventType, shortDesc))
+                        connection.commit()
+                        newWindow.success_label['text'] = "Successfully submitted"
+                        newWindow.success_label.tkraise()
+                        connection.close()
+                    else:
+                        newWindow.fail_label['text'] = "Ensure fields are filled"
+                        newWindow.fail_label.tkraise()
+
+                newWindow.submit_btn = tk.Button(newWindow, text='Submit', font='Bahnschrift 16 bold', bg='Cyan', relief='solid', command=submit_event)
+                newWindow.submit_btn.place(x=200, y=480)
+                newWindow.success_label = tk.Label(newWindow, text='', fg='green', relief='flat', font='Bahnschrift 16 bold')
+                newWindow.success_label.place(x=140, y=530)
+                newWindow.fail_label = tk.Label(newWindow, text='', fg='red', relief='flat',font='Bahnschrift 16 bold')
+                newWindow.fail_label.place(x=140, y=530)
+
+            elif password_hash == db_password:
+                file = open("Databases/logs.txt", "w")
+                file.write(username + "\n")
+                file.close()
+                file = open("Databases/logs.txt", "r").read()
+                login_username_label['text'] = "Logged in as:\n" + file[:-1]
+                login_username_label.tkraise()
                 controller.show_frame('Recs_page')
             else:
                 incorrect_password_label['text'] = 'Incorrect Password'
@@ -103,13 +226,8 @@ class Login(tk.Frame):
         self.roundedbutton["bg"] = "#ff8c1a"
         self.roundedbutton["border"] = "3"
         self.roundedbutton.pack(side="top")
-
-        #login_button = tk.Button(self, text='Login', command=check_login, font=('Arial', 15), width=10, relief='raise', borderwidth=3)
-        #login_button.pack(pady=10)
-
         signup_button = tk.Button(self, text='Sign Up', fg='black', bg='orange', command=register_page, font=('Arial', 15), width=10, relief='raised', borderwidth=5)
         signup_button.pack(pady=10)
-
         incorrect_password_label = tk.Label(self, text='', font=('Arial', 20), fg='black', bg='#ff8c1a')
         incorrect_password_label.pack(fill='both', expand=True)
 '''
@@ -703,7 +821,6 @@ class Profile_page(tk.Frame):
         self.profile_btn.place(x=910, y=2)
         self.profile_btn.tkraise()
 '''
-
 if __name__ == "__main__":
     app = BinaryApp()
     app.mainloop()
