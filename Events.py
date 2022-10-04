@@ -14,36 +14,21 @@ class Events_page(tk.Frame):
         # Top Toolbar
         self.space_label1 = tk.Label(self, width=1000, height=9, bg="#ff8c1a", borderwidth=2, relief='solid')
 
-        def goto_recs():
-            controller.show_frame('Recs_page')
-
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
         self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised",
                                   command=lambda: controller.show_frame("Recs_page"))
-
-        def goto_search():
-            controller.show_frame('Search_page')
 
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
         self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Search_page"))
 
-        def goto_events():
-            controller.show_frame('Events_page')
-
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
         self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Events_page"))
 
-        def goto_contacts():
-            controller.show_frame('Contacts_page')
-
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
         self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130,
                                       relief="raised", command=lambda: controller.show_frame("Contacts_page"))
-
-        def goto_profile():
-            controller.show_frame('Profile_page')
 
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
@@ -61,6 +46,7 @@ class Events_page(tk.Frame):
         self.hack_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
         self.hack_label = tk.Label(self, text='Hackathon', font='Bahnschrift 32 bold underline', bg='#119975')
         self.hack_img = tk.Label(self, image=self.hack_main_img)
+        #This function opens up a new window and displays all hackathons uploaded into the system by the admin
         def hackathon_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
@@ -70,6 +56,7 @@ class Events_page(tk.Frame):
             count = count[0][0]
             cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Hackathon'])
             query_data = cursor.fetchall()
+            #This function populates a grid with all the events related to the event type
             def populate(newWindow):
                 '''Put in some fake data'''
                 for row in range(count):
@@ -116,6 +103,8 @@ class Events_page(tk.Frame):
         self.code_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
         self.code_label = tk.Label(self, text='Codathon', font='Bahnschrift 32 bold underline', bg='#119975')
         self.code_img = tk.Label(self, image=self.code_main_img)
+
+        # This function opens up a new window and displays all codathons uploaded into the system by the admin
         def codathon_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
@@ -125,8 +114,8 @@ class Events_page(tk.Frame):
             count = count[0][0]
             cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Codathon'])
             query_data = cursor.fetchall()
+            #This function popualtes a grid with all the events related to the event type
             def populate(newWindow):
-                '''Put in some fake data'''
                 self.picture = {}
                 self.resized_image = {}
                 self.open_image = {}
@@ -174,6 +163,8 @@ class Events_page(tk.Frame):
         self.bug_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
         self.bug_label = tk.Label(self, text='Bug Hunts', font='Bahnschrift 32 bold underline', bg='#119975')
         self.bug_img = tk.Label(self, image=self.bug_main_img)
+
+        # This function opens up a new window and displays all bug hunts uploaded into the system by the admin
         def bug_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
@@ -183,8 +174,8 @@ class Events_page(tk.Frame):
             count = count[0][0]
             cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Bug Hunt'])
             query_data = cursor.fetchall()
+            #This function populates a grid with all the events related to the event type
             def populate(newWindow):
-                '''Put in some fake data'''
                 for row in range(count):
                     print(query_data[row][1])
                     print(query_data[row][4])
@@ -229,6 +220,8 @@ class Events_page(tk.Frame):
         self.seminar_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
         self.seminar_label = tk.Label(self, text='Seminar & Events', font='Bahnschrift 32 bold underline', bg='#119975')
         self.seminar_img = tk.Label(self, image=self.seminar_main_img)
+
+        # This function opens up a new window and displays all seminars or olympiads uploaded into the system by the admin
         def SnO_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
@@ -238,8 +231,8 @@ class Events_page(tk.Frame):
             count = count[0][0]
             cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Seminars & Olympiads'])
             query_data = cursor.fetchall()
+            #This function populates a grid with all the events related to the event type
             def populate(newWindow):
-                '''Put in some fake data'''
                 for row in range(count):
                     print(query_data[row][1])
                     print(query_data[row][4])

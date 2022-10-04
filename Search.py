@@ -14,36 +14,21 @@ class Search_page(tk.Frame):
         # Top Toolbar
         self.space_label1 = tk.Label(self, width=1000, height=9, bg="#ff8c1a", borderwidth=2, relief='solid')
 
-        def goto_recs():
-            controller.show_frame('Recs_page')
-
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
         self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised",
                                   command=lambda: controller.show_frame("Recs_page"))
-
-        def goto_search():
-            controller.show_frame('Search_page')
 
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
         self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Search_page"))
 
-        def goto_events():
-            controller.show_frame('Events_page')
-
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
         self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Events_page"))
 
-        def goto_contacts():
-            controller.show_frame('Contacts_page')
-
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
         self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130,
                                       relief="raised", command=lambda: controller.show_frame("Contacts_page"))
-
-        def goto_profile():
-            controller.show_frame('Profile_page')
 
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
@@ -56,23 +41,31 @@ class Search_page(tk.Frame):
         self.search_user.pack(ipady=18)
         self.label_block = tk.Label(self, bg='red', width=500, height=300)
         self.success_label = tk.Label(self, bg='red',fg='green', text='', font='Bahnschrift 30 bold ')
+        self.fail_label = tk.Label(self,bg='red', fg='black', text='', font='Bahnschrift 30 bold ')
+        #Gets the username entered into the the search bar and finds that user, returns appropriate messages if no user
+        # is found and returns the found user if there exists one
         def search_user():
             connection = sqlite3.connect('Databases/User_database.db')
             cursor = connection.cursor()
             search_username = self.search_user.get()
             cursor.execute("SELECT profile_pic, username, short_Desc FROM User WHERE username = ?", [search_username])
             details = cursor.fetchall()
-            print(details)
-            profile_pic = details[0][0]
-            load_profile_pic = Image.open(profile_pic)
-            default_pic = ImageTk.PhotoImage(load_profile_pic.resize((130, 130), Image.ANTIALIAS))
-            self.randomuser1_img.configure(image=default_pic)
-            self.randomuser1_img.image = default_pic
-            search_username = details[0][1]
-            self.randomuser1_username['text'] = search_username
-            short_desc = details[0][2]
-            self.randomuser1_desc['text'] = short_desc
-            self.label_block.lower()
+            try:
+                profile_pic = details[0][0]
+                if profile_pic != None:
+                    load_profile_pic = Image.open(profile_pic)
+                    default_pic = ImageTk.PhotoImage(load_profile_pic.resize((130, 130), Image.ANTIALIAS))
+                    self.randomuser1_img.configure(image=default_pic)
+                    self.randomuser1_img.image = default_pic
+                search_username = details[0][1]
+                self.randomuser1_username['text'] = search_username
+                short_desc = details[0][2]
+                self.randomuser1_desc['text'] = short_desc
+                self.fail_label['text'] = ""
+                self.label_block.lower()
+            except IndexError:
+                self.fail_label['text'] = "No user found, please check your input once more"
+                self.fail_label.tkraise()
         self.usersearch_button = tk.Button(self, text='Search', font='Bahnschrift 16 bold', bg='Cyan', relief='raised', command=search_user)
         self.rect_label_1 = tk.Label(self, bg='orange', fg='black', relief='solid', height='10', width='80')
         self.load_randomuser1_img = tk.PhotoImage(file='images/profile_icon.png')
@@ -155,6 +148,7 @@ class Search_page(tk.Frame):
         self.label_block.place(x=0, y=300)
         self.label_block.tkraise()
         self.success_label.place(x=550, y=500)
+        self.fail_label.place(x=300, y=500)
         '''
         self.rect_label_2.place(x=450, y=500)
         self.randomuser2_img.place(x=460, y=510)

@@ -14,7 +14,7 @@ class Register_page(tk.Frame):
         self.controller = controller
         connection = sqlite3.connect('Databases/User_database.db')
         cursor = connection.cursor()
-        sql = '''CREATE TABLE IF NOT EXISTS User(profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT)'''
+        sql = '''CREATE TABLE IF NOT EXISTS User(profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT, user_preference TEXT)'''
         cursor.execute(sql)
         connection.commit()
         #Create elements & widgets
