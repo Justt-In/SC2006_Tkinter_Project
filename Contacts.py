@@ -34,7 +34,7 @@ class Contacts_page(tk.Frame):
                     if count == 0:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image1 = Image.open(picture[0][0])
+                            self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label1.configure(image=self.proggy_image1)
@@ -43,7 +43,7 @@ class Contacts_page(tk.Frame):
                     elif count == 1:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image2 = Image.open(picture[0][0])
+                            self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label2.configure(image=self.proggy_image2)
@@ -52,7 +52,7 @@ class Contacts_page(tk.Frame):
                     elif count == 2:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image3 = Image.open(picture[0][0])
+                            self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label3.configure(image=self.proggy_image3)
@@ -61,7 +61,7 @@ class Contacts_page(tk.Frame):
                     elif count == 3:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image4 = Image.open(picture[0][0])
+                            self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label4.configure(image=self.proggy_image4)
@@ -70,7 +70,7 @@ class Contacts_page(tk.Frame):
                     elif count == 4:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image5 = Image.open(picture[0][0])
+                            self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label5.configure(image=self.proggy_image5)
@@ -79,7 +79,7 @@ class Contacts_page(tk.Frame):
                     elif count == 5:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image6 = Image.open(picture[0][0])
+                            self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label6.configure(image=self.proggy_image6)
@@ -88,7 +88,7 @@ class Contacts_page(tk.Frame):
                     elif count == 6:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image7 = Image.open(picture[0][0])
+                            self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label7.configure(image=self.proggy_image7)
@@ -97,7 +97,7 @@ class Contacts_page(tk.Frame):
                     elif count == 7:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image8 = Image.open(picture[0][0])
+                            self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label8.configure(image=self.proggy_image8)
@@ -132,7 +132,7 @@ class Contacts_page(tk.Frame):
                     if count == 0:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image1 = Image.open(picture[0][0])
+                            self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label1.configure(image=self.proggy_image1)
@@ -141,7 +141,7 @@ class Contacts_page(tk.Frame):
                     elif count == 1:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image2 = Image.open(picture[0][0])
+                            self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label2.configure(image=self.proggy_image2)
@@ -150,7 +150,7 @@ class Contacts_page(tk.Frame):
                     elif count == 2:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image3 = Image.open(picture[0][0])
+                            self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label3.configure(image=self.proggy_image3)
@@ -159,7 +159,7 @@ class Contacts_page(tk.Frame):
                     elif count == 3:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image4 = Image.open(picture[0][0])
+                            self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label4.configure(image=self.proggy_image4)
@@ -168,7 +168,7 @@ class Contacts_page(tk.Frame):
                     elif count == 4:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image5 = Image.open(picture[0][0])
+                            self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label5.configure(image=self.proggy_image5)
@@ -177,7 +177,7 @@ class Contacts_page(tk.Frame):
                     elif count == 5:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image6 = Image.open(picture[0][0])
+                            self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label6.configure(image=self.proggy_image6)
@@ -186,7 +186,7 @@ class Contacts_page(tk.Frame):
                     elif count == 6:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image7 = Image.open(picture[0][0])
+                            self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label7.configure(image=self.proggy_image7)
@@ -195,7 +195,7 @@ class Contacts_page(tk.Frame):
                     elif count == 7:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image8 = Image.open(picture[0][0])
+                            self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label8.configure(image=self.proggy_image8)
@@ -230,7 +230,7 @@ class Contacts_page(tk.Frame):
                     if count == 0:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image1 = Image.open(picture[0][0])
+                            self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label1.configure(image=self.proggy_image1)
@@ -239,7 +239,7 @@ class Contacts_page(tk.Frame):
                     elif count == 1:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image2 = Image.open(picture[0][0])
+                            self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label2.configure(image=self.proggy_image2)
@@ -248,7 +248,7 @@ class Contacts_page(tk.Frame):
                     elif count == 2:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image3 = Image.open(picture[0][0])
+                            self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label3.configure(image=self.proggy_image3)
@@ -257,7 +257,7 @@ class Contacts_page(tk.Frame):
                     elif count == 3:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image4 = Image.open(picture[0][0])
+                            self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label4.configure(image=self.proggy_image4)
@@ -266,7 +266,7 @@ class Contacts_page(tk.Frame):
                     elif count == 4:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image5 = Image.open(picture[0][0])
+                            self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label5.configure(image=self.proggy_image5)
@@ -275,7 +275,7 @@ class Contacts_page(tk.Frame):
                     elif count == 5:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image6 = Image.open(picture[0][0])
+                            self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label6.configure(image=self.proggy_image6)
@@ -284,7 +284,7 @@ class Contacts_page(tk.Frame):
                     elif count == 6:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image7 = Image.open(picture[0][0])
+                            self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label7.configure(image=self.proggy_image7)
@@ -293,7 +293,7 @@ class Contacts_page(tk.Frame):
                     elif count == 7:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image8 = Image.open(picture[0][0])
+                            self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label8.configure(image=self.proggy_image8)
@@ -328,7 +328,7 @@ class Contacts_page(tk.Frame):
                     if count == 0:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image1 = Image.open(picture[0][0])
+                            self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label1.configure(image=self.proggy_image1)
@@ -337,7 +337,7 @@ class Contacts_page(tk.Frame):
                     elif count == 1:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image2 = Image.open(picture[0][0])
+                            self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label2.configure(image=self.proggy_image2)
@@ -346,7 +346,7 @@ class Contacts_page(tk.Frame):
                     elif count == 2:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image3 = Image.open(picture[0][0])
+                            self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label3.configure(image=self.proggy_image3)
@@ -355,7 +355,7 @@ class Contacts_page(tk.Frame):
                     elif count == 3:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image4 = Image.open(picture[0][0])
+                            self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label4.configure(image=self.proggy_image4)
@@ -364,7 +364,7 @@ class Contacts_page(tk.Frame):
                     elif count == 4:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image5 = Image.open(picture[0][0])
+                            self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label5.configure(image=self.proggy_image5)
@@ -373,7 +373,7 @@ class Contacts_page(tk.Frame):
                     elif count == 5:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image6 = Image.open(picture[0][0])
+                            self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label6.configure(image=self.proggy_image6)
@@ -382,7 +382,7 @@ class Contacts_page(tk.Frame):
                     elif count == 6:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image7 = Image.open(picture[0][0])
+                            self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label7.configure(image=self.proggy_image7)
@@ -391,7 +391,7 @@ class Contacts_page(tk.Frame):
                     elif count == 7:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image8 = Image.open(picture[0][0])
+                            self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label8.configure(image=self.proggy_image8)
@@ -426,7 +426,7 @@ class Contacts_page(tk.Frame):
                     if count == 0:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image1 = Image.open(picture[0][0])
+                            self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label1.configure(image=self.proggy_image1)
@@ -435,7 +435,7 @@ class Contacts_page(tk.Frame):
                     elif count == 1:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image2 = Image.open(picture[0][0])
+                            self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label2.configure(image=self.proggy_image2)
@@ -444,7 +444,7 @@ class Contacts_page(tk.Frame):
                     elif count == 2:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image3 = Image.open(picture[0][0])
+                            self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label3.configure(image=self.proggy_image3)
@@ -453,7 +453,7 @@ class Contacts_page(tk.Frame):
                     elif count == 3:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image4 = Image.open(picture[0][0])
+                            self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label4.configure(image=self.proggy_image4)
@@ -462,7 +462,7 @@ class Contacts_page(tk.Frame):
                     elif count == 4:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image5 = Image.open(picture[0][0])
+                            self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label5.configure(image=self.proggy_image5)
@@ -471,7 +471,7 @@ class Contacts_page(tk.Frame):
                     elif count == 5:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image6 = Image.open(picture[0][0])
+                            self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label6.configure(image=self.proggy_image6)
@@ -480,7 +480,7 @@ class Contacts_page(tk.Frame):
                     elif count == 6:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image7 = Image.open(picture[0][0])
+                            self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label7.configure(image=self.proggy_image7)
@@ -489,7 +489,7 @@ class Contacts_page(tk.Frame):
                     elif count == 7:
                         if picture[0][0] != None:
                             filepath = "images/" + picture[0][0][25:]
-                            self.load_proggy_image8 = Image.open(picture[0][0])
+                            self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
                             self.pic_label8.configure(image=self.proggy_image8)
