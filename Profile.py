@@ -100,6 +100,7 @@ class Profile_page(tk.Frame):
             cursor.execute("SELECT profile_pic FROM User WHERE username = ?", [username])
             file_path = str(cursor.fetchall())[3:-4]
             print(file_path)
+            file_path = "images/" + file_path[25:]
             img2 = ImageTk.PhotoImage(Image.open(file_path))
             self.profile_pic_label.configure(image=img2)
             self.profile_pic_label.image = img2
