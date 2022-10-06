@@ -33,6 +33,11 @@ class Search_page(tk.Frame):
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
                                      relief="raised", command=lambda: controller.show_frame("Profile_page"))
+
+        self.load_logout_img = Image.open("images/logout_icon.png")
+        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+                                    command=lambda: controller.show_frame("Login"))
         # End of Toolbar
 
         #add elemets & widgets
@@ -137,6 +142,7 @@ class Search_page(tk.Frame):
         self.contacts_btn.tkraise()
         self.profile_btn.place(x=910, y=2)
         self.profile_btn.tkraise()
+        self.logout_btn.place(x=100, y=3)
         self.user_label.place(x=450, y=150)
         self.search_user.place(x=530, y=250)
         self.usersearch_button.place(x=930, y=245)

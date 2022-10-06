@@ -2,10 +2,12 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import scrolledtext
+from tkinter import messagebox
 from PIL import ImageTk, Image
 import sqlite3
 from datetime import datetime
 from random import randint
+import re
 from hashlib import blake2b
 
 class Register_page(tk.Frame):
@@ -22,6 +24,9 @@ class Register_page(tk.Frame):
         self.load_register_icon = tk.PhotoImage(file="images/register_hello.png")
         self.register_icon_label = tk.Label(self, image=self.load_register_icon, bg="#ff8c1a")
         self.register_label = tk.Label(self, text='Registration', font='Bahnschrift 70 bold', bg="#ff8c1a")
+        self.load_return_img = Image.open("images/back_icon.png")
+        self.return_img = ImageTk.PhotoImage(self.load_return_img.resize((128, 128), Image.ANTIALIAS))
+        self.return_login = tk.Button(self, image=self.return_img, bg="#ff8c1a", bd="3", relief='raised', command=lambda: controller.show_frame("Login"))
         #Backdrop Left
         self.load_backdrop1_img = Image.open("images/backdrop1_v.png")
         self.backdrop1 = ImageTk.PhotoImage(self.load_backdrop1_img.resize((450, 600), Image.ANTIALIAS))
@@ -158,16 +163,60 @@ class Register_page(tk.Frame):
             count = 0
             counter = 0
             data_trust = 'Yes'
+            user_conn = sqlite3.connect("Databases/User_database.db")
+            user_cursor = user_conn.cursor()
+            user_cursor.execute("SELECT username FROM User")
+            username_list = user_cursor.fetchall()
+
+            def isAllPresent(str):
+
+                # ReGex to check if a string
+                # contains uppercase, lowercase
+                # special character & numeric value
+                regex = ("^(?=.*[a-z])(?=." +
+                         "*[A-Z])(?=.*\\d)" +
+                         "(?=.*[-+_!@#$%^&*., ?]).+$")
+
+                # Compile the ReGex
+                p = re.compile(regex)
+
+                # If the string is empty
+                # return false
+                if (str == None):
+                    return "no"
+
+                # Print Yes if string
+                # matches ReGex
+                if (re.search(p, str)):
+                    return "yes"
+                else:
+                    return "no"
             #personal details
             username = self.username_entry.get()
+            if len(username) <= 5:
+                self.error_label['text'] = 'Username has to be longer than 5 characters'
+                self.error_label.place(x=420, y=780)
+            for name in username_list:
+                if username == name[0]:
+                    self.error_label['text'] = 'Username already exists, please choose another'
+                    self.error_label.place(x=400, y=780)
             if username == '': count+=1
             else:
                 f = open('Databases/event.txt', 'r+')
                 f.truncate(0)
-                #f = open("Databases/event.txt", "a")
+                f = open("Databases/event.txt", "a")
                 f.write(username)
                 f.close()
             password = self.password_entry.get()
+            if len(password) < 12:
+                self.error_label['text'] = 'Password has to be more than 12 characters'
+                self.error_label.place(x=450, y=780)
+                return
+            regex = isAllPresent(password)
+            if regex == "no":
+                self.error_label['text'] = 'Password must contain Uppercase, Lowercase, Number & Special Character'
+                self.error_label.place(x=300, y=780)
+                return
             if password == '': count += 1
             else:
                 h = blake2b()
@@ -271,18 +320,27 @@ class Register_page(tk.Frame):
 
             if counter > 0:
                 self.error_label['text'] = 'Your Passwords Do Not Match Up'
+                self.error_label.place(x=500, y=780)
             elif count > 0:
                 self.error_label['text'] = 'Please Double Check Your Entries'
+                self.error_label.place(x=500, y=780)
             else:
-                connection.cursor()
-                cursor.execute('INSERT INTO User(creation_date, data_protect, fullname, age, nationality, username, password, email, github, linkedIn, code_lang, meeting_mode, meeting_region, field_study, years_in_field) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                               (date_time, data_trust, fullname, age, nationality, username, password, email, github, linkedin, coding_prof, meet_pref, locale_pref, field, years_exp))
-                connection.commit()
-                data = cursor.execute('SELECT * FROM User')
-                for row in data:
-                    print(row)
-                connection.close()
-            controller.show_frame('Register_confirmation_page')
+                ans = tk.messagebox.askquestion("Username Warning","Your Username cannot be changed in tuhe future.\nDo you wish to proceed?")
+                if ans == "yes":
+                    connection.cursor()
+                    cursor.execute(
+                        'INSERT INTO User(creation_date, data_protect, fullname, age, nationality, username, password, email, github, linkedIn, code_lang, meeting_mode, meeting_region, field_study, years_in_field) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                        (date_time, data_trust, fullname, age, nationality, username, password, email, github, linkedin,
+                         coding_prof, meet_pref, locale_pref, field, years_exp))
+                    connection.commit()
+                    data = cursor.execute('SELECT * FROM User')
+                    for row in data:
+                        print(row)
+                    connection.close()
+                    controller.show_frame('Register_confirmation_page')
+                else:
+                    return
+
 
         self.next_button = tk.Button(self, text='Continue To Next Step', font='Bahnschrift 20 bold', bg='#5cc9ed', bd=3, relief='raised', width=20, height=1, command=goto_cfm_page)
 
@@ -290,6 +348,7 @@ class Register_page(tk.Frame):
         self.space_label1.place(x=0, y=0)
         self.register_icon_label.place(x=400, y=5)
         self.register_label.place(x=550, y=10)
+        self.return_login.place(x=1200, y=3)
         #Backdrop1
         self.backdrop1_label.place(x=50, y=175)
         self.username_label.place(x=215, y=190)
@@ -357,7 +416,6 @@ class Register_page(tk.Frame):
         self.experience10.place(x=1200, y=590)
         self.check10.place(x=1040, y=588)
 
-        self.error_label.place(x=520, y=780)
         self.next_button.place(x=570, y=820)
 
 

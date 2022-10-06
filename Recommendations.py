@@ -5,6 +5,8 @@ import Contacts
 from PIL import ImageTk, Image
 import sqlite3
 
+
+
 class Recs_page(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -33,6 +35,9 @@ class Recs_page(tk.Frame):
             controller.show_frame('Profile_page')
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Profile_page"))
+        self.load_logout_img = Image.open("images/logout_icon.png")
+        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised", command=lambda: controller.show_frame("Login"))
         #End of Toolbar
 
         #create elements/widgets
@@ -126,6 +131,7 @@ class Recs_page(tk.Frame):
         self.contacts_btn.tkraise()
         self.profile_btn.place(x=910, y=2)
         self.profile_btn.tkraise()
+        self.logout_btn.place(x=100, y=3)
         self.rect_label.place(x=350, y=180)
         self.title_label.tkraise()
         self.title_label.place(x=530, y=190)

@@ -503,6 +503,11 @@ class Contacts_page(tk.Frame):
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
                                      relief="raised", command=goto_profile)
+
+        self.load_logout_img = Image.open("images/logout_icon.png")
+        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+                                    command=lambda: controller.show_frame("Login"))
         # End of Toolbar
 
         #Add elements and widgets
@@ -1343,61 +1348,1049 @@ class Contacts_page(tk.Frame):
                     self.pic_label8.configure(image=self.profiles)
                     self.username_label8['text'] = 'Username'
 
+        def view_proggy_prof1():
+            username = self.username_label1.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof2():
+            username = self.username_label2.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof3():
+            username = self.username_label3.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof4():
+            username = self.username_label4.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof5():
+            username = self.username_label5.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof6():
+            username = self.username_label6.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof7():
+            username = self.username_label7.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+        def view_proggy_prof8():
+            username = self.username_label8.cget('text')
+            if username == "Username":
+                return
+            connection = sqlite3.connect('Databases/User_database.db')
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            newWindow = tk.Toplevel(parent)
+            newWindow.title(username + "'s Profile")
+            newWindow.geometry("400x600")
+            newWindow.configure(bg='yellow')
+            query_data = cursor.fetchall()
+            print(query_data)
+            newWindow.username = tk.Label(newWindow, text='Username', bg='yellow', fg='black', font='Bahnschrift 24 bold underline')
+            newWindow.username.pack(side='top')
+            newWindow.username["text"] = str(query_data[0][8])
+            try:
+                filepath = query_data[0][1]
+                if filepath == None or filepath == '':
+                    filepath = "images/default_profile_img.png"
+                else:
+                    filepath = "images/" + str(query_data[0][1][25:])
+            except TypeError:
+                filepath = "images/default_profile_img.png"
+            self.load_prof_image = Image.open(filepath)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((150, 150), Image.ANTIALIAS))
+            newWindow.profile_pic = tk.Label(newWindow, image=self.prof_image, bg='yellow').pack(side='top')
+            newWindow.code_lang = tk.Label(newWindow, text='', bg='yellow', fg='black',font='Bahnschrift 14 bold')
+            newWindow.code_lang.pack(side='top')
+            coding_languages = query_data[0][12]
+            coding_languages = coding_languages.split(',')
+            code_text = ''
+            for x in coding_languages:
+                if x == '':
+                    continue
+                code_text = x + "\n"
+            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.short_desc = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
+            newWindow.short_desc.pack(side='top', fill='x')
+            newWindow.short_desc["text"] = str(query_data[0][18])
+            newWindow.meetMode = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetMode.pack(side='top')
+            newWindow.meetMode["text"] = "Meeting Preference: " + query_data[0][14]
+            newWindow.meetLocale = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.meetLocale.pack(side='top')
+            newWindow.meetLocale["text"] = "Location Preference: " + query_data[0][15]
+            newWindow.fullname = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold underline')
+            newWindow.fullname.pack(side='top')
+            newWindow.fullname["text"] = "Name: " + query_data[0][4]
+            newWindow.age = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.age.pack(side='top')
+            newWindow.age["text"] = str(query_data[0][6]) + " Years Old"
+            newWindow.nationality = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.nationality.pack(side='top')
+            newWindow.nationality["text"] = "Nationality: " + query_data[0][7]
+            newWindow.email = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.email.pack(side='top')
+            newWindow.email["text"] = "Email: " + query_data[0][9]
+            newWindow.github = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.github.pack(side='top')
+            newWindow.github["text"] = "Github Username: " + query_data[0][10]
+            newWindow.linkedIn = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.linkedIn.pack(side='top')
+            newWindow.linkedIn["text"] = "LinkedIn URL: " + query_data[0][11]
+            newWindow.field = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.field.pack(side='top')
+            newWindow.field["text"] = "Specialization/Field of study: " + query_data[0][16]
+            newWindow.fieldYrs = tk.Label(newWindow, text='', bg='yellow', fg='black', font='Bahnschrift 14 bold')
+            newWindow.fieldYrs.pack(side='top')
+            if query_data[0][17] > 1:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
+            else:
+                newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
+            connection.close()
+
+        self.load_send_img = Image.open("images/send_message_icon.png")
+        self.send_img = ImageTk.PhotoImage(self.load_send_img.resize((40, 40), Image.ANTIALIAS))
+        def message_proggy1():
+            username = self.username_label1.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy2():
+            username = self.username_label2.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy3():
+            username = self.username_label3.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy4():
+            username = self.username_label4.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy5():
+            username = self.username_label5.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy6():
+            username = self.username_label6.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy7():
+            username = self.username_label7.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+        def message_proggy8():
+            username = self.username_label8.cget('text')
+            if username == "Username":
+                return
+            file = open("Databases/logs.txt", "r")
+            logged_in = file.read()
+            file.close()
+            logged_in = logged_in[:-1]
+            sql = "Databases/" + logged_in + "_db.db"
+            connection = sqlite3.connect(sql)
+            chat_cursor = connection.cursor()
+            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            openWindow = tk.Toplevel(parent)
+            openWindow.title("Chatting with " + username)
+            openWindow.geometry("400x600")
+            openWindow.configure(bg='yellow')
+            chat_log = chat_cursor.fetchall()[0]
+            if chat_log == None:
+                chat_log = ""
+            openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
+                                                       font='Bahnschrift 16 bold', bd='3', relief='solid')
+            openWindow.chat_scrolledtext.place(x=10, y=10)
+            for line in chat_log:
+                if line == None:
+                    continue
+                else:
+                    openWindow.chat_scrolledtext.insert('insert', line)
+            openWindow.chat_scrolledtext.configure(state='disabled')
+            openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
+            openWindow.chat_entry.place(x=10, y=530)
+            def send_message():
+                openWindow.chat_scrolledtext.configure(state="normal")
+                sql = 'Databases/' + username + '_db.db'
+                proggy_conn = sqlite3.connect(sql)
+                proggy_cursor = proggy_conn.cursor()
+                send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
+                openWindow.chat_entry.delete(0, 'end')
+                chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
+                openWindow.chat_scrolledtext.delete('1.0', 'end')
+                chat_log = chat_log + send_text
+                openWindow.chat_scrolledtext.insert('end', chat_log)
+                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
+                connection.commit()
+                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
+                proggy_conn.commit()
+                proggy_conn.close()
+                openWindow.chat_scrolledtext.configure(state="disabled")
+            openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="yellow", bd="3", relief="raised", command=send_message)
+            openWindow.chat_send.place(x=330, y=527)
+
         self.backdrop1 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label1 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label1 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn1 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn1 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof1)
         self.delete_btn1 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy1)
-        self.message_btn1 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn1 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy1)
 
         self.backdrop2 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label2 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label2 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn2 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn2 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof2)
         self.delete_btn2 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy2)
-        self.message_btn2 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn2 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy2)
 
         self.backdrop3 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label3 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label3 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn3 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn3 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof3)
         self.delete_btn3 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy3)
-        self.message_btn3 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn3 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy3)
 
         self.backdrop4 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label4 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label4 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn4 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn4 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof4)
         self.delete_btn4 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy4)
-        self.message_btn4 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn4 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy4)
 
         self.backdrop5 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label5 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label5 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn5 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn5 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof5)
         self.delete_btn5 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy5)
-        self.message_btn5 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn5 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy5)
 
         self.backdrop6 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label6 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label6 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn6 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn6 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof6)
         self.delete_btn6 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy6)
-        self.message_btn6 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn6 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy6)
 
         self.backdrop7 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label7 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label7 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn7 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn7 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof7)
         self.delete_btn7 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy7)
-        self.message_btn7 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn7 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy7)
 
         self.backdrop8 = tk.Label(self, image=self.backdrops, bg='blue')
         self.pic_label8 = tk.Label(self, image=self.profiles, bg='#119975')
         self.username_label8 = tk.Label(self, text='Username', bg='#119975', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn8 = tk.Button(self, image=self.view_prof_image, bg='#119975')
+        self.view_prof_btn8 = tk.Button(self, image=self.view_prof_image, bg='#119975', command=view_proggy_prof8)
         self.delete_btn8 = tk.Button(self, image=self.deletes, bg='#119975', command=remove_proggy8)
-        self.message_btn8 = tk.Button(self, image=self.messages, bg='#119975')
+        self.message_btn8 = tk.Button(self, image=self.messages, bg='#119975', command=message_proggy8)
 
         # arrange elements & widgets in grid
         self.space_label1.place(x=0, y=0)
@@ -1411,6 +2404,7 @@ class Contacts_page(tk.Frame):
         self.contacts_btn.tkraise()
         self.profile_btn.place(x=910, y=2)
         self.profile_btn.tkraise()
+        self.logout_btn.place(x=100, y=3)
         self.requests.place(x=1300, y=150)
         self.requests_label.place(x=1300, y=270)
         self.proggies.place(x=1300, y=350)

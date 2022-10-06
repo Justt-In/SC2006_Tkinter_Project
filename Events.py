@@ -33,6 +33,11 @@ class Events_page(tk.Frame):
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
                                      relief="raised", command=lambda: controller.show_frame("Profile_page"))
+
+        self.load_logout_img = Image.open("images/logout_icon.png")
+        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+                                    command=lambda: controller.show_frame("Login"))
         # End of Toolbar
 
         #Create elements and widgets
@@ -60,13 +65,15 @@ class Events_page(tk.Frame):
             def populate(newWindow):
                 '''Put in some fake data'''
                 for row in range(count):
+                    '''
                     print(query_data[row][1])
                     print(query_data[row][4])
                     print(query_data[row][3])
                     print(query_data[row][5])
                     print(query_data[row][7])
-
-                    self.open_image = Image.open(query_data[row][1])
+                    '''
+                    filepath = "images/" + query_data[row][1][25:]
+                    self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     tk.Label(newWindow, image=self.resized_image, bg='yellow', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
@@ -120,14 +127,16 @@ class Events_page(tk.Frame):
                 self.resized_image = {}
                 self.open_image = {}
                 for row in range(count):
+                    '''
                     print(query_data[row][1])
                     print(query_data[row][4])
                     print(query_data[row][3])
                     print(query_data[row][5])
                     print(query_data[row][7])
-
-                    self.open_image[row] = Image.open(query_data[row][1])
-                    self.resized_image[row] = ImageTk.PhotoImage(self.open_image[row].resize((200, 150), Image.ANTIALIAS))
+                    '''
+                    filepath = "images/" + query_data[row][1][25:]
+                    self.open_image = Image.open(filepath)
+                    self.resized_image[row] = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='yellow', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
                     tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='yellow').grid(row=row, column=1)
@@ -177,13 +186,15 @@ class Events_page(tk.Frame):
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
                 for row in range(count):
+                    '''
                     print(query_data[row][1])
                     print(query_data[row][4])
                     print(query_data[row][3])
                     print(query_data[row][5])
                     print(query_data[row][7])
-
-                    self.open_image = Image.open(query_data[row][1])
+                    '''
+                    filepath = "images/" + query_data[row][1][25:]
+                    self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     tk.Label(newWindow, image=self.resized_image, bg='yellow', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
@@ -234,13 +245,15 @@ class Events_page(tk.Frame):
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
                 for row in range(count):
+                    '''
                     print(query_data[row][1])
                     print(query_data[row][4])
                     print(query_data[row][3])
                     print(query_data[row][5])
                     print(query_data[row][7])
-
-                    self.open_image = Image.open(query_data[row][1])
+                    '''
+                    filepath = "images/" + query_data[row][1][25:]
+                    self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     tk.Label(newWindow, image=self.resized_image, bg='yellow', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
@@ -283,6 +296,7 @@ class Events_page(tk.Frame):
         self.contacts_btn.tkraise()
         self.profile_btn.place(x=910, y=2)
         self.profile_btn.tkraise()
+        self.logout_btn.place(x=100, y=3)
         # Top-left backdrop
         self.hack_backdrop.place(x=100, y=150)
         self.hack_label.place(x=250, y=170)

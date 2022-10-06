@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import scrolledtext
+from tkinter import messagebox
 from PIL import ImageTk, Image
 import sqlite3
 
@@ -12,27 +13,398 @@ class Profile_page(tk.Frame):
         # Toolbar
         # Top Toolbar
         self.space_label1 = tk.Label(self, width=1000, height=9, bg='#ff8c1a', borderwidth=2, relief='solid')
-
+        def goto_recs():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            if var1.get() == 1:
+                self.check1.deselect()
+                self.proficient1.set("Experience")
+            if var2.get() == 1:
+                self.check2.deselect()
+                self.proficient2.set("Experience")
+            if var3.get() == 1:
+                self.check3.deselect()
+                self.proficient3.set("Experience")
+            if var4.get() == 1:
+                self.check4.deselect()
+                self.proficient4.set("Experience")
+            if var5.get() == 1:
+                self.check5.deselect()
+                self.proficient5.set("Experience")
+            if var6.get() == 1:
+                self.check6.deselect()
+                self.proficient6.set("Experience")
+            if var7.get() == 1:
+                self.check7.deselect()
+                self.proficient7.set("Experience")
+            if var8.get() == 1:
+                self.check8.deselect()
+                self.proficient8.set("Experience")
+            if var9.get() == 1:
+                self.check9.deselect()
+                self.proficient9.set("Experience")
+            if var10.get() == 1:
+                self.check10.deselect()
+                self.proficient10.set("Experience")
+            self.proficient1.set("Experience")
+            self.proficient2.set("Experience")
+            self.proficient3.set("Experience")
+            self.proficient4.set("Experience")
+            self.proficient5.set("Experience")
+            self.proficient6.set("Experience")
+            self.proficient7.set("Experience")
+            self.proficient8.set("Experience")
+            self.proficient9.set("Experience")
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
+            controller.show_frame("Recs_page")
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
         self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised",
-                                  command=lambda: controller.show_frame("Recs_page"))
-
+                                  command=goto_recs)
+        def goto_search():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            if var1.get() == 1:
+                self.check1.deselect()
+                self.proficient1.set("Experience")
+            if var2.get() == 1:
+                self.check2.deselect()
+                self.proficient2.set("Experience")
+            if var3.get() == 1:
+                self.check3.deselect()
+                self.proficient3.set("Experience")
+            if var4.get() == 1:
+                self.check4.deselect()
+                self.proficient4.set("Experience")
+            if var5.get() == 1:
+                self.check5.deselect()
+                self.proficient5.set("Experience")
+            if var6.get() == 1:
+                self.check6.deselect()
+                self.proficient6.set("Experience")
+            if var7.get() == 1:
+                self.check7.deselect()
+                self.proficient7.set("Experience")
+            if var8.get() == 1:
+                self.check8.deselect()
+                self.proficient8.set("Experience")
+            if var9.get() == 1:
+                self.check9.deselect()
+                self.proficient9.set("Experience")
+            if var10.get() == 1:
+                self.check10.deselect()
+                self.proficient10.set("Experience")
+            self.proficient1.set("Experience")
+            self.proficient2.set("Experience")
+            self.proficient3.set("Experience")
+            self.proficient4.set("Experience")
+            self.proficient5.set("Experience")
+            self.proficient6.set("Experience")
+            self.proficient7.set("Experience")
+            self.proficient8.set("Experience")
+            self.proficient9.set("Experience")
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
+            controller.show_frame("Search_page")
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
         self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130,
-                                    relief="raised", command=lambda: controller.show_frame("Search_page"))
-
+                                    relief="raised", command=goto_search)
+        def goto_events():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            if var1.get() == 1:
+                self.check1.deselect()
+                self.proficient1.set("Experience")
+            if var2.get() == 1:
+                self.check2.deselect()
+                self.proficient2.set("Experience")
+            if var3.get() == 1:
+                self.check3.deselect()
+                self.proficient3.set("Experience")
+            if var4.get() == 1:
+                self.check4.deselect()
+                self.proficient4.set("Experience")
+            if var5.get() == 1:
+                self.check5.deselect()
+                self.proficient5.set("Experience")
+            if var6.get() == 1:
+                self.check6.deselect()
+                self.proficient6.set("Experience")
+            if var7.get() == 1:
+                self.check7.deselect()
+                self.proficient7.set("Experience")
+            if var8.get() == 1:
+                self.check8.deselect()
+                self.proficient8.set("Experience")
+            if var9.get() == 1:
+                self.check9.deselect()
+                self.proficient9.set("Experience")
+            if var10.get() == 1:
+                self.check10.deselect()
+                self.proficient10.set("Experience")
+            self.proficient1.set("Experience")
+            self.proficient2.set("Experience")
+            self.proficient3.set("Experience")
+            self.proficient4.set("Experience")
+            self.proficient5.set("Experience")
+            self.proficient6.set("Experience")
+            self.proficient7.set("Experience")
+            self.proficient8.set("Experience")
+            self.proficient9.set("Experience")
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
+            controller.show_frame("Events_page")
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
         self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130,
-                                    relief="raised", command=lambda: controller.show_frame("Events_page"))
-
+                                    relief="raised", command=goto_events)
+        def goto_contacts():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            if var1.get() == 1:
+                self.check1.deselect()
+                self.proficient1.set("Experience")
+            if var2.get() == 1:
+                self.check2.deselect()
+                self.proficient2.set("Experience")
+            if var3.get() == 1:
+                self.check3.deselect()
+                self.proficient3.set("Experience")
+            if var4.get() == 1:
+                self.check4.deselect()
+                self.proficient4.set("Experience")
+            if var5.get() == 1:
+                self.check5.deselect()
+                self.proficient5.set("Experience")
+            if var6.get() == 1:
+                self.check6.deselect()
+                self.proficient6.set("Experience")
+            if var7.get() == 1:
+                self.check7.deselect()
+                self.proficient7.set("Experience")
+            if var8.get() == 1:
+                self.check8.deselect()
+                self.proficient8.set("Experience")
+            if var9.get() == 1:
+                self.check9.deselect()
+                self.proficient9.set("Experience")
+            if var10.get() == 1:
+                self.check10.deselect()
+                self.proficient10.set("Experience")
+            self.proficient1.set("Experience")
+            self.proficient2.set("Experience")
+            self.proficient3.set("Experience")
+            self.proficient4.set("Experience")
+            self.proficient5.set("Experience")
+            self.proficient6.set("Experience")
+            self.proficient7.set("Experience")
+            self.proficient8.set("Experience")
+            self.proficient9.set("Experience")
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
+            controller.show_frame("Contacts_page")
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
         self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130,
-                                      relief="raised", command=lambda: controller.show_frame("Contacts_page"))
-
+                                      relief="raised", command=goto_contacts)
+        def goto_contacts():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            if var1.get() == 1:
+                self.check1.deselect()
+                self.proficient1.set("Experience")
+            if var2.get() == 1:
+                self.check2.deselect()
+                self.proficient2.set("Experience")
+            if var3.get() == 1:
+                self.check3.deselect()
+                self.proficient3.set("Experience")
+            if var4.get() == 1:
+                self.check4.deselect()
+                self.proficient4.set("Experience")
+            if var5.get() == 1:
+                self.check5.deselect()
+                self.proficient5.set("Experience")
+            if var6.get() == 1:
+                self.check6.deselect()
+                self.proficient6.set("Experience")
+            if var7.get() == 1:
+                self.check7.deselect()
+                self.proficient7.set("Experience")
+            if var8.get() == 1:
+                self.check8.deselect()
+                self.proficient8.set("Experience")
+            if var9.get() == 1:
+                self.check9.deselect()
+                self.proficient9.set("Experience")
+            if var10.get() == 1:
+                self.check10.deselect()
+                self.proficient10.set("Experience")
+            self.proficient1.set("Experience")
+            self.proficient2.set("Experience")
+            self.proficient3.set("Experience")
+            self.proficient4.set("Experience")
+            self.proficient5.set("Experience")
+            self.proficient6.set("Experience")
+            self.proficient7.set("Experience")
+            self.proficient8.set("Experience")
+            self.proficient9.set("Experience")
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
+            controller.show_frame("Profile_page")
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
         self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
-                                     relief="raised", command=lambda: controller.show_frame("Profile_page"))
+                                     relief="raised", command=goto_contacts)
+        def goto_login():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            if var1.get() == 1:
+                self.check1.deselect()
+                self.proficient1.set("Experience")
+            if var2.get() == 1:
+                self.check2.deselect()
+                self.proficient2.set("Experience")
+            if var3.get() == 1:
+                self.check3.deselect()
+                self.proficient3.set("Experience")
+            if var4.get() == 1:
+                self.check4.deselect()
+                self.proficient4.set("Experience")
+            if var5.get() == 1:
+                self.check5.deselect()
+                self.proficient5.set("Experience")
+            if var6.get() == 1:
+                self.check6.deselect()
+                self.proficient6.set("Experience")
+            if var7.get() == 1:
+                self.check7.deselect()
+                self.proficient7.set("Experience")
+            if var8.get() == 1:
+                self.check8.deselect()
+                self.proficient8.set("Experience")
+            if var9.get() == 1:
+                self.check9.deselect()
+                self.proficient9.set("Experience")
+            if var10.get() == 1:
+                self.check10.deselect()
+                self.proficient10.set("Experience")
+            self.proficient1.set("Experience")
+            self.proficient2.set("Experience")
+            self.proficient3.set("Experience")
+            self.proficient4.set("Experience")
+            self.proficient5.set("Experience")
+            self.proficient6.set("Experience")
+            self.proficient7.set("Experience")
+            self.proficient8.set("Experience")
+            self.proficient9.set("Experience")
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
+            controller.show_frame("Login")
+        self.load_logout_img = Image.open("images/logout_icon.png")
+        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+                                    command=goto_login)
         # End of Toolbar
+
+        def reset_page():
+            self.username_label['text'] = "Username"
+            self.name_entry.delete(0, 'end')
+            self.age_entry.delete(0, 'end')
+            self.nationality_entry.delete(0, 'end')
+            self.email_entry.delete(0, 'end')
+            self.github_entry.delete(0, 'end')
+            self.linkedIn_entry.delete(0, 'end')
+            self.specialize_entry.delete(0, 'end')
+            self.fieldYrs_entry.delete(0, 'end')
+            self.check1.deselect()
+            self.proficient1.set("Experience")
+            self.check2.deselect()
+            self.proficient2.set("Experience")
+            self.check3.deselect()
+            self.proficient3.set("Experience")
+            self.check4.deselect()
+            self.proficient4.set("Experience")
+            self.check5.deselect()
+            self.proficient5.set("Experience")
+            self.check6.deselect()
+            self.proficient6.set("Experience")
+            self.check7.deselect()
+            self.proficient7.set("Experience")
+            self.check8.deselect()
+            self.proficient8.set("Experience")
+            self.check9.deselect()
+            self.proficient9.set("Experience")
+            self.check10.deselect()
+            self.proficient10.set("Experience")
+            self.profile_pic_label.configure(image=self.default_pic)
+            self.meetOpt.set("Meeting Preference")
+            self.areaOpt.set("Preferred Area")
+            self.user_desc.delete('1.0', 'end')
+            self.error_label['text'] = ""
 
         #Create elements & widgets
         self.email_label = tk.Label(self, text='Email', font='Bahnschrift 16 bold', bg='green')
@@ -76,8 +448,12 @@ class Profile_page(tk.Frame):
             username = file.read()
             file.close()
             username = username[:-1]
+            cursor.execute("SELECT profile_pic FROM User WHERE username = ?", [username])
+            file_path = str(cursor.fetchall())[3:-4]
             filename = filedialog.askopenfilename(initialdir="C:\\", filetypes=(
             ("PNG file", "*.png"), ("JPEG File", "*.jpeg"), ("JPG File", "*.jpg"), ("All File Types", "*.*")))
+            if filename == None or filename == '':
+                filename = file_path
             cursor.execute("UPDATE User SET profile_pic = ? WHERE username = ?", [filename, username])
             connection.commit()
             connection.close()
@@ -90,6 +466,7 @@ class Profile_page(tk.Frame):
 
         #This function gets the data of the logged in user from the database and displays his/her details on screen
         def start_edits():
+            reset_page()
             connection = sqlite3.connect('Databases/User_database.db')
             cursor = connection.cursor()
             file = open("Databases/logs.txt", "r")
@@ -105,8 +482,11 @@ class Profile_page(tk.Frame):
             self.profile_pic_label.configure(image=img2)
             self.profile_pic_label.image = img2
             cursor.execute("SELECT short_Desc FROM User WHERE username = ?", [username])
-            new_desc = str(cursor.fetchall())[3:-4]
-            self.user_desc.insert('insert',new_desc)
+            for line in cursor.fetchall()[0]:
+                if line == None:
+                    continue
+                else:
+                    self.user_desc.insert('insert', line)
             cursor.execute("SELECT fullname FROM User WHERE username = ?", [username])
             fullname = str(cursor.fetchall())[3:-4]
             self.name_entry.insert('insert', fullname)
@@ -397,8 +777,9 @@ class Profile_page(tk.Frame):
                 self.error_label['text'] = "Please check that all required fields are filled"
                 return
             cursor.execute("UPDATE User SET code_lang = ? WHERE username = ?", [coding_prof, username])
+            self.error_label['text'] = ""
+            tk.messagebox.showinfo("Success", "Edits saved successfully!")
             connection.commit()
-
             connection.close()
         self.save_details_btn = tk.Button(self, text='Save Edits', font='Bahnschrift 28 bold', bg='Red', relief='solid', command=save_edits)
         self.user_desc = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=25, height=15, font='Bahnschrift 16 bold')
@@ -415,6 +796,7 @@ class Profile_page(tk.Frame):
         self.contacts_btn.tkraise()
         self.profile_btn.place(x=910, y=2)
         self.profile_btn.tkraise()
+        self.logout_btn.place(x=100, y=3)
         self.get_details_btn.place(x=450, y=170)
         self.profile_pic_label.place(x=370, y=305)
         self.pic_btn.place(x=350, y=520)

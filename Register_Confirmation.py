@@ -164,7 +164,7 @@ class Register_confirmation_page(tk.Frame):
             sql = 'Databases/' + username + '_db.db'
             connection = sqlite3.connect(sql)
             cursor = connection.cursor()
-            cursor.execute('''CREATE TABLE IF NOT EXISTS Personal(userid INTEGER PRIMARY KEY AUTOINCREMENT, invite_received TEXT, invite_sent TEXT, proggies TEXT, chat_log TEXT)''')
+            cursor.execute('''CREATE TABLE IF NOT EXISTS Personal(userid INTEGER PRIMARY KEY AUTOINCREMENT, invite_received TEXT, invite_sent TEXT, proggies TEXT, chat_logs TEXT)''')
             connection.commit()
             connection.close()
             connection = sqlite3.connect('Databases/User_database.db')
