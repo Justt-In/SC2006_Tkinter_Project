@@ -208,8 +208,8 @@ class Register_page(tk.Frame):
                 f.write(username)
                 f.close()
             password = self.password_entry.get()
-            if len(password) < 12:
-                self.error_label['text'] = 'Password has to be more than 12 characters'
+            if len(password) < 8:
+                self.error_label['text'] = 'Password has to be more than 8 characters'
                 self.error_label.place(x=450, y=780)
                 return
             regex = isAllPresent(password)
