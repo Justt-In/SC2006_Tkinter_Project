@@ -10,47 +10,47 @@ import sqlite3
 class Recs_page(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='brown')
+        tk.Frame.__init__(self, parent, bg='#2176FF')
         self.controller = controller
         #Toolbar
         #Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#ff8c1a", borderwidth=2, relief='solid')
+        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#FDCA40", borderwidth=2, relief='solid')
         def goto_recs():
             controller.show_frame('Recs_page')
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Recs_page"))
+        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Recs_page"))
         def goto_search():
             controller.show_frame('Search_page')
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Search_page"))
+        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Search_page"))
         def goto_events():
             controller.show_frame('Events_page')
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Events_page"))
+        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Events_page"))
         def goto_contacts():
             controller.show_frame('Contacts_page')
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Contacts_page"))
+        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Contacts_page"))
         def goto_profile():
             controller.show_frame('Profile_page')
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Profile_page"))
+        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130, relief="raised", command=lambda: controller.show_frame("Profile_page"))
         self.load_logout_img = Image.open("images/logout_icon.png")
         self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised", command=lambda: controller.show_frame("Login"))
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised", command=lambda: controller.show_frame("Login"))
         #End of Toolbar
 
         #create elements/widgets
         self.space_label1_1 = tk.Label(self, height=8, width=50, bg='black')
         self.space_label2 = tk.Label(self, height=1, bg='black')
         #self.space_label3 = tk.Label(self, height=1, bg='black')
-        self.line_label1 = tk.Label(self,  width=1000, bg='green')
-        self.title_label = tk.Label(self, text='Upcoming Events You May Be Interested', font='Impact 16 underline', background='green')
-        self.user_label = tk.Label(self, text='Username', font='Impact 16 underline', background='green')
+        self.line_label1 = tk.Label(self,  width=1000, bg='#33A1FD')
+        self.title_label = tk.Label(self, text='Upcoming Events You May Be Interested', font='Impact 16 underline', background='#33A1FD')
+        self.user_label = tk.Label(self, text='Username', font='Impact 16 underline', background='#33A1FD')
 
         image = Image.open("images/round_rect.png")
         photo = ImageTk.PhotoImage(image.resize((710, 300), Image.ANTIALIAS))
-        self.rect_label = tk.Label(self, image=photo, bg='green', fg='black', relief='solid')
+        self.rect_label = tk.Label(self, image=photo, bg='#33A1FD', fg='black', relief='solid')
 
         self.event_left = tk.PhotoImage(file="images/img_login_left.png")
         self.event_left_btn = tk.Button(self, image=self.event_left, bg="white", bd="3", relief="raised")
@@ -62,7 +62,7 @@ class Recs_page(tk.Frame):
 
         image1 = Image.open("images/round_rect.png")
         photo1 = ImageTk.PhotoImage(image1.resize((710, 300), Image.ANTIALIAS))
-        self.rect_label_2 = tk.Label(self, image=photo1, bg='green', fg='black', relief='solid')
+        self.rect_label_2 = tk.Label(self, image=photo1, bg='#33A1FD', fg='black', relief='solid')
         #Popup filter
         def popup_window():
             window = tk.Toplevel()
@@ -117,7 +117,7 @@ class Recs_page(tk.Frame):
         self.user_image = tk.PhotoImage(file="images/profile_icon.png")
         self.user_image_Button = tk.Button(self, image=self.user_image)
 
-        self.user_desc_label = tk.Label(self, text='description...', bg='green', fg='black')
+        self.user_desc_label = tk.Label(self, text='description...', bg='#33A1FD', fg='black')
 
         #arrange elements & widgets in grid
         self.space_label1.place(x=0, y=0)

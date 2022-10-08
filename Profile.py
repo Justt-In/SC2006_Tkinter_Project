@@ -8,11 +8,11 @@ import sqlite3
 class Profile_page(tk.Frame):
     #Initialises the Tkinter frame
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='green')
+        tk.Frame.__init__(self, parent, bg='#2176FF')
         self.controller = controller
         # Toolbar
         # Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg='#ff8c1a', borderwidth=2, relief='solid')
+        self.space_label1 = tk.Label(self, width=1000, height=9, bg='#FDCA40', borderwidth=2, relief='solid')
         def goto_recs():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -70,7 +70,7 @@ class Profile_page(tk.Frame):
             self.error_label['text'] = ""
             controller.show_frame("Recs_page")
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised",
+        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised",
                                   command=goto_recs)
         def goto_search():
             self.username_label['text'] = "Username"
@@ -129,7 +129,7 @@ class Profile_page(tk.Frame):
             self.error_label['text'] = ""
             controller.show_frame("Search_page")
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130,
+        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130,
                                     relief="raised", command=goto_search)
         def goto_events():
             self.username_label['text'] = "Username"
@@ -188,7 +188,7 @@ class Profile_page(tk.Frame):
             self.error_label['text'] = ""
             controller.show_frame("Events_page")
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130,
+        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130,
                                     relief="raised", command=goto_events)
         def goto_contacts():
             self.username_label['text'] = "Username"
@@ -247,9 +247,9 @@ class Profile_page(tk.Frame):
             self.error_label['text'] = ""
             controller.show_frame("Contacts_page")
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130,
+        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130,
                                       relief="raised", command=goto_contacts)
-        def goto_contacts():
+        def goto_profile():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.age_entry.delete(0, 'end')
@@ -306,8 +306,8 @@ class Profile_page(tk.Frame):
             self.error_label['text'] = ""
             controller.show_frame("Profile_page")
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
-                                     relief="raised", command=goto_contacts)
+        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130,
+                                     relief="raised", command=goto_profile)
         def goto_login():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -366,20 +366,28 @@ class Profile_page(tk.Frame):
             controller.show_frame("Login")
         self.load_logout_img = Image.open("images/logout_icon.png")
         self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised",
                                     command=goto_login)
         # End of Toolbar
 
         def reset_page():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
+            self.name_entry.configure(state="normal")
             self.age_entry.delete(0, 'end')
+            self.age_entry.configure(state="normal")
             self.nationality_entry.delete(0, 'end')
+            self.nationality_entry.configure(state="normal")
             self.email_entry.delete(0, 'end')
+            self.email_entry.configure(state="normal")
             self.github_entry.delete(0, 'end')
+            self.github_entry.configure(state="normal")
             self.linkedIn_entry.delete(0, 'end')
+            self.linkedIn_entry.configure(state="normal")
             self.specialize_entry.delete(0, 'end')
+            self.specialize_entry.configure(state="normal")
             self.fieldYrs_entry.delete(0, 'end')
+            self.fieldYrs_entry.configure(state="normal")
             self.check1.deselect()
             self.proficient1.set("Experience")
             self.check2.deselect()
@@ -404,40 +412,41 @@ class Profile_page(tk.Frame):
             self.meetOpt.set("Meeting Preference")
             self.areaOpt.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
+            self.user_desc.configure(state="normal")
             self.error_label['text'] = ""
 
         #Create elements & widgets
-        self.email_label = tk.Label(self, text='Email', font='Bahnschrift 16 bold', bg='green')
+        self.email_label = tk.Label(self, text='Email', font='Bahnschrift 16 bold', bg='#2176FF')
         self.email_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.name_label = tk.Label(self, text='Name', font='Bahnschrift 16 bold', bg='green')
+        self.name_label = tk.Label(self, text='Name', font='Bahnschrift 16 bold', bg='#2176FF')
         self.name_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.nationality_label = tk.Label(self, text='Nationality', font='Bahnschrift 16 bold', bg='green')
+        self.nationality_label = tk.Label(self, text='Nationality', font='Bahnschrift 16 bold', bg='#2176FF')
         self.nationality_entry = tk.Entry(self, font='Bahnschrift 16')
         self.meetOpt = tk.StringVar(self)
         self.meetOpt.set("Meeting Preference")
         self.meetPref = tk.OptionMenu(self, self.meetOpt, "Virtual", "Physical", "None")
-        self.meetPref.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.meetPref.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         meetPref_menu = self.nametowidget(self.meetPref.menuname)
         meetPref_menu.configure(font='Bahnschrift 12 bold')
         self.areaOpt = tk.StringVar(self)
         self.areaOpt.set("Preferred Area")
         self.areaPref = tk.OptionMenu(self, self.areaOpt, "Central SG", "North SG", "East SG", "South SG", "West SG")
-        self.areaPref.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.areaPref.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         areaPref_menu = self.nametowidget(self.areaPref.menuname)
         areaPref_menu.configure(font='Bahnschrift 12 bold')
-        self.github_label = tk.Label(self, text='Github Username (Optional)', font='Bahnschrift 16 bold', bg='green')
+        self.github_label = tk.Label(self, text='Github Username (Optional)', font='Bahnschrift 16 bold', bg='#2176FF')
         self.github_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.linkedIn_label = tk.Label(self, text='LinkedIn Url (Optional)', font='Bahnschrift 16 bold', bg='green')
+        self.linkedIn_label = tk.Label(self, text='LinkedIn Url (Optional)', font='Bahnschrift 16 bold', bg='#2176FF')
         self.linkedIn_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.age_label = tk.Label(self, text='Age', font='Bahnschrift 16 bold', bg='green')
+        self.age_label = tk.Label(self, text='Age', font='Bahnschrift 16 bold', bg='#2176FF')
         self.age_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.specialize_label = tk.Label(self, text='Specialization/Field of study', font='Bahnschrift 16 bold', bg='green')
+        self.specialize_label = tk.Label(self, text='Specialization/Field of study', font='Bahnschrift 16 bold', bg='#2176FF')
         self.specialize_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.fieldYrs_label = tk.Label(self, text='Years in Specialization', font='Bahnschrift 16 bold', bg='green')
+        self.fieldYrs_label = tk.Label(self, text='Years in Specialization', font='Bahnschrift 16 bold', bg='#2176FF')
         self.fieldYrs_entry = tk.Entry(self, font='Bahnschrift 16')
         self.load_profile_pic = Image.open('images/default_profile_img.png')
         self.default_pic = ImageTk.PhotoImage(self.load_profile_pic.resize((200, 200), Image.ANTIALIAS))
-        self.profile_pic_label = tk.Label(self, image=self.default_pic, bg='green')
+        self.profile_pic_label = tk.Label(self, image=self.default_pic, bg='#2176FF')
 
         #This function allows the user to change their profile picture and updates dynamically upon update, it also
         # saves the image to the database immediately
@@ -461,8 +470,8 @@ class Profile_page(tk.Frame):
             self.profile_pic_label.configure(image=stgImg)
             self.profile_pic_label.image = stgImg
 
-        self.pic_btn = tk.Button(self, text='Change Picture', width=20, height=1, relief='solid', font='Bahnschrift 16 underline bold', bg='cyan', command=change_pic)
-        self.username_label = tk.Label(self, text='Username', font='Bahnschrift 50 underline bold', bg='green')
+        self.pic_btn = tk.Button(self, text='Change Picture', width=20, height=1, relief='solid', font='Bahnschrift 16 underline bold', bg='#FDCA40', command=change_pic)
+        self.username_label = tk.Label(self, text='Username', font='Bahnschrift 50 underline bold', bg='#2176FF')
 
         #This function gets the data of the logged in user from the database and displays his/her details on screen
         def start_edits():
@@ -555,10 +564,10 @@ class Profile_page(tk.Frame):
                     self.check10.select()
                     self.proficient10.set(language_year[1])
             connection.close()
-        self.get_details_btn = tk.Button(self, text='Get Current Profile Details', font='Bahnschrift 32 bold', bg='cyan', relief='solid', command=start_edits)
+        self.get_details_btn = tk.Button(self, text='Get Current Profile Details', font='Bahnschrift 32 bold', bg='#008600', relief='solid', command=start_edits)
 
         #Proficiencies
-        self.proficient_label = tk.Label(self, text='Proficient Languages', font='Bahnschrift 24 bold underline', bg='green')
+        self.proficient_label = tk.Label(self, text='Proficient Languages', font='Bahnschrift 24 bold underline', bg='#2176FF')
         var1 = tk.IntVar(self)
         var2 = tk.IntVar(self)
         var3 = tk.IntVar(self)
@@ -590,58 +599,58 @@ class Profile_page(tk.Frame):
         self.proficient10 = tk.StringVar(self)
         self.proficient10.set("Experience")
         self.experience1 = tk.OptionMenu(self, self.proficient1, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience1.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience1.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience1_menu = self.nametowidget(self.experience1.menuname)
         experience1_menu.configure(font='Bahnschrift 12 bold')
-        self.check1 = tk.Checkbutton(self, text='Python', font='Bahnschrift 16 bold', bg='green', bd=-2,
+        self.check1 = tk.Checkbutton(self, text='Python', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2,
                                      variable=var1)
         self.experience2 = tk.OptionMenu(self, self.proficient2, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience2.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience2.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience2_menu = self.nametowidget(self.experience2.menuname)
         experience2_menu.configure(font='Bahnschrift 12 bold')
-        self.check2 = tk.Checkbutton(self, text='C++', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var2)
+        self.check2 = tk.Checkbutton(self, text='C++', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var2)
         self.experience3 = tk.OptionMenu(self, self.proficient3, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience3.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience3.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience3_menu = self.nametowidget(self.experience3.menuname)
         experience3_menu.configure(font='Bahnschrift 12 bold')
-        self.check3 = tk.Checkbutton(self, text='C#', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var3)
+        self.check3 = tk.Checkbutton(self, text='C#', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var3)
         self.experience4 = tk.OptionMenu(self, self.proficient4, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience4.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience4.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience4_menu = self.nametowidget(self.experience4.menuname)
         experience4_menu.configure(font='Bahnschrift 12 bold')
-        self.check4 = tk.Checkbutton(self, text='C', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var4)
+        self.check4 = tk.Checkbutton(self, text='C', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var4)
         self.experience5 = tk.OptionMenu(self, self.proficient5, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience5.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience5.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience5_menu = self.nametowidget(self.experience5.menuname)
         experience5_menu.configure(font='Bahnschrift 12 bold')
-        self.check5 = tk.Checkbutton(self, text='Java', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var5)
+        self.check5 = tk.Checkbutton(self, text='Java', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var5)
         self.experience6 = tk.OptionMenu(self, self.proficient6, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience6.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience6.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience6_menu = self.nametowidget(self.experience6.menuname)
         experience6_menu.configure(font='Bahnschrift 12 bold')
-        self.check6 = tk.Checkbutton(self, text='Javascript', font='Bahnschrift 16 bold', bg='green', bd=-2,
+        self.check6 = tk.Checkbutton(self, text='Javascript', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2,
                                      variable=var6)
         self.experience7 = tk.OptionMenu(self, self.proficient7, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience7.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience7.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience7_menu = self.nametowidget(self.experience7.menuname)
         experience7_menu.configure(font='Bahnschrift 12 bold')
-        self.check7 = tk.Checkbutton(self, text='PHP', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var7)
+        self.check7 = tk.Checkbutton(self, text='PHP', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var7)
         self.experience8 = tk.OptionMenu(self, self.proficient8, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience8.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience8.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience8_menu = self.nametowidget(self.experience8.menuname)
         experience8_menu.configure(font='Bahnschrift 12 bold')
-        self.check8 = tk.Checkbutton(self, text='SQL', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var8)
+        self.check8 = tk.Checkbutton(self, text='SQL', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var8)
         self.experience9 = tk.OptionMenu(self, self.proficient9, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience9.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience9.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience9_menu = self.nametowidget(self.experience9.menuname)
         experience9_menu.configure(font='Bahnschrift 12 bold')
-        self.check9 = tk.Checkbutton(self, text='HTML', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var9)
+        self.check9 = tk.Checkbutton(self, text='HTML', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var9)
         self.experience10 = tk.OptionMenu(self, self.proficient10, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience10.configure(font='Bahnschrift 12 bold', bg='#4c5270', fg='white', bd=-2)
+        self.experience10.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
         experience10_menu = self.nametowidget(self.experience10.menuname)
         experience10_menu.configure(font='Bahnschrift 12 bold')
-        self.check10 = tk.Checkbutton(self, text='CSS', font='Bahnschrift 16 bold', bg='green', bd=-2, variable=var10)
-        self.error_label = tk.Label(self, text="",font='Bahnschrift 20 underline', bg='green', bd=3, fg='red')
+        self.check10 = tk.Checkbutton(self, text='CSS', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var10)
+        self.error_label = tk.Label(self, text="",font='Bahnschrift 20 underline', bg='#2176FF', bd=3, fg='#a00000')
 
         #This function collects the data in all the entry widgets and saves it to the overall user database
         def save_edits():

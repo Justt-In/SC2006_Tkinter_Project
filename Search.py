@@ -7,46 +7,46 @@ import sqlite3
 class Search_page(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='red')
+        tk.Frame.__init__(self, parent, bg='#2176FF')
         self.controller = controller
 
         # Toolbar
         # Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#ff8c1a", borderwidth=2, relief='solid')
+        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#FDCA40", borderwidth=2, relief='solid')
 
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised",
+        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised",
                                   command=lambda: controller.show_frame("Recs_page"))
 
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130,
+        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Search_page"))
 
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130,
+        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Events_page"))
 
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130,
+        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130,
                                       relief="raised", command=lambda: controller.show_frame("Contacts_page"))
 
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
+        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130,
                                      relief="raised", command=lambda: controller.show_frame("Profile_page"))
 
         self.load_logout_img = Image.open("images/logout_icon.png")
         self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised",
                                     command=lambda: controller.show_frame("Login"))
         # End of Toolbar
 
         #add elemets & widgets
-        self.user_label = tk.Label(self, text='Looking for someone...?', font='Bahnschrift 40 bold underline', bg='red')
+        self.user_label = tk.Label(self, text='Looking for someone...?', font='Bahnschrift 40 bold underline', bg='#2176FF')
         self.search_user = tk.Entry(self, font=('arial', 18), width=30, relief='solid', bd=2)
         self.search_user.pack(ipady=18)
-        self.label_block = tk.Label(self, bg='red', width=500, height=300)
-        self.success_label = tk.Label(self, bg='red',fg='green', text='', font='Bahnschrift 30 bold ')
-        self.fail_label = tk.Label(self,bg='red', fg='black', text='', font='Bahnschrift 30 bold ')
+        self.label_block = tk.Label(self, bg='#2176FF', width=500, height=300)
+        self.success_label = tk.Label(self, bg='#2176FF',fg='green', text='', font='Bahnschrift 30 bold ')
+        self.fail_label = tk.Label(self,bg='#2176FF', fg='black', text='', font='Bahnschrift 30 bold ')
         #Gets the username entered into the the search bar and finds that user, returns appropriate messages if no user
         # is found and returns the found user if there exists one
         def search_user():
@@ -71,12 +71,12 @@ class Search_page(tk.Frame):
             except IndexError:
                 self.fail_label['text'] = "No user found, please check your input once more"
                 self.fail_label.tkraise()
-        self.usersearch_button = tk.Button(self, text='Search', font='Bahnschrift 16 bold', bg='Cyan', relief='raised', command=search_user)
-        self.rect_label_1 = tk.Label(self, bg='orange', fg='black', relief='solid', height='10', width='80')
+        self.usersearch_button = tk.Button(self, text='Search', font='Bahnschrift 16 bold', bg='#FDCA40', relief='raised', command=search_user)
+        self.rect_label_1 = tk.Label(self, bg='#33A1FD', fg='black', relief='solid', height='10', width='80')
         self.load_randomuser1_img = tk.PhotoImage(file='images/profile_icon.png')
-        self.randomuser1_img = tk.Label(self, image=self.load_randomuser1_img, bg='orange')
-        self.randomuser1_username = tk.Label(self, text='Username', font='Bahnschrift 20 underline bold', bg='orange')
-        self.randomuser1_desc = tk.Label(self, text='Experience Description...', font='Bahnschrift 14 bold', bg='orange')
+        self.randomuser1_img = tk.Label(self, image=self.load_randomuser1_img, bg='#33A1FD')
+        self.randomuser1_username = tk.Label(self, text='Username', font='Bahnschrift 20 underline bold', bg='#33A1FD')
+        self.randomuser1_desc = tk.Label(self, text='Experience Description...', font='Bahnschrift 14 bold', bg='#33A1FD')
         self.load_add_img = tk.PhotoImage(file='images/add_user_img.png')
         def add_user():
             file = open("Databases/logs.txt", "r").read()
@@ -118,17 +118,17 @@ class Search_page(tk.Frame):
                 connection.commit()
                 connection.close()
                 self.success_label['text'] = 'Friend Request Sent!'
-        self.add_img_btn1 = tk.Button(self, image=self.load_add_img, bg='orange', command=add_user)
-        self.rect_label_2 = tk.Label(self, bg='orange', fg='black', relief='solid', height='10', width='80')
-        self.randomuser2_img = tk.Label(self, image=self.load_randomuser1_img, bg='orange')
-        self.randomuser2_username = tk.Label(self, text='Username', font='Bahnschrift 20 underline bold', bg='orange')
-        self.randomuser2_desc = tk.Label(self, text='Experience Description...', font='Bahnschrift 14 bold',bg='orange')
-        self.add_img_btn2 = tk.Button(self, image=self.load_add_img, bg='orange')
-        self.rect_label_3 = tk.Label(self, bg='orange', fg='black', relief='solid', height='10', width='80')
-        self.randomuser3_img = tk.Label(self, image=self.load_randomuser1_img, bg='orange')
-        self.randomuser3_username = tk.Label(self, text='Username', font='Bahnschrift 20 underline bold', bg='orange')
-        self.randomuser3_desc = tk.Label(self, text='Experience Description...', font='Bahnschrift 14 bold',bg='orange')
-        self.add_img_btn3 = tk.Button(self, image=self.load_add_img, bg='orange')
+        self.add_img_btn1 = tk.Button(self, image=self.load_add_img, bg='#33A1FD', command=add_user, relief='solid')
+        self.rect_label_2 = tk.Label(self, bg='#33A1FD', fg='black', relief='solid', height='10', width='80')
+        self.randomuser2_img = tk.Label(self, image=self.load_randomuser1_img, bg='#33A1FD')
+        self.randomuser2_username = tk.Label(self, text='Username', font='Bahnschrift 20 underline bold', bg='#33A1FD')
+        self.randomuser2_desc = tk.Label(self, text='Experience Description...', font='Bahnschrift 14 bold',bg='#33A1FD')
+        self.add_img_btn2 = tk.Button(self, image=self.load_add_img, bg='#33A1FD')
+        self.rect_label_3 = tk.Label(self, bg='#33A1FD', fg='black', relief='solid', height='10', width='80')
+        self.randomuser3_img = tk.Label(self, image=self.load_randomuser1_img, bg='#33A1FD')
+        self.randomuser3_username = tk.Label(self, text='Username', font='Bahnschrift 20 underline bold', bg='#33A1FD')
+        self.randomuser3_desc = tk.Label(self, text='Experience Description...', font='Bahnschrift 14 bold',bg='#33A1FD')
+        self.add_img_btn3 = tk.Button(self, image=self.load_add_img, bg='#33A1FD')
 
         # arrange elements & widgets
         self.space_label1.place(x=0, y=0)

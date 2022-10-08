@@ -25,6 +25,7 @@ cursor = connection.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS Events(eventid INTEGER PRIMARY KEY AUTOINCREMENT, event_pic TEXT, creation_date TEXT, event_date TEXT, eventname TEXT, location TEXT, event_type TEXT, short_Desc TEXT)''')
 connection.commit()
 connection.close()
+
 class BinaryApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -58,12 +59,12 @@ class BinaryApp(tk.Tk):
 class Login(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#ff8c1a')
+        tk.Frame.__init__(self, parent, bg='#2176FF')
         self.controller = controller
         self.controller.title("Binary")
         self.controller.state("zoomed")
 
-        space_label1 = tk.Label(self, height=8, bg='#ff8c1a')
+        space_label1 = tk.Label(self, height=8, bg='#2176FF')
         space_label1.pack()
 
         image = Image.open("images/binary_home.png")
@@ -73,32 +74,32 @@ class Login(tk.Frame):
         label_img.image = photo
         label_img.pack()
 
-        space_label2 = tk.Label(self, height=3, bg='#ff8c1a')
+        space_label2 = tk.Label(self, height=3, bg='#2176FF')
         space_label2.pack()
 
-        username_label = tk.Label(self, text="Username", font=('arial', 20, 'bold'), foreground='black', bg='#ff8c1a')
+        username_label = tk.Label(self, text="Username", font=('arial', 20, 'bold'), foreground='black', bg='#2176FF')
         username_label.pack(pady=5)
         username = tk.StringVar()
         username_box = tk.Entry(self, textvariable=username, font=('arial', 12), width=30)
         username_box.pack(ipady=7)
         username_box.focus_set()
 
-        password_label = tk.Label(self, text="Password", font=('arial', 20, 'bold'), foreground='black',background='#ff8c1a')
+        password_label = tk.Label(self, text="Password", font=('arial', 20, 'bold'), foreground='black',background='#2176FF')
         password_label.pack(pady=5)
         password = tk.StringVar()
         password_box = tk.Entry(self, textvariable=password, font=('arial', 12), width=30)
         password_box.pack(ipady=7)
 
         #ALL
-        login_username_label = tk.Label(font='Bahnschrift 20 underline bold', bg="#ff8c1a")
-        login_username_label.place(x=1175, y=50)
+        login_username_label = tk.Label(font='Bahnschrift 20 underline bold', bg="#FDCA40")
+        #self.login_block_label = tk.Label(font='Bahnschrift 20 underline bold', bg="#2176FF", width=20, height=10)
 
         def handleFocusIn(_):
             password_box.configure(fg='black', show='*')
 
         password_box.bind('<FocusIn>', handleFocusIn)
 
-        space_label3 = tk.Label(self, height=1, bg='#ff8c1a')
+        space_label3 = tk.Label(self, height=1, bg='#2176FF')
         space_label3.pack()
 
         def check_login():
@@ -119,7 +120,9 @@ class Login(tk.Frame):
                 file = open("Databases/logs.txt", "r").read()
                 login_username_label['text'] = "Logged in as:\n" + file[:-1]
                 login_username_label.tkraise()
+                login_username_label.place(x=1175, y=50)
                 controller.show_frame('Recs_page')
+            #Admin Login
             elif username == "admin" and password == "admin":
                 # Toplevel object which will
                 # be treated as a new window
@@ -200,7 +203,7 @@ class Login(tk.Frame):
                         newWindow.fail_label['text'] = "Ensure fields are filled"
                         newWindow.fail_label.tkraise()
 
-                newWindow.submit_btn = tk.Button(newWindow, text='Submit', font='Bahnschrift 16 bold', bg='Cyan', relief='solid', command=submit_event)
+                newWindow.submit_btn = tk.Button(newWindow, text='Submit', font='Bahnschrift 16 bold', bg='#FDCA40', relief='solid', command=submit_event)
                 newWindow.submit_btn.place(x=200, y=480)
                 newWindow.success_label = tk.Label(newWindow, text='', fg='green', relief='flat', font='Bahnschrift 16 bold')
                 newWindow.success_label.place(x=140, y=530)
@@ -214,21 +217,24 @@ class Login(tk.Frame):
                 file = open("Databases/logs.txt", "r").read()
                 login_username_label['text'] = "Logged in as:\n" + file[:-1]
                 login_username_label.tkraise()
+                login_username_label.place(x=1175, y=50)
                 controller.show_frame('Recs_page')
             else:
                 incorrect_password_label['text'] = 'Incorrect Password'
 
         def register_page():
+            login_username_label.place(x=1175, y=50)
+            login_username_label.lower()
             controller.show_frame('Register_page')
 
         self.loadimage = tk.PhotoImage(file="images/img_login.png")
         self.roundedbutton = tk.Button(self, image=self.loadimage, command=check_login)
-        self.roundedbutton["bg"] = "#ff8c1a"
+        self.roundedbutton["bg"] = "#FDCA40"
         self.roundedbutton["border"] = "3"
         self.roundedbutton.pack(side="top")
-        signup_button = tk.Button(self, text='Sign Up', fg='black', bg='orange', command=register_page, font=('Arial', 15), width=10, relief='raised', borderwidth=5)
+        signup_button = tk.Button(self, text='Sign Up', fg='black', bg='#FDCA40', command=register_page, font=('Arial', 15), width=10, relief='raised', borderwidth=5)
         signup_button.pack(pady=10)
-        incorrect_password_label = tk.Label(self, text='', font=('Arial', 20), fg='black', bg='#ff8c1a')
+        incorrect_password_label = tk.Label(self, text='', font=('Arial', 20), fg='red', bg='#2176FF')
         incorrect_password_label.pack(fill='both', expand=True)
 '''
 class Register_page(tk.Frame):

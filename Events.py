@@ -7,49 +7,49 @@ import sqlite3
 class Events_page(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='yellow')
+        tk.Frame.__init__(self, parent, bg='#2176FF')
         self.controller = controller
 
         # Toolbar
         # Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#ff8c1a", borderwidth=2, relief='solid')
+        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#FDCA40", borderwidth=2, relief='solid')
 
         self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#ff8c1a", bd="3", height=130, relief="raised",
+        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised",
                                   command=lambda: controller.show_frame("Recs_page"))
 
         self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#ff8c1a", bd="3", height=130,
+        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Search_page"))
 
         self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#ff8c1a", bd="3", height=130,
+        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130,
                                     relief="raised", command=lambda: controller.show_frame("Events_page"))
 
         self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#ff8c1a", bd="3", height=130,
+        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130,
                                       relief="raised", command=lambda: controller.show_frame("Contacts_page"))
 
         self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#ff8c1a", bd="3", height=130,
+        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130,
                                      relief="raised", command=lambda: controller.show_frame("Profile_page"))
 
         self.load_logout_img = Image.open("images/logout_icon.png")
         self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#ff8c1a", bd="3", relief="raised",
+        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised",
                                     command=lambda: controller.show_frame("Login"))
         # End of Toolbar
 
         #Create elements and widgets
         #Top Left backdrop
-        self.load_round_rect = Image.open("images/backdrop2.png")
+        self.load_round_rect = Image.open("images/backdrop_v2.png")
         self.load_main_img1 = Image.open("images/hackathon.png")
         self.hack_main_img = ImageTk.PhotoImage(self.load_main_img1.resize((250, 150), Image.ANTIALIAS))
         self.next_img = tk.PhotoImage(file="images/img_login.png")
 
         self.backdrop_top_left = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.hack_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
-        self.hack_label = tk.Label(self, text='Hackathon', font='Bahnschrift 32 bold underline', bg='#119975')
+        self.hack_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
+        self.hack_label = tk.Label(self, text='Hackathon', font='Bahnschrift 32 bold underline', bg='#33A1FD')
         self.hack_img = tk.Label(self, image=self.hack_main_img)
         #This function opens up a new window and displays all hackathons uploaded into the system by the admin
         def hackathon_view():
@@ -75,10 +75,10 @@ class Events_page(tk.Frame):
                     filepath = "images/" + query_data[row][1][25:]
                     self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
-                    tk.Label(newWindow, image=self.resized_image, bg='yellow', relief='solid').grid(row=row, column=0)
+                    tk.Label(newWindow, image=self.resized_image, bg='#33A1FD', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
-                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='yellow').grid(row=row, column=1)
-                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='yellow').grid(row=row, column=2)
+                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row, column=1)
+                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
                 '''Reset the scroll region to encompass the inner frame'''
@@ -86,8 +86,8 @@ class Events_page(tk.Frame):
 
             root = tk.Toplevel()
             root.geometry("600x500")
-            canvas = tk.Canvas(root, borderwidth=0, background="yellow")
-            frame = tk.Frame(canvas, background="yellow")
+            canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
+            frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
             canvas.configure(yscrollcommand=vsb.set)
             hsb = tk.Scrollbar(root, orient="horizontal", command=canvas.xview)
@@ -107,8 +107,8 @@ class Events_page(tk.Frame):
         self.load_main_img2 = Image.open("images/codathon.png")
         self.code_main_img = ImageTk.PhotoImage(self.load_main_img2.resize((250, 150), Image.ANTIALIAS))
         self.backdrop_top_right = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.code_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
-        self.code_label = tk.Label(self, text='Codathon', font='Bahnschrift 32 bold underline', bg='#119975')
+        self.code_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
+        self.code_label = tk.Label(self, text='Codathon', font='Bahnschrift 32 bold underline', bg='#33A1FD')
         self.code_img = tk.Label(self, image=self.code_main_img)
 
         # This function opens up a new window and displays all codathons uploaded into the system by the admin
@@ -137,10 +137,10 @@ class Events_page(tk.Frame):
                     filepath = "images/" + query_data[row][1][25:]
                     self.open_image = Image.open(filepath)
                     self.resized_image[row] = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
-                    self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='yellow', relief='solid').grid(row=row, column=0)
+                    self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='#33A1FD', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
-                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='yellow').grid(row=row, column=1)
-                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='yellow').grid(row=row, column=2)
+                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row, column=1)
+                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
                 '''Reset the scroll region to encompass the inner frame'''
@@ -148,8 +148,8 @@ class Events_page(tk.Frame):
 
             root = tk.Toplevel()
             root.geometry("600x500")
-            canvas = tk.Canvas(root, borderwidth=0, background="yellow")
-            frame = tk.Frame(canvas, background="yellow")
+            canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
+            frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
             canvas.configure(yscrollcommand=vsb.set)
             hsb = tk.Scrollbar(root, orient="horizontal", command=canvas.xview)
@@ -169,8 +169,8 @@ class Events_page(tk.Frame):
         self.load_main_img3 = Image.open("images/bug_hunt.jpg")
         self.bug_main_img = ImageTk.PhotoImage(self.load_main_img3.resize((250, 150), Image.ANTIALIAS))
         self.backdrop_bottom_left = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.bug_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
-        self.bug_label = tk.Label(self, text='Bug Hunts', font='Bahnschrift 32 bold underline', bg='#119975')
+        self.bug_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
+        self.bug_label = tk.Label(self, text='Bug Hunts', font='Bahnschrift 32 bold underline', bg='#33A1FD')
         self.bug_img = tk.Label(self, image=self.bug_main_img)
 
         # This function opens up a new window and displays all bug hunts uploaded into the system by the admin
@@ -196,10 +196,10 @@ class Events_page(tk.Frame):
                     filepath = "images/" + query_data[row][1][25:]
                     self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
-                    tk.Label(newWindow, image=self.resized_image, bg='yellow', relief='solid').grid(row=row, column=0)
+                    tk.Label(newWindow, image=self.resized_image, bg='#33A1FD', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
-                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='yellow').grid(row=row, column=1)
-                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='yellow').grid(row=row, column=2)
+                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row, column=1)
+                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
                 '''Reset the scroll region to encompass the inner frame'''
@@ -207,8 +207,8 @@ class Events_page(tk.Frame):
 
             root = tk.Toplevel()
             root.geometry("600x500")
-            canvas = tk.Canvas(root, borderwidth=0, background="yellow")
-            frame = tk.Frame(canvas, background="yellow")
+            canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
+            frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
             canvas.configure(yscrollcommand=vsb.set)
             hsb = tk.Scrollbar(root, orient="horizontal", command=canvas.xview)
@@ -228,8 +228,8 @@ class Events_page(tk.Frame):
         self.load_main_img4 = Image.open("images/seminars.jpg")
         self.seminar_main_img = ImageTk.PhotoImage(self.load_main_img4.resize((250, 150), Image.ANTIALIAS))
         self.backdrop_bottom_right = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.seminar_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='yellow')
-        self.seminar_label = tk.Label(self, text='Seminar & Events', font='Bahnschrift 32 bold underline', bg='#119975')
+        self.seminar_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
+        self.seminar_label = tk.Label(self, text='Seminar & Events', font='Bahnschrift 32 bold underline', bg='#33A1FD')
         self.seminar_img = tk.Label(self, image=self.seminar_main_img)
 
         # This function opens up a new window and displays all seminars or olympiads uploaded into the system by the admin
@@ -255,10 +255,10 @@ class Events_page(tk.Frame):
                     filepath = "images/" + query_data[row][1][25:]
                     self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
-                    tk.Label(newWindow, image=self.resized_image, bg='yellow', relief='solid').grid(row=row, column=0)
+                    tk.Label(newWindow, image=self.resized_image, bg='#33A1FD', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
-                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='yellow').grid(row=row, column=1)
-                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='yellow').grid(row=row, column=2)
+                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row, column=1)
+                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
                 '''Reset the scroll region to encompass the inner frame'''
@@ -266,8 +266,8 @@ class Events_page(tk.Frame):
 
             root = tk.Toplevel()
             root.geometry("600x500")
-            canvas = tk.Canvas(root, borderwidth=0, background="yellow")
-            frame = tk.Frame(canvas, background="yellow")
+            canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
+            frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
             canvas.configure(yscrollcommand=vsb.set)
             hsb = tk.Scrollbar(root, orient="horizontal", command=canvas.xview)
