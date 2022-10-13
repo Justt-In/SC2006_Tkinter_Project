@@ -52,6 +52,8 @@ class Recs_page(tk.Frame):
         photo = ImageTk.PhotoImage(image.resize((710, 300), Image.ANTIALIAS))
         self.rect_label = tk.Label(self, image=photo, bg='#33A1FD', fg='black', relief='solid')
 
+
+
         self.event_left = tk.PhotoImage(file="images/img_login_left.png")
         self.event_left_btn = tk.Button(self, image=self.event_left, bg="white", bd="3", relief="raised")
         self.event_right = tk.PhotoImage(file="images/img_login.png")
@@ -60,6 +62,15 @@ class Recs_page(tk.Frame):
         self.event_focus = tk.PhotoImage(file="images/blank_image_icon.png")
         self.event_focus_btn = tk.Button(self, image=self.event_focus)
 
+        '''
+        connection = sqlite3.connect("Databases/Event_database.db")
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM Events")
+        profilepic1 = cursor.fetchall()[0][1]
+        load_profile_pic = Image.open(profilepic1)
+        default_pic = ImageTk.PhotoImage(load_profile_pic.resize((130, 130), Image.ANTIALIAS))
+        self.event_focus_btn.configure(image=default_pic)
+        '''
         image1 = Image.open("images/round_rect.png")
         photo1 = ImageTk.PhotoImage(image1.resize((710, 300), Image.ANTIALIAS))
         self.rect_label_2 = tk.Label(self, image=photo1, bg='#33A1FD', fg='black', relief='solid')
@@ -102,6 +113,13 @@ class Recs_page(tk.Frame):
             locale_menu.configure(font='Bahnschrift 12 bold')
             window.locale_dropdown.pack(fill='x', ipady=5, pady=10)
             def submit_filter():
+                connection = sqlite3.connect("Databases/User_database.db")
+                cursor = connection.cursor()
+                proficiency = window.proficient
+                cursor.execute("SELECT * FROM User WHERE code_lang = ?", [proficiency])
+
+                user_returned = cursor.fetchall()
+
                 window.destroy()
             button_close = tk.Button(window, text="Submit", command=submit_filter)
             button_close.pack(fill='x', pady=10)
