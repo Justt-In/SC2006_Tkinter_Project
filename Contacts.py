@@ -1,19 +1,50 @@
 import tkinter as tk
+import customtkinter
 from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import sqlite3
 
-class Contacts_page(tk.Frame):
+class Contacts_page(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#2176FF')
+        super().__init__()
+        customtkinter.set_appearance_mode("System")
+        customtkinter.set_default_color_theme("blue")
+        if customtkinter.get_appearance_mode() == "light" or customtkinter.get_appearance_mode() == "Light":
+            path = "images/toolbar_image2.jpg"
+            main_bg = "#ffe5d9"
+            toolbar_bg = "#e1edfb"
+            accentColour = "#48CAE4"
+            accentColour2 = "#E46248"
+            accentColour3 = "#00b4d8"
+            textColour = "black"
+            backdrop1 = "images/backdropv3_1"
+        else:
+            path = "images/toolbar_image1.png"
+            main_bg = "#464646"
+            toolbar_bg = "#112938"
+            accentColour = "#0077b6"
+            accentColour2 = "#B63F00"
+            accentColour3 = "#00b4d8"
+            textColour = "black"
+            backdrop1 = "images/backdropv3_3"
+        customtkinter.CTkFrame.__init__(self, parent, fg_color=main_bg)
         self.controller = controller
         # Toolbar
         # Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#FDCA40", borderwidth=2, relief='solid')
-        #This function updates the contacts list and changes view to the recommendations page
+        # Create Canvas
+        canvas1 = tk.Canvas(self, width=400, height=250, bd=0, highlightthickness=0)
+        canvas1.pack(fill="x", side='top')
+
+        # Display image
+
+        self.toolbarImg = Image.open(path)
+        self.toolbarImg = ImageTk.PhotoImage(self.toolbarImg.resize((1930, 300), Image.ANTIALIAS))
+        canvas1.create_image(0, 0, image=self.toolbarImg, anchor="nw")
+
+        # This function updates the contacts list and changes view to the recommendations page
         def goto_recs():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
@@ -107,11 +138,12 @@ class Contacts_page(tk.Frame):
                 except IndexError:
                     break
             controller.show_frame('Recs_page')
+        self.recs_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='Recommendations',
+                                                text_color=textColour,
+                                                text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                command=goto_recs)
 
-        self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised",
-                                  command=goto_recs)
-        #This function updates the contacts list and changes view to the search page
+        # This function updates the contacts list and changes view to the search page
         def goto_search():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
@@ -127,7 +159,7 @@ class Contacts_page(tk.Frame):
             for name in proggies_list:
                 refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
                 picture = refresh_cursor2.fetchall()
-                #print(picture[0][0][25:])
+                # print(picture[0][0][25:])
                 try:
                     if count == 0:
                         if picture[0][0] != None:
@@ -205,11 +237,11 @@ class Contacts_page(tk.Frame):
                 except IndexError:
                     break
             controller.show_frame('Search_page')
+        self.search_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='Search Users', text_color=textColour,
+                                                  text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                  command=goto_search)
 
-        self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130,
-                                    relief="raised", command=goto_search)
-        #This function updates the contacts list and changes view to the events page
+        # This function updates the contacts list and changes view to the events page
         def goto_events():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
@@ -303,11 +335,10 @@ class Contacts_page(tk.Frame):
                 except IndexError:
                     break
             controller.show_frame('Events_page')
+        self.events_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='View Events', text_color=textColour,
+                                                  text_font=['trebuchet MS bold', 12], height=30,fg_color=accentColour,
+                                                  command=goto_events)
 
-        self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130,
-                                    relief="raised", command=goto_events)
-        #This function updates the contacts list and changes view to the contacts page (like refreshing the page)
         def goto_contacts():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
@@ -401,11 +432,10 @@ class Contacts_page(tk.Frame):
                 except IndexError:
                     break
             controller.show_frame('Contacts_page')
+        self.contacts_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='My Contacts',text_color=textColour,
+                                                    text_font=['trebuchet MS bold', 12], height=30,fg_color=accentColour2,
+                                                    command=goto_contacts)
 
-        self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130,
-                                      relief="raised", command=goto_contacts)
-        #This function updates the contacts list and changes view to the profile page
         def goto_profile():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
@@ -499,15 +529,9 @@ class Contacts_page(tk.Frame):
                 except IndexError:
                     break
             controller.show_frame('Profile_page')
-
-        self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130,
-                                     relief="raised", command=goto_profile)
-
-        self.load_logout_img = Image.open("images/logout_icon.png")
-        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised",
-                                    command=lambda: controller.show_frame("Login"))
+        self.profile_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='My Profile', text_color=textColour,
+                                                   text_font=['trebuchet MS bold', 12], height=30,fg_color=accentColour,
+                                                   command=goto_profile)
         # End of Toolbar
 
         #Add elements and widgets
@@ -521,7 +545,7 @@ class Contacts_page(tk.Frame):
         self.deletes = ImageTk.PhotoImage(self.load_delete.resize((55, 55), Image.ANTIALIAS))
         self.view_prof_image = ImageTk.PhotoImage(self.load_view_prof_image.resize((55, 55), Image.ANTIALIAS))
         self.profiles = ImageTk.PhotoImage(self.load_user_image.resize((100, 100), Image.ANTIALIAS))
-        self.block_label = tk.Label(self, width=180, height=100, bg='#2176FF')
+        self.block_label = tk.Label(self, width=160, height=100, bg=main_bg)
         self.load_requests_image = Image.open("images/add_user_img.png")
         self.requests_image = ImageTk.PhotoImage(self.load_requests_image.resize((100, 100), Image.ANTIALIAS))
         #This function allows the user to view all the requests sent to them, it checks their personal database and
@@ -541,7 +565,7 @@ class Contacts_page(tk.Frame):
             def populate(newWindow):
                 noneCounter = 0
                 for name in received_requests:
-                    print(name[0])
+                    #print(name[0])
                     if name[0] == None:
                         noneCounter += 1
                 if noneCounter == count:
@@ -586,27 +610,28 @@ class Contacts_page(tk.Frame):
                     self.resized_accept[name] = ImageTk.PhotoImage(self.accept[name].resize((150, 150), Image.ANTIALIAS))
                     #This function will trigger when the logged in user accepts a request from the sender
                     def accept_request(btnName):
-                        '''
+
                         if len(user_list) == 1:
                             adding = user_list[0]
                         else:
-                            adding = user_list[btnName]
-                        '''
-                        for x in user_list:
-                            adding = x
-                            sql = "Databases/" + username + '_db.db'
-                            newConnection1 = sqlite3.connect(sql)
-                            newCursor1 = newConnection1.cursor()
-                            sql = "Databases/" + adding + '_db.db'
-                            newConnection2 = sqlite3.connect(sql)
-                            newCursor2 = newConnection2.cursor()
-                            #update logged in user's database
-                            newCursor1.execute('UPDATE Personal SET invite_received = ?, proggies = ? WHERE invite_received = ?', (None, adding, adding,))
-                            newConnection1.commit()
-                            #update sender's database
-                            newCursor2.execute('UPDATE Personal SET invite_sent = ?, proggies = ? WHERE invite_sent = ?',(None, username, username,))
-                            newConnection2.commit()
-                            tk.messagebox.showinfo("New Proggy", "Proggy Request Accepted!")
+                            print("btnName: " + str(btnName))
+                            adding = user_list[btnName-3]
+                            print("adding: " + adding)
+                        #for x in user_list:
+                            #adding = x
+                        sql = "Databases/" + username + '_db.db'
+                        newConnection1 = sqlite3.connect(sql)
+                        newCursor1 = newConnection1.cursor()
+                        sql = "Databases/" + adding + '_db.db'
+                        newConnection2 = sqlite3.connect(sql)
+                        newCursor2 = newConnection2.cursor()
+                        #update logged in user's database
+                        newCursor1.execute('UPDATE Personal SET invite_received = ?, proggies = ? WHERE invite_received = ?', (None, adding, adding,))
+                        newConnection1.commit()
+                        #update sender's database
+                        newCursor2.execute('UPDATE Personal SET invite_sent = ?, proggies = ? WHERE invite_sent = ?',(None, username, username,))
+                        newConnection2.commit()
+                        tk.messagebox.showinfo("New Proggy", "Proggy Request Accepted!")
                     self.accept_button[name] = tk.Button(newWindow, bg='#33A1FD', image=self.resized_accept[name], relief='solid', command= lambda text=name:accept_request(text)).grid(row=name,column=2)
                     self.decline[name] = Image.open('images/delete_icon.png')
                     self.resized_decline[name] = ImageTk.PhotoImage(self.decline[name].resize((150, 150), Image.ANTIALIAS))
@@ -666,9 +691,8 @@ class Contacts_page(tk.Frame):
             count = 0
             try:
                 for name in proggies_list:
-                    #print(name[0])
                     if name[0] == None:
-                        break
+                        continue
                     refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
                     picture = refresh_cursor2.fetchall()
                     if count == 0:
@@ -748,19 +772,23 @@ class Contacts_page(tk.Frame):
             except IndexError:
                 tk.messagebox.showerror("Page Error", "Error loading page, please relaunch application")
 
-        self.requests = tk.Button(self, image=self.requests_image, bg='#FDCA40', command=view_requests, relief='solid')
-        self.requests_label = tk.Label(self, text='View Invite\nRequests', font='Bahnschrift 16 bold', bg='#2176FF', fg='white')
+        self.requests = customtkinter.CTkButton(self, image=self.requests_image, bg=main_bg, text="View Invites",
+                                                text_color=textColour, text_font=["trebuchet MS bold", 19], compound="top",
+                                                command=view_requests)
+        #self.requests_label = tk.Label(self, text='View Invite\nRequests', font='Bahnschrift 16 bold', bg='#2176FF', fg='white')
         self.load_proggies_image = Image.open("images/proggies_icon.png")
         self.proggies_image = ImageTk.PhotoImage(self.load_proggies_image.resize((100, 100), Image.ANTIALIAS))
-        self.proggies = tk.Button(self, image=self.proggies_image, bg='#FDCA40', command=view_proggies, relief='solid')
+        self.proggies = customtkinter.CTkButton(self, image=self.proggies_image, bg_color=main_bg,text="View Your Proggies",
+                                                text_color=textColour, text_font=["trebuchet MS bold", 12], compound="top",
+                                                command=view_proggies)
         self.proggies_label = tk.Label(self, text='View Your\nProggies', font='Bahnschrift 16 bold', bg='#2176FF', fg='white')
 
         #This function allows the logged in user to remove a friend from their contacts list - friend 1
         def remove_proggy1():
             if self.username_label1.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label1.cget("text")
@@ -833,8 +861,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy2():
             if self.username_label2.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label2.cget("text")
@@ -907,8 +936,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy3():
             if self.username_label3.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label3.cget("text")
@@ -981,8 +1011,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy4():
             if self.username_label4.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label4.cget("text")
@@ -1055,8 +1086,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy5():
             if self.username_label5.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label5.cget("text")
@@ -1129,8 +1161,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy6():
             if self.username_label6.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label6.cget("text")
@@ -1204,8 +1237,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy7():
             if self.username_label7.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label7.cget("text")
@@ -1278,8 +1312,9 @@ class Contacts_page(tk.Frame):
         def remove_proggy8():
             if self.username_label8.cget("text") == "Username":
                 return
-            MsgBox = tk.messagebox.askquestion('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
-            if MsgBox == 'No':
+            MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
+                                            icon='warning')
+            if MsgBox == False:
                 return
             else:
                 proggy = self.username_label8.cget("text")
@@ -1357,7 +1392,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1379,11 +1414,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1431,7 +1462,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1453,11 +1484,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1505,7 +1532,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1527,11 +1554,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1579,7 +1602,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1601,11 +1624,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1653,7 +1672,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1675,11 +1694,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1727,7 +1742,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1749,11 +1764,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1801,7 +1812,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1823,11 +1834,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -1875,7 +1882,7 @@ class Contacts_page(tk.Frame):
             cursor.execute('SELECT * FROM User WHERE username = ?', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
-            newWindow.geometry("470x600")
+            newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
             query_data = cursor.fetchall()
             print(query_data)
@@ -1897,11 +1904,7 @@ class Contacts_page(tk.Frame):
             newWindow.code_lang.pack(side='top')
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
-            code_text = ''
-            for x in coding_languages:
-                if x == '':
-                    continue
-                code_text = x + "\n"
+            code_text = '\n'.join(coding_languages[1:])
             newWindow.code_lang["text"] = code_text[:-1]
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
@@ -2336,134 +2339,159 @@ class Contacts_page(tk.Frame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=330, y=527)
 
-        self.backdrop1 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label1 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label1 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn1 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof1)
-        self.delete_btn1 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy1)
-        self.message_btn1 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy1)
+        self.backdrop1 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label1 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label1 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn1 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof1)
+        self.delete_btn1 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy1)
+        self.message_btn1 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=message_proggy1)
 
-        self.backdrop2 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label2 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label2 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn2 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof2)
-        self.delete_btn2 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy2)
-        self.message_btn2 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy2)
+        self.backdrop2 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label2 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label2 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn2 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof2)
+        self.delete_btn2 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy2)
+        self.message_btn2 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy2)
 
-        self.backdrop3 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label3 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label3 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn3 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof3)
-        self.delete_btn3 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy3)
-        self.message_btn3 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy3)
+        self.backdrop3 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label3 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label3 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn3 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof3)
+        self.delete_btn3 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy3)
+        self.message_btn3 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy3)
 
-        self.backdrop4 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label4 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label4 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn4 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof4)
-        self.delete_btn4 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy4)
-        self.message_btn4 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy4)
+        self.backdrop4 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label4 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label4 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn4 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof4)
+        self.delete_btn4 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy4)
+        self.message_btn4 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy4)
 
-        self.backdrop5 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label5 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label5 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn5 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof5)
-        self.delete_btn5 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy5)
-        self.message_btn5 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy5)
+        self.backdrop5 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label5 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label5 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn5 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof5)
+        self.delete_btn5 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy5)
+        self.message_btn5 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy5)
 
-        self.backdrop6 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label6 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label6 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn6 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof6)
-        self.delete_btn6 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy6)
-        self.message_btn6 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy6)
+        self.backdrop6 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label6 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label6 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn6 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof6)
+        self.delete_btn6 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy6)
+        self.message_btn6 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy6)
 
-        self.backdrop7 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label7 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label7 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn7 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof7)
-        self.delete_btn7 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy7)
-        self.message_btn7 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy7)
+        self.backdrop7 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label7 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label7 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn7 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof7)
+        self.delete_btn7 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy7)
+        self.message_btn7 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy7)
 
-        self.backdrop8 = tk.Label(self, image=self.backdrops, bg='#2176FF')
-        self.pic_label8 = tk.Label(self, image=self.profiles, bg='#33A1FD')
-        self.username_label8 = tk.Label(self, text='Username', bg='#33A1FD', font='Bahnschrift 18 underline bold')
-        self.view_prof_btn8 = tk.Button(self, image=self.view_prof_image, bg='#FDCA40', command=view_proggy_prof8)
-        self.delete_btn8 = tk.Button(self, image=self.deletes, bg='#FDCA40', command=remove_proggy8)
-        self.message_btn8 = tk.Button(self, image=self.messages, bg='#FDCA40', command=message_proggy8)
+        self.backdrop8 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
+                                                corner_radius=20, width=400, height=100)
+        self.pic_label8 = tk.Label(self, image=self.profiles, bg=accentColour)
+        self.username_label8 = tk.Label(self, text='Username', bg=accentColour, font='Bahnschrift 18 underline bold')
+        self.view_prof_btn8 = customtkinter.CTkButton(self, image=self.view_prof_image, bg_color=accentColour, width=50,
+                                                      fg_color=accentColour2, text="", command=view_proggy_prof8)
+        self.delete_btn8 = customtkinter.CTkButton(self, image=self.deletes, bg_color=accentColour, width=50,
+                                                   fg_color=accentColour2, text="", command=remove_proggy8)
+        self.message_btn8 = customtkinter.CTkButton(self, image=self.messages, bg_color=accentColour, width=50,
+                                                    fg_color=accentColour2, text="", command=message_proggy8)
 
         # arrange elements & widgets in grid
-        self.space_label1.place(x=0, y=0)
-        self.recs_btn.place(x=370, y=2)
-        self.recs_btn.tkraise()
-        self.search_btn.place(x=505, y=2)
-        self.search_btn.tkraise()
-        self.events_btn.place(x=640, y=2)
-        self.events_btn.tkraise()
-        self.contacts_btn.place(x=775, y=2)
-        self.contacts_btn.tkraise()
-        self.profile_btn.place(x=910, y=2)
-        self.profile_btn.tkraise()
-        self.logout_btn.place(x=100, y=3)
-        self.requests.place(x=1300, y=150)
-        self.requests_label.place(x=1300, y=270)
-        self.proggies.place(x=1300, y=350)
-        self.proggies_label.place(x=1300, y=470)
-        self.block_label.place(x=0, y=150)
+        self.recs_btn.place(x=2, y=2)
+        self.search_btn.place(x=158, y=2)
+        self.events_btn.place(x=300, y=2)
+        self.contacts_btn.place(x=442, y=2)
+        self.profile_btn.place(x=584, y=2)
+
+        self.requests.place(x=1100, y=200)
+        self.proggies.place(x=1100, y=330)
+        self.block_label.place(x=0, y=270)
         self.block_label.tkraise()
+
         #column1
-        self.backdrop1.place(x=190, y=160)
-        self.pic_label1.place(x=220, y=185)
-        self.username_label1.place(x=370, y=205)
-        self.view_prof_btn1.place(x=505, y=200)
-        self.delete_btn1.place(x=570, y=175)
-        self.message_btn1.place(x=570, y=240)
+        self.backdrop1.place(x=130, y=190)
+        self.pic_label1.place(x=210, y=310)
+        self.username_label1.place(x=325, y=330)
+        self.view_prof_btn1.place(x=350, y=220)
+        self.delete_btn1.place(x=410, y=220)
+        self.message_btn1.place(x=470, y=220)
 
-        self.backdrop2.place(x=190, y=320)
-        self.pic_label2.place(x=220, y=345)
-        self.username_label2.place(x=370, y=365)
-        self.view_prof_btn2.place(x=505, y=360)
-        self.delete_btn2.place(x=570, y=335)
-        self.message_btn2.place(x=570, y=400)
+        self.backdrop2.place(x=130, y=310)
+        self.pic_label2.place(x=210, y=490)
+        self.username_label2.place(x=325, y=510)
+        self.view_prof_btn2.place(x=350, y=340)
+        self.delete_btn2.place(x=410, y=340)
+        self.message_btn2.place(x=470, y=340)
 
-        self.backdrop3.place(x=190, y=480)
-        self.pic_label3.place(x=220, y=505)
-        self.username_label3.place(x=370, y=525)
-        self.view_prof_btn3.place(x=505, y=520)
-        self.delete_btn3.place(x=570, y=495)
-        self.message_btn3.place(x=570, y=560)
+        self.backdrop3.place(x=130, y=430)
+        self.pic_label3.place(x=210, y=670)
+        self.username_label3.place(x=325, y=690)
+        self.view_prof_btn3.place(x=350, y=460)
+        self.delete_btn3.place(x=410, y=460)
+        self.message_btn3.place(x=470, y=460)
 
-        self.backdrop4.place(x=190, y=640)
-        self.pic_label4.place(x=220, y=665)
-        self.username_label4.place(x=370, y=685)
-        self.view_prof_btn4.place(x=505, y=680)
-        self.delete_btn4.place(x=570, y=655)
-        self.message_btn4.place(x=570, y=720)
-        #column2
-        self.backdrop5.place(x=760, y=160)
-        self.pic_label5.place(x=790, y=185)
-        self.username_label5.place(x=940, y=205)
-        self.view_prof_btn5.place(x=1075, y=200)
-        self.delete_btn5.place(x=1140, y=175)
-        self.message_btn5.place(x=1140, y=240)
+        self.backdrop4.place(x=130, y=550)
+        self.pic_label4.place(x=210, y=850)
+        self.username_label4.place(x=325, y=870)
+        self.view_prof_btn4.place(x=350, y=580)
+        self.delete_btn4.place(x=410, y=580)
+        self.message_btn4.place(x=470, y=580)
 
-        self.backdrop6.place(x=760, y=320)
-        self.pic_label6.place(x=790, y=345)
-        self.username_label6.place(x=940, y=365)
-        self.view_prof_btn6.place(x=1075, y=360)
-        self.delete_btn6.place(x=1140, y=335)
-        self.message_btn6.place(x=1140, y=400)
+        self.backdrop5.place(x=600, y=190)
+        self.pic_label5.place(x=915, y=310)
+        self.username_label5.place(x=1030, y=330)
+        self.view_prof_btn5.place(x=820, y=220)
+        self.delete_btn5.place(x=880, y=220)
+        self.message_btn5.place(x=940, y=220)
 
-        self.backdrop7.place(x=760, y=480)
-        self.pic_label7.place(x=790, y=505)
-        self.username_label7.place(x=940, y=525)
-        self.view_prof_btn7.place(x=1075, y=520)
-        self.delete_btn7.place(x=1140, y=495)
-        self.message_btn7.place(x=1140, y=560)
+        self.backdrop6.place(x=600, y=310)
+        self.pic_label6.place(x=915, y=490)
+        self.username_label6.place(x=1030, y=510)
+        self.view_prof_btn6.place(x=820, y=340)
+        self.delete_btn6.place(x=880, y=340)
+        self.message_btn6.place(x=940, y=340)
 
-        self.backdrop8.place(x=760, y=640)
-        self.pic_label8.place(x=790, y=665)
-        self.username_label8.place(x=940, y=685)
-        self.view_prof_btn8.place(x=1075, y=680)
-        self.delete_btn8.place(x=1140, y=655)
-        self.message_btn8.place(x=1140, y=720)
+        self.backdrop7.place(x=600, y=430)
+        self.pic_label7.place(x=915, y=670)
+        self.username_label7.place(x=1030, y=690)
+        self.view_prof_btn7.place(x=820, y=460)
+        self.delete_btn7.place(x=880, y=460)
+        self.message_btn7.place(x=940, y=460)
+
+        self.backdrop8.place(x=600, y=550)
+        self.pic_label8.place(x=915, y=850)
+        self.username_label8.place(x=1030, y=870)
+        self.view_prof_btn8.place(x=820, y=580)
+        self.delete_btn8.place(x=880, y=580)
+        self.message_btn8.place(x=940, y=580)

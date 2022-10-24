@@ -1,18 +1,54 @@
 import tkinter as tk
+import customtkinter
 from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import sqlite3
 
-class Profile_page(tk.Frame):
+class Profile_page(customtkinter.CTkFrame):
     #Initialises the Tkinter frame
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#2176FF')
+        super().__init__()
+        customtkinter.set_appearance_mode("System")
+        customtkinter.set_default_color_theme("blue")
+        if customtkinter.get_appearance_mode() == "light" or customtkinter.get_appearance_mode() == "Light":
+            path = "images/toolbar_image2.jpg"
+            main_bg = "#ffe5d9"
+            toolbar_bg = "#e1edfb"
+            accentColour = "#48CAE4"
+            accentColour2 = "#E46248"
+            accentColour3 = "#00b4d8"
+            textColour = "black"
+            backdrop1 = "images/backdropv3_1"
+        else:
+            path = "images/toolbar_image1.png"
+            main_bg = "#464646"
+            toolbar_bg = "#112938"
+            accentColour = "#0077b6"
+            accentColour2 = "#B63F00"
+            accentColour3 = "#00b4d8"
+            textColour = "black"
+            backdrop1 = "images/backdropv3_3"
+        customtkinter.CTkFrame.__init__(self, parent, fg_color=main_bg)
         self.controller = controller
         # Toolbar
         # Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg='#FDCA40', borderwidth=2, relief='solid')
+        # Create Canvas
+        canvas1 = tk.Canvas(self, width=400, height=250, bd=0, highlightthickness=0)
+        canvas1.pack(fill="x", side='top')
+
+        # Display image
+
+        self.toolbarImg = Image.open(path)
+        self.toolbarImg = ImageTk.PhotoImage(self.toolbarImg.resize((1930, 300), Image.ANTIALIAS))
+        canvas1.create_image(0, 0, image=self.toolbarImg, anchor="nw")
+        # Display image
+
+        self.toolbarImg = Image.open(path)
+        self.toolbarImg = ImageTk.PhotoImage(self.toolbarImg.resize((1930, 300), Image.ANTIALIAS))
+        canvas1.create_image(0, 0, image=self.toolbarImg, anchor="nw")
+
         def goto_recs():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -24,54 +60,55 @@ class Profile_page(tk.Frame):
             self.specialize_entry.delete(0, 'end')
             self.fieldYrs_entry.delete(0, 'end')
             if var1.get() == 1:
-                self.check1.deselect()
-                self.proficient1.set("Experience")
+                self.switch1.deselect()
+                self.experience1.set("Experience")
             if var2.get() == 1:
-                self.check2.deselect()
-                self.proficient2.set("Experience")
+                self.switch2.deselect()
+                self.experience2.set("Experience")
             if var3.get() == 1:
-                self.check3.deselect()
-                self.proficient3.set("Experience")
+                self.switch3.deselect()
+                self.experience3.set("Experience")
             if var4.get() == 1:
-                self.check4.deselect()
-                self.proficient4.set("Experience")
+                self.switch4.deselect()
+                self.experience4.set("Experience")
             if var5.get() == 1:
-                self.check5.deselect()
-                self.proficient5.set("Experience")
+                self.switch5.deselect()
+                self.experience5.set("Experience")
             if var6.get() == 1:
-                self.check6.deselect()
-                self.proficient6.set("Experience")
+                self.switch6.deselect()
+                self.experience6.set("Experience")
             if var7.get() == 1:
-                self.check7.deselect()
-                self.proficient7.set("Experience")
+                self.switch7.deselect()
+                self.experience7.set("Experience")
             if var8.get() == 1:
-                self.check8.deselect()
-                self.proficient8.set("Experience")
+                self.switch8.deselect()
+                self.experience8.set("Experience")
             if var9.get() == 1:
-                self.check9.deselect()
-                self.proficient9.set("Experience")
+                self.switch9.deselect()
+                self.experience9.set("Experience")
             if var10.get() == 1:
-                self.check10.deselect()
-                self.proficient10.set("Experience")
-            self.proficient1.set("Experience")
-            self.proficient2.set("Experience")
-            self.proficient3.set("Experience")
-            self.proficient4.set("Experience")
-            self.proficient5.set("Experience")
-            self.proficient6.set("Experience")
-            self.proficient7.set("Experience")
-            self.proficient8.set("Experience")
-            self.proficient9.set("Experience")
-            self.proficient10.set("Experience")
+                self.switch10.deselect()
+                self.experience10.set("Experience")
+            self.experience1.set("Experience")
+            self.experience2.set("Experience")
+            self.experience3.set("Experience")
+            self.experience4.set("Experience")
+            self.experience5.set("Experience")
+            self.experience6.set("Experience")
+            self.experience7.set("Experience")
+            self.experience8.set("Experience")
+            self.experience9.set("Experience")
+            self.experience10.set("Experience")
             self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
+            self.meet_pref_dd.set("Meeting Preference")
+            self.locale_pref_dd.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
             self.error_label['text'] = ""
             controller.show_frame("Recs_page")
-        self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised",
-                                  command=goto_recs)
+        self.recs_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='Recommendations',
+                                                text_color=textColour,
+                                                text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                command=goto_recs)
         def goto_search():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -83,54 +120,55 @@ class Profile_page(tk.Frame):
             self.specialize_entry.delete(0, 'end')
             self.fieldYrs_entry.delete(0, 'end')
             if var1.get() == 1:
-                self.check1.deselect()
-                self.proficient1.set("Experience")
+                self.switch1.deselect()
+                self.experience1.set("Experience")
             if var2.get() == 1:
-                self.check2.deselect()
-                self.proficient2.set("Experience")
+                self.switch2.deselect()
+                self.experience2.set("Experience")
             if var3.get() == 1:
-                self.check3.deselect()
-                self.proficient3.set("Experience")
+                self.switch3.deselect()
+                self.experience3.set("Experience")
             if var4.get() == 1:
-                self.check4.deselect()
-                self.proficient4.set("Experience")
+                self.switch4.deselect()
+                self.experience4.set("Experience")
             if var5.get() == 1:
-                self.check5.deselect()
-                self.proficient5.set("Experience")
+                self.switch5.deselect()
+                self.experience5.set("Experience")
             if var6.get() == 1:
-                self.check6.deselect()
-                self.proficient6.set("Experience")
+                self.switch6.deselect()
+                self.experience6.set("Experience")
             if var7.get() == 1:
-                self.check7.deselect()
-                self.proficient7.set("Experience")
+                self.switch7.deselect()
+                self.experience7.set("Experience")
             if var8.get() == 1:
-                self.check8.deselect()
-                self.proficient8.set("Experience")
+                self.switch8.deselect()
+                self.experience8.set("Experience")
             if var9.get() == 1:
-                self.check9.deselect()
-                self.proficient9.set("Experience")
+                self.switch9.deselect()
+                self.experience9.set("Experience")
             if var10.get() == 1:
-                self.check10.deselect()
-                self.proficient10.set("Experience")
-            self.proficient1.set("Experience")
-            self.proficient2.set("Experience")
-            self.proficient3.set("Experience")
-            self.proficient4.set("Experience")
-            self.proficient5.set("Experience")
-            self.proficient6.set("Experience")
-            self.proficient7.set("Experience")
-            self.proficient8.set("Experience")
-            self.proficient9.set("Experience")
-            self.proficient10.set("Experience")
+                self.switch10.deselect()
+                self.experience10.set("Experience")
+            self.experience1.set("Experience")
+            self.experience2.set("Experience")
+            self.experience3.set("Experience")
+            self.experience4.set("Experience")
+            self.experience5.set("Experience")
+            self.experience6.set("Experience")
+            self.experience7.set("Experience")
+            self.experience8.set("Experience")
+            self.experience9.set("Experience")
+            self.experience10.set("Experience")
             self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
+            self.meet_pref_dd.set("Meeting Preference")
+            self.locale_pref_dd.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
             self.error_label['text'] = ""
             controller.show_frame("Search_page")
-        self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130,
-                                    relief="raised", command=goto_search)
+        self.search_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='Search Users', text_color=textColour,
+                                                  text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                  command=goto_search)
+
         def goto_events():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -142,54 +180,54 @@ class Profile_page(tk.Frame):
             self.specialize_entry.delete(0, 'end')
             self.fieldYrs_entry.delete(0, 'end')
             if var1.get() == 1:
-                self.check1.deselect()
-                self.proficient1.set("Experience")
+                self.switch1.deselect()
+                self.experience1.set("Experience")
             if var2.get() == 1:
-                self.check2.deselect()
-                self.proficient2.set("Experience")
+                self.switch2.deselect()
+                self.experience2.set("Experience")
             if var3.get() == 1:
-                self.check3.deselect()
-                self.proficient3.set("Experience")
+                self.switch3.deselect()
+                self.experience3.set("Experience")
             if var4.get() == 1:
-                self.check4.deselect()
-                self.proficient4.set("Experience")
+                self.switch4.deselect()
+                self.experience4.set("Experience")
             if var5.get() == 1:
-                self.check5.deselect()
-                self.proficient5.set("Experience")
+                self.switch5.deselect()
+                self.experience5.set("Experience")
             if var6.get() == 1:
-                self.check6.deselect()
-                self.proficient6.set("Experience")
+                self.switch6.deselect()
+                self.experience6.set("Experience")
             if var7.get() == 1:
-                self.check7.deselect()
-                self.proficient7.set("Experience")
+                self.switch7.deselect()
+                self.experience7.set("Experience")
             if var8.get() == 1:
-                self.check8.deselect()
-                self.proficient8.set("Experience")
+                self.switch8.deselect()
+                self.experience8.set("Experience")
             if var9.get() == 1:
-                self.check9.deselect()
-                self.proficient9.set("Experience")
+                self.switch9.deselect()
+                self.experience9.set("Experience")
             if var10.get() == 1:
-                self.check10.deselect()
-                self.proficient10.set("Experience")
-            self.proficient1.set("Experience")
-            self.proficient2.set("Experience")
-            self.proficient3.set("Experience")
-            self.proficient4.set("Experience")
-            self.proficient5.set("Experience")
-            self.proficient6.set("Experience")
-            self.proficient7.set("Experience")
-            self.proficient8.set("Experience")
-            self.proficient9.set("Experience")
-            self.proficient10.set("Experience")
+                self.switch10.deselect()
+                self.experience10.set("Experience")
+            self.experience1.set("Experience")
+            self.experience2.set("Experience")
+            self.experience3.set("Experience")
+            self.experience4.set("Experience")
+            self.experience5.set("Experience")
+            self.experience6.set("Experience")
+            self.experience7.set("Experience")
+            self.experience8.set("Experience")
+            self.experience9.set("Experience")
+            self.experience10.set("Experience")
             self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
+            self.meet_pref_dd.set("Meeting Preference")
+            self.locale_pref_dd.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
             self.error_label['text'] = ""
             controller.show_frame("Events_page")
-        self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130,
-                                    relief="raised", command=goto_events)
+        self.events_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='View Events', text_color=textColour,
+                                                  text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                  command=goto_events)
         def goto_contacts():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -201,54 +239,56 @@ class Profile_page(tk.Frame):
             self.specialize_entry.delete(0, 'end')
             self.fieldYrs_entry.delete(0, 'end')
             if var1.get() == 1:
-                self.check1.deselect()
-                self.proficient1.set("Experience")
+                self.switch1.deselect()
+                self.experience1.set("Experience")
             if var2.get() == 1:
-                self.check2.deselect()
-                self.proficient2.set("Experience")
+                self.switch2.deselect()
+                self.experience2.set("Experience")
             if var3.get() == 1:
-                self.check3.deselect()
-                self.proficient3.set("Experience")
+                self.switch3.deselect()
+                self.experience3.set("Experience")
             if var4.get() == 1:
-                self.check4.deselect()
-                self.proficient4.set("Experience")
+                self.switch4.deselect()
+                self.experience4.set("Experience")
             if var5.get() == 1:
-                self.check5.deselect()
-                self.proficient5.set("Experience")
+                self.switch5.deselect()
+                self.experience5.set("Experience")
             if var6.get() == 1:
-                self.check6.deselect()
-                self.proficient6.set("Experience")
+                self.switch6.deselect()
+                self.experience6.set("Experience")
             if var7.get() == 1:
-                self.check7.deselect()
-                self.proficient7.set("Experience")
+                self.switch7.deselect()
+                self.experience7.set("Experience")
             if var8.get() == 1:
-                self.check8.deselect()
-                self.proficient8.set("Experience")
+                self.switch8.deselect()
+                self.experience8.set("Experience")
             if var9.get() == 1:
-                self.check9.deselect()
-                self.proficient9.set("Experience")
+                self.switch9.deselect()
+                self.experience9.set("Experience")
             if var10.get() == 1:
-                self.check10.deselect()
-                self.proficient10.set("Experience")
-            self.proficient1.set("Experience")
-            self.proficient2.set("Experience")
-            self.proficient3.set("Experience")
-            self.proficient4.set("Experience")
-            self.proficient5.set("Experience")
-            self.proficient6.set("Experience")
-            self.proficient7.set("Experience")
-            self.proficient8.set("Experience")
-            self.proficient9.set("Experience")
-            self.proficient10.set("Experience")
+                self.switch10.deselect()
+                self.experience10.set("Experience")
+            self.experience1.set("Experience")
+            self.experience2.set("Experience")
+            self.experience3.set("Experience")
+            self.experience4.set("Experience")
+            self.experience5.set("Experience")
+            self.experience6.set("Experience")
+            self.experience7.set("Experience")
+            self.experience8.set("Experience")
+            self.experience9.set("Experience")
+            self.experience10.set("Experience")
             self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
+            self.meet_pref_dd.set("Meeting Preference")
+            self.locale_pref_dd.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
             self.error_label['text'] = ""
             controller.show_frame("Contacts_page")
-        self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130,
-                                      relief="raised", command=goto_contacts)
+        self.contacts_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='My Contacts',
+                                                    text_color=textColour,
+                                                    text_font=['trebuchet MS bold', 12], height=30,
+                                                    fg_color=accentColour,
+                                                    command=goto_contacts)
         def goto_profile():
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
@@ -260,114 +300,55 @@ class Profile_page(tk.Frame):
             self.specialize_entry.delete(0, 'end')
             self.fieldYrs_entry.delete(0, 'end')
             if var1.get() == 1:
-                self.check1.deselect()
-                self.proficient1.set("Experience")
+                self.switch1.deselect()
+                self.experience1.set("Experience")
             if var2.get() == 1:
-                self.check2.deselect()
-                self.proficient2.set("Experience")
+                self.switch2.deselect()
+                self.experience2.set("Experience")
             if var3.get() == 1:
-                self.check3.deselect()
-                self.proficient3.set("Experience")
+                self.switch3.deselect()
+                self.experience3.set("Experience")
             if var4.get() == 1:
-                self.check4.deselect()
-                self.proficient4.set("Experience")
+                self.switch4.deselect()
+                self.experience4.set("Experience")
             if var5.get() == 1:
-                self.check5.deselect()
-                self.proficient5.set("Experience")
+                self.switch5.deselect()
+                self.experience5.set("Experience")
             if var6.get() == 1:
-                self.check6.deselect()
-                self.proficient6.set("Experience")
+                self.switch6.deselect()
+                self.experience6.set("Experience")
             if var7.get() == 1:
-                self.check7.deselect()
-                self.proficient7.set("Experience")
+                self.switch7.deselect()
+                self.experience7.set("Experience")
             if var8.get() == 1:
-                self.check8.deselect()
-                self.proficient8.set("Experience")
+                self.switch8.deselect()
+                self.experience8.set("Experience")
             if var9.get() == 1:
-                self.check9.deselect()
-                self.proficient9.set("Experience")
+                self.switch9.deselect()
+                self.experience9.set("Experience")
             if var10.get() == 1:
-                self.check10.deselect()
-                self.proficient10.set("Experience")
-            self.proficient1.set("Experience")
-            self.proficient2.set("Experience")
-            self.proficient3.set("Experience")
-            self.proficient4.set("Experience")
-            self.proficient5.set("Experience")
-            self.proficient6.set("Experience")
-            self.proficient7.set("Experience")
-            self.proficient8.set("Experience")
-            self.proficient9.set("Experience")
-            self.proficient10.set("Experience")
+                self.switch10.deselect()
+                self.experience10.set("Experience")
+            self.experience1.set("Experience")
+            self.experience2.set("Experience")
+            self.experience3.set("Experience")
+            self.experience4.set("Experience")
+            self.experience5.set("Experience")
+            self.experience6.set("Experience")
+            self.experience7.set("Experience")
+            self.experience8.set("Experience")
+            self.experience9.set("Experience")
+            self.experience10.set("Experience")
             self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
+            self.meet_pref_dd.set("Meeting Preference")
+            self.locale_pref_dd.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
             self.error_label['text'] = ""
             controller.show_frame("Profile_page")
-        self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130,
-                                     relief="raised", command=goto_profile)
-        def goto_login():
-            self.username_label['text'] = "Username"
-            self.name_entry.delete(0, 'end')
-            self.age_entry.delete(0, 'end')
-            self.nationality_entry.delete(0, 'end')
-            self.email_entry.delete(0, 'end')
-            self.github_entry.delete(0, 'end')
-            self.linkedIn_entry.delete(0, 'end')
-            self.specialize_entry.delete(0, 'end')
-            self.fieldYrs_entry.delete(0, 'end')
-            if var1.get() == 1:
-                self.check1.deselect()
-                self.proficient1.set("Experience")
-            if var2.get() == 1:
-                self.check2.deselect()
-                self.proficient2.set("Experience")
-            if var3.get() == 1:
-                self.check3.deselect()
-                self.proficient3.set("Experience")
-            if var4.get() == 1:
-                self.check4.deselect()
-                self.proficient4.set("Experience")
-            if var5.get() == 1:
-                self.check5.deselect()
-                self.proficient5.set("Experience")
-            if var6.get() == 1:
-                self.check6.deselect()
-                self.proficient6.set("Experience")
-            if var7.get() == 1:
-                self.check7.deselect()
-                self.proficient7.set("Experience")
-            if var8.get() == 1:
-                self.check8.deselect()
-                self.proficient8.set("Experience")
-            if var9.get() == 1:
-                self.check9.deselect()
-                self.proficient9.set("Experience")
-            if var10.get() == 1:
-                self.check10.deselect()
-                self.proficient10.set("Experience")
-            self.proficient1.set("Experience")
-            self.proficient2.set("Experience")
-            self.proficient3.set("Experience")
-            self.proficient4.set("Experience")
-            self.proficient5.set("Experience")
-            self.proficient6.set("Experience")
-            self.proficient7.set("Experience")
-            self.proficient8.set("Experience")
-            self.proficient9.set("Experience")
-            self.proficient10.set("Experience")
-            self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
-            self.user_desc.delete('1.0', 'end')
-            self.error_label['text'] = ""
-            controller.show_frame("Login")
-        self.load_logout_img = Image.open("images/logout_icon.png")
-        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised",
-                                    command=goto_login)
+        self.profile_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='My Profile', text_color=textColour,
+                                                   text_font=['trebuchet MS bold', 12], height=30,
+                                                   fg_color=accentColour2,
+                                                   command=goto_profile)
         # End of Toolbar
 
         def reset_page():
@@ -388,65 +369,90 @@ class Profile_page(tk.Frame):
             self.specialize_entry.configure(state="normal")
             self.fieldYrs_entry.delete(0, 'end')
             self.fieldYrs_entry.configure(state="normal")
-            self.check1.deselect()
-            self.proficient1.set("Experience")
-            self.check2.deselect()
-            self.proficient2.set("Experience")
-            self.check3.deselect()
-            self.proficient3.set("Experience")
-            self.check4.deselect()
-            self.proficient4.set("Experience")
-            self.check5.deselect()
-            self.proficient5.set("Experience")
-            self.check6.deselect()
-            self.proficient6.set("Experience")
-            self.check7.deselect()
-            self.proficient7.set("Experience")
-            self.check8.deselect()
-            self.proficient8.set("Experience")
-            self.check9.deselect()
-            self.proficient9.set("Experience")
-            self.check10.deselect()
-            self.proficient10.set("Experience")
+            if var1.get() == 1:
+                self.switch1.deselect()
+                self.experience1.set("Experience")
+            if var2.get() == 1:
+                self.switch2.deselect()
+                self.experience2.set("Experience")
+            if var3.get() == 1:
+                self.switch3.deselect()
+                self.experience3.set("Experience")
+            if var4.get() == 1:
+                self.switch4.deselect()
+                self.experience4.set("Experience")
+            if var5.get() == 1:
+                self.switch5.deselect()
+                self.experience5.set("Experience")
+            if var6.get() == 1:
+                self.switch6.deselect()
+                self.experience6.set("Experience")
+            if var7.get() == 1:
+                self.switch7.deselect()
+                self.experience7.set("Experience")
+            if var8.get() == 1:
+                self.switch8.deselect()
+                self.experience8.set("Experience")
+            if var9.get() == 1:
+                self.switch9.deselect()
+                self.experience9.set("Experience")
+            if var10.get() == 1:
+                self.switch10.deselect()
+                self.experience10.set("Experience")
+            self.experience1.set("Experience")
+            self.experience2.set("Experience")
+            self.experience3.set("Experience")
+            self.experience4.set("Experience")
+            self.experience5.set("Experience")
+            self.experience6.set("Experience")
+            self.experience7.set("Experience")
+            self.experience8.set("Experience")
+            self.experience9.set("Experience")
+            self.experience10.set("Experience")
             self.profile_pic_label.configure(image=self.default_pic)
-            self.meetOpt.set("Meeting Preference")
-            self.areaOpt.set("Preferred Area")
+            self.meet_pref_dd.set("Meeting Preference")
+            self.locale_pref_dd.set("Preferred Area")
             self.user_desc.delete('1.0', 'end')
-            self.user_desc.configure(state="normal")
             self.error_label['text'] = ""
 
         #Create elements & widgets
-        self.email_label = tk.Label(self, text='Email', font='Bahnschrift 16 bold', bg='#2176FF')
-        self.email_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.name_label = tk.Label(self, text='Name', font='Bahnschrift 16 bold', bg='#2176FF')
+        self.name_label = tk.Label(self, text='Name', font='Bahnschrift 16 bold', bg=main_bg)
         self.name_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.nationality_label = tk.Label(self, text='Nationality', font='Bahnschrift 16 bold', bg='#2176FF')
+
+        self.email_label = tk.Label(self, text='Email', font='Bahnschrift 16 bold', bg=main_bg)
+        self.email_entry = tk.Entry(self, font='Bahnschrift 16')
+
+        self.nationality_label = tk.Label(self, text='Nationality', font='Bahnschrift 16 bold', bg=main_bg)
         self.nationality_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.meetOpt = tk.StringVar(self)
-        self.meetOpt.set("Meeting Preference")
-        self.meetPref = tk.OptionMenu(self, self.meetOpt, "Virtual", "Physical", "None")
-        self.meetPref.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        meetPref_menu = self.nametowidget(self.meetPref.menuname)
-        meetPref_menu.configure(font='Bahnschrift 12 bold')
-        self.areaOpt = tk.StringVar(self)
-        self.areaOpt.set("Preferred Area")
-        self.areaPref = tk.OptionMenu(self, self.areaOpt, "Central SG", "North SG", "East SG", "South SG", "West SG")
-        self.areaPref.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        areaPref_menu = self.nametowidget(self.areaPref.menuname)
-        areaPref_menu.configure(font='Bahnschrift 12 bold')
-        self.github_label = tk.Label(self, text='Github Username (Optional)', font='Bahnschrift 16 bold', bg='#2176FF')
+
+        self.meet_pref_dd = customtkinter.CTkOptionMenu(self, values=["Virtual", "Physical", "None"])
+        self.meet_pref_dd.set("Meeting Preference")
+        self.meet_pref_dd.configure(text_font='Bahnschrift 16 bold', bg_color=main_bg, fg_color=accentColour,
+                                    text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                    dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 16 bold',
+                                    width=190)
+
+        self.locale_pref_dd = customtkinter.CTkOptionMenu(self, values=["Central SG", "North SG", "East SG", "South SG",
+                                                                        "West SG"])
+        self.locale_pref_dd.set("Preferred Area")
+        self.locale_pref_dd.configure(text_font='Bahnschrift 16 bold', bg_color=main_bg, fg_color=accentColour,
+                                      text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                      dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 16 bold',
+                                      width=190)
+
+        self.github_label = tk.Label(self, text='Github Username (Optional)', font='Bahnschrift 16 bold', bg=main_bg)
         self.github_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.linkedIn_label = tk.Label(self, text='LinkedIn Url (Optional)', font='Bahnschrift 16 bold', bg='#2176FF')
+        self.linkedIn_label = tk.Label(self, text='LinkedIn Url (Optional)', font='Bahnschrift 16 bold', bg=main_bg)
         self.linkedIn_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.age_label = tk.Label(self, text='Age', font='Bahnschrift 16 bold', bg='#2176FF')
+        self.age_label = tk.Label(self, text='Age', font='Bahnschrift 16 bold', bg=main_bg)
         self.age_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.specialize_label = tk.Label(self, text='Specialization/Field of study', font='Bahnschrift 16 bold', bg='#2176FF')
+        self.specialize_label = tk.Label(self, text='Specialization/Field of study', font='Bahnschrift 16 bold', bg=main_bg)
         self.specialize_entry = tk.Entry(self, font='Bahnschrift 16')
-        self.fieldYrs_label = tk.Label(self, text='Years in Specialization', font='Bahnschrift 16 bold', bg='#2176FF')
+        self.fieldYrs_label = tk.Label(self, text='Years in Specialization', font='Bahnschrift 16 bold', bg=main_bg)
         self.fieldYrs_entry = tk.Entry(self, font='Bahnschrift 16')
         self.load_profile_pic = Image.open('images/default_profile_img.png')
         self.default_pic = ImageTk.PhotoImage(self.load_profile_pic.resize((200, 200), Image.ANTIALIAS))
-        self.profile_pic_label = tk.Label(self, image=self.default_pic, bg='#2176FF')
+        self.profile_pic_label = tk.Label(self, image=self.default_pic, bg=main_bg)
 
         #This function allows the user to change their profile picture and updates dynamically upon update, it also
         # saves the image to the database immediately
@@ -466,12 +472,18 @@ class Profile_page(tk.Frame):
             cursor.execute("UPDATE User SET profile_pic = ? WHERE username = ?", [filename, username])
             connection.commit()
             connection.close()
-            stgImg = ImageTk.PhotoImage(file=filename)
-            self.profile_pic_label.configure(image=stgImg)
-            self.profile_pic_label.image = stgImg
+            #stgImg = ImageTk.PhotoImage(file=filename)
+            self.load_prof_image = Image.open(filename)
+            self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((200, 200), Image.ANTIALIAS))
+            self.profile_pic_label.configure(image=self.prof_image)
+            self.profile_pic_label.image = self.prof_image
 
-        self.pic_btn = tk.Button(self, text='Change Picture', width=20, height=1, relief='solid', font='Bahnschrift 16 underline bold', bg='#FDCA40', command=change_pic)
-        self.username_label = tk.Label(self, text='Username', font='Bahnschrift 50 underline bold', bg='#2176FF')
+        submit_img = Image.open("images/submit_icon.png")
+        submit_img = ImageTk.PhotoImage(submit_img.resize((50, 50), Image.ANTIALIAS))
+        self.pic_btn = customtkinter.CTkButton(self, text='Change Picture', width=20, height=1, text_color=textColour,
+                                               text_font=['trebuchet MS bold', 16], bg_color=main_bg, image=submit_img,
+                                               fg_color=accentColour, command=change_pic)
+        self.username_label = tk.Label(self, text='Username', font='Bahnschrift 30 underline bold', bg=main_bg)
 
         #This function gets the data of the logged in user from the database and displays his/her details on screen
         def start_edits():
@@ -522,10 +534,10 @@ class Profile_page(tk.Frame):
             self.fieldYrs_entry.insert('insert', yrsField)
             cursor.execute("SELECT meeting_mode FROM User WHERE username = ?", [username])
             meet_mode = str(cursor.fetchall())[3:-4]
-            self.meetOpt.set(meet_mode)
+            self.meet_pref_dd.set(meet_mode)
             cursor.execute("SELECT meeting_region FROM User WHERE username = ?", [username])
             meet_region = str(cursor.fetchall())[3:-4]
-            self.areaOpt.set(meet_region)
+            self.locale_pref_dd.set(meet_region)
             cursor.execute("SELECT code_lang FROM User WHERE username = ?", [username])
             code_lang = str(cursor.fetchall())[3:-4]
             code_lang = code_lang.split(',')
@@ -534,40 +546,43 @@ class Profile_page(tk.Frame):
                     continue
                 language_year = x[1:].split(" ")
                 if language_year[0] == "Python":
-                    self.check1.select()
-                    self.proficient1.set(language_year[1])
+                    self.switch1.select()
+                    self.experience1.set(language_year[1])
                 elif language_year[0] == "C++":
-                    self.check2.select()
-                    self.proficient2.set(language_year[1])
+                    self.switch2.select()
+                    self.experience2.set(language_year[1])
                 elif language_year[0] == "C#":
-                    self.check3.select()
-                    self.proficient3.set(language_year[1])
+                    self.switch3.select()
+                    self.experience3.set(language_year[1])
                 elif language_year[0] == "C":
-                    self.check4.select()
-                    self.proficient4.set(language_year[1])
+                    self.switch4.select()
+                    self.experience4.set(language_year[1])
                 elif language_year[0] == "Java":
-                    self.check5.select()
-                    self.proficient5.set(language_year[1])
+                    self.switch5.select()
+                    self.experience5.set(language_year[1])
                 elif language_year[0] == "Javascript":
-                    self.check6.select()
-                    self.proficient6.set(language_year[1])
+                    self.switch6.select()
+                    self.experience6.set(language_year[1])
                 elif language_year[0] == "PHP":
-                    self.check7.select()
-                    self.proficient7.set(language_year[1])
+                    self.switch7.select()
+                    self.experience7.set(language_year[1])
                 elif language_year[0] == "SQL":
-                    self.check8.select()
-                    self.proficient8.set(language_year[1])
+                    self.switch8.select()
+                    self.experience8.set(language_year[1])
                 elif language_year[0] == "HTML":
-                    self.check9.select()
-                    self.proficient9.set(language_year[1])
+                    self.switch9.select()
+                    self.experience9.set(language_year[1])
                 elif language_year[0] == "CSS":
-                    self.check10.select()
-                    self.proficient10.set(language_year[1])
+                    self.switch10.select()
+                    self.experience10.set(language_year[1])
             connection.close()
-        self.get_details_btn = tk.Button(self, text='Get Current Profile Details', font='Bahnschrift 32 bold', bg='#008600', relief='solid', command=start_edits)
+        self.get_details_btn = customtkinter.CTkButton(self, text='Get Current Profile Details', text_color=textColour,
+                                                       text_font=['trebuchet MS bold', 32], bg_color=main_bg,
+                                                       fg_color="#0d9c8c", command=start_edits)
 
         #Proficiencies
-        self.proficient_label = tk.Label(self, text='Proficient Languages', font='Bahnschrift 24 bold underline', bg='#2176FF')
+        self.proficient_label = customtkinter.CTkLabel(self, text='Proficient Languages', text_color=textColour,
+                                                       text_font=['trebuchet MS bold', 20], bg_color=main_bg)
         var1 = tk.IntVar(self)
         var2 = tk.IntVar(self)
         var3 = tk.IntVar(self)
@@ -578,79 +593,117 @@ class Profile_page(tk.Frame):
         var8 = tk.IntVar(self)
         var9 = tk.IntVar(self)
         var10 = tk.IntVar(self)
-        self.proficient1 = tk.StringVar(self)
-        self.proficient1.set("Experience")  # default value
-        self.proficient2 = tk.StringVar(self)
-        self.proficient2.set("Experience")
-        self.proficient3 = tk.StringVar(self)
-        self.proficient3.set("Experience")
-        self.proficient4 = tk.StringVar(self)
-        self.proficient4.set("Experience")
-        self.proficient5 = tk.StringVar(self)
-        self.proficient5.set("Experience")
-        self.proficient6 = tk.StringVar(self)
-        self.proficient6.set("Experience")
-        self.proficient7 = tk.StringVar(self)
-        self.proficient7.set("Experience")
-        self.proficient8 = tk.StringVar(self)
-        self.proficient8.set("Experience")
-        self.proficient9 = tk.StringVar(self)
-        self.proficient9.set("Experience")
-        self.proficient10 = tk.StringVar(self)
-        self.proficient10.set("Experience")
-        self.experience1 = tk.OptionMenu(self, self.proficient1, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience1.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience1_menu = self.nametowidget(self.experience1.menuname)
-        experience1_menu.configure(font='Bahnschrift 12 bold')
-        self.check1 = tk.Checkbutton(self, text='Python', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2,
-                                     variable=var1)
-        self.experience2 = tk.OptionMenu(self, self.proficient2, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience2.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience2_menu = self.nametowidget(self.experience2.menuname)
-        experience2_menu.configure(font='Bahnschrift 12 bold')
-        self.check2 = tk.Checkbutton(self, text='C++', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var2)
-        self.experience3 = tk.OptionMenu(self, self.proficient3, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience3.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience3_menu = self.nametowidget(self.experience3.menuname)
-        experience3_menu.configure(font='Bahnschrift 12 bold')
-        self.check3 = tk.Checkbutton(self, text='C#', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var3)
-        self.experience4 = tk.OptionMenu(self, self.proficient4, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience4.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience4_menu = self.nametowidget(self.experience4.menuname)
-        experience4_menu.configure(font='Bahnschrift 12 bold')
-        self.check4 = tk.Checkbutton(self, text='C', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var4)
-        self.experience5 = tk.OptionMenu(self, self.proficient5, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience5.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience5_menu = self.nametowidget(self.experience5.menuname)
-        experience5_menu.configure(font='Bahnschrift 12 bold')
-        self.check5 = tk.Checkbutton(self, text='Java', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var5)
-        self.experience6 = tk.OptionMenu(self, self.proficient6, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience6.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience6_menu = self.nametowidget(self.experience6.menuname)
-        experience6_menu.configure(font='Bahnschrift 12 bold')
-        self.check6 = tk.Checkbutton(self, text='Javascript', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2,
-                                     variable=var6)
-        self.experience7 = tk.OptionMenu(self, self.proficient7, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience7.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience7_menu = self.nametowidget(self.experience7.menuname)
-        experience7_menu.configure(font='Bahnschrift 12 bold')
-        self.check7 = tk.Checkbutton(self, text='PHP', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var7)
-        self.experience8 = tk.OptionMenu(self, self.proficient8, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience8.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience8_menu = self.nametowidget(self.experience8.menuname)
-        experience8_menu.configure(font='Bahnschrift 12 bold')
-        self.check8 = tk.Checkbutton(self, text='SQL', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var8)
-        self.experience9 = tk.OptionMenu(self, self.proficient9, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience9.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience9_menu = self.nametowidget(self.experience9.menuname)
-        experience9_menu.configure(font='Bahnschrift 12 bold')
-        self.check9 = tk.Checkbutton(self, text='HTML', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var9)
-        self.experience10 = tk.OptionMenu(self, self.proficient10, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience10.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience10_menu = self.nametowidget(self.experience10.menuname)
-        experience10_menu.configure(font='Bahnschrift 12 bold')
-        self.check10 = tk.Checkbutton(self, text='CSS', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var10)
-        self.error_label = tk.Label(self, text="",font='Bahnschrift 20 underline', bg='#2176FF', bd=3, fg='#a00000')
+
+        self.experience1 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience1.set("Experience")
+        self.experience1.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+        self.switch1 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var1, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel1 = customtkinter.CTkLabel(self, text='Python', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience2 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience2.set("Experience")
+        self.experience2.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch2 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var2, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel2 = customtkinter.CTkLabel(self, text='C++', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience3 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience3.set("Experience")
+        self.experience3.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch3 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var3, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel3 = customtkinter.CTkLabel(self, text='C#', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience4 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience4.set("Experience")
+        self.experience4.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch4 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var4, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel4 = customtkinter.CTkLabel(self, text='C', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience5 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience5.set("Experience")
+        self.experience5.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch5 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var5, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel5 = customtkinter.CTkLabel(self, text='Java', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience6 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience6.set("Experience")
+        self.experience6.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch6 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var6, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel6 = customtkinter.CTkLabel(self, text='Javascript', text_font='Bahnschrift 12 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience7 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience7.set("Experience")
+        self.experience7.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch7 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var7, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel7 = customtkinter.CTkLabel(self, text='PHP', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience8 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience8.set("Experience")
+        self.experience8.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch8 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var8, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel8 = customtkinter.CTkLabel(self, text='SQL', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience9 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience9.set("Experience")
+        self.experience9.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                   text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch9 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var9, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel9 = customtkinter.CTkLabel(self, text='HTML', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience10 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience10.set("Experience")
+        self.experience10.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour,
+                                    text_color=textColour, button_color=accentColour, dropdown_color=accentColour,
+                                    dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                    width=100)
+
+        self.switch10 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var10, fg_color='red',
+                                                progress_color='#2BD447')
+        self.switchLabel10 = customtkinter.CTkLabel(self, text='CSS', text_font='Bahnschrift 14 bold',
+                                                    bg_color=main_bg, text_color=textColour)
+        self.error_label = tk.Label(self, text="",font='Bahnschrift 20 underline', bg=main_bg, bd=3, fg='#a00000')
 
         #This function collects the data in all the entry widgets and saves it to the overall user database
         def save_edits():
@@ -723,61 +776,61 @@ class Profile_page(tk.Frame):
             coding_prof = ''
             print('var1:' + str(var1.get()))
             if var1.get() == 1:
-                python = self.proficient1.get()
+                python = self.experience1.get()
                 if python == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', Python ' + python
             if var2.get() == 1:
-                c_plus = self.proficient2.get()
+                c_plus = self.experience2.get()
                 if c_plus == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', C++ ' + c_plus
             if var3.get() == 1:
-                c_sharp = self.proficient3.get()
+                c_sharp = self.experience3.get()
                 if c_sharp == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', C# ' + c_sharp
             if var4.get() == 1:
-                c_only = self.proficient4.get()
+                c_only = self.experience4.get()
                 if c_only == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', C ' + c_only
             if var5.get() == 1:
-                java = self.proficient5.get()
+                java = self.experience5.get()
                 if java == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', Java ' + java
             if var6.get() == 1:
-                javascript = self.proficient6.get()
+                javascript = self.experience6.get()
                 if javascript == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', Javascript ' + javascript
             if var7.get() == 1:
-                php = self.proficient7.get()
+                php = self.experience7.get()
                 if php == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', PHP ' + php
             if var8.get() == 1:
-                s_q_l = self.proficient8.get()
+                s_q_l = self.experience8.get()
                 if s_q_l == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', SQL ' + s_q_l
             if var9.get() == 1:
-                html = self.proficient9.get()
+                html = self.experience9.get()
                 if html == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', HTML ' + html
             if var10.get() == 1:
-                css = self.proficient10.get()
+                css = self.experience10.get()
                 if css == 'Experience':
                     count += 1
                 else:
@@ -790,69 +843,97 @@ class Profile_page(tk.Frame):
             tk.messagebox.showinfo("Success", "Edits saved successfully!")
             connection.commit()
             connection.close()
-        self.save_details_btn = tk.Button(self, text='Save Edits', font='Bahnschrift 28 bold', bg='Red', relief='solid', command=save_edits)
-        self.user_desc = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=25, height=15, font='Bahnschrift 16 bold')
+        self.save_details_btn = customtkinter.CTkButton(self, text='Save Edits', text_font=['trebuchet MS bold',28],
+                                                        text_color=textColour, bg_color=main_bg, fg_color='red',
+                                                        command=save_edits)
+        self.user_desc = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=25, height=6, font='Bahnschrift 16 bold')
 
         # arrange elements & widgets in grid
-        self.space_label1.place(x=0, y=0)
-        self.recs_btn.place(x=370, y=2)
-        self.recs_btn.tkraise()
-        self.search_btn.place(x=505, y=2)
-        self.search_btn.tkraise()
-        self.events_btn.place(x=640, y=2)
-        self.events_btn.tkraise()
-        self.contacts_btn.place(x=775, y=2)
-        self.contacts_btn.tkraise()
-        self.profile_btn.place(x=910, y=2)
-        self.profile_btn.tkraise()
-        self.logout_btn.place(x=100, y=3)
-        self.get_details_btn.place(x=450, y=170)
-        self.profile_pic_label.place(x=370, y=305)
-        self.pic_btn.place(x=350, y=520)
-        self.username_label.place(x=650, y=280)
-        self.user_desc.place(x=650, y=380)
-        self.save_details_btn.place(x=600, y=780)
+        self.recs_btn.place(x=2, y=2)
+        self.search_btn.place(x=158, y=2)
+        self.events_btn.place(x=300, y=2)
+        self.contacts_btn.place(x=442, y=2)
+        self.profile_btn.place(x=584, y=2)
+
+        self.get_details_btn.place(x=360, y=185)
+        self.profile_pic_label.place(x=580, y=400)
+        self.pic_btn.place(x=350, y=415)
+
+        self.username_label.place(x=1000, y=370)
+        self.user_desc.place(x=900, y=450)
+        self.save_details_btn.place(x=550, y=660)
 
         #Details
-        self.name_label.place(x=130, y=300)
-        self.name_entry.place(x=45, y=330)
-        self.age_label.place(x=140, y=360)
-        self.age_entry.place(x=45, y=390)
-        self.nationality_label.place(x=110, y=420)
-        self.nationality_entry.place(x=45, y=450)
-        self.email_label.place(x=135, y=480)
-        self.email_entry.place(x=45, y=510)
-        self.github_label.place(x=35, y=540)
-        self.github_entry.place(x=45, y=570)
-        self.linkedIn_label.place(x=60, y=600)
-        self.linkedIn_entry.place(x=45, y=630)
-        self.specialize_label.place(x=35, y=660)
-        self.specialize_entry.place(x=45, y=690)
-        self.fieldYrs_label.place(x=65, y=720)
-        self.fieldYrs_entry.place(x=45, y=750)
-        self.meetPref.place(x=380, y=580)
-        self.areaPref.place(x=380, y=620)
+        self.meet_pref_dd.place(x=600, y=470)
+        self.locale_pref_dd.place(x=350, y=470)
+        self.name_label.place(x=670, y=770)
+        self.name_entry.place(x=530, y=820)
+        self.age_label.place(x=1150, y=770)
+        self.age_entry.place(x=1000, y=820)
+        self.email_label.place(x=670, y=870)
+        self.email_entry.place(x=530, y=920)
+        self.nationality_label.place(x=1110, y=870)
+        self.nationality_entry.place(x=1000, y=920)
+
+
+        self.github_label.place(x=35, y=570)
+        self.github_entry.place(x=50, y=620)
+        self.linkedIn_label.place(x=70, y=670)
+        self.linkedIn_entry.place(x=50, y=720)
+        self.specialize_label.place(x=30, y=770)
+        self.specialize_entry.place(x=50, y=820)
+        self.fieldYrs_label.place(x=65, y=870)
+        self.fieldYrs_entry.place(x=50, y=920)
 
         #Proficiencies
-        self.proficient_label.place(x=1020, y=315)
-        self.experience1.place(x=1200, y=370)
-        self.check1.place(x=1040, y=365)
-        self.experience2.place(x=1200, y=410)
-        self.check2.place(x=1040, y=408)
-        self.experience3.place(x=1200, y=450)
-        self.check3.place(x=1040, y=450)
-        self.experience4.place(x=1200, y=490)
-        self.check4.place(x=1040, y=488)
-        self.experience5.place(x=1200, y=530)
-        self.check5.place(x=1040, y=528)
-        self.experience6.place(x=1200, y=570)
-        self.check6.place(x=1040, y=568)
-        self.experience7.place(x=1200, y=610)
-        self.check7.place(x=1040, y=608)
-        self.experience8.place(x=1200, y=650)
-        self.check8.place(x=1040, y=648)
-        self.experience9.place(x=1200, y=690)
-        self.check9.place(x=1040, y=688)
-        self.experience10.place(x=1200, y=730)
-        self.check10.place(x=1040, y=728)
-        self.error_label.place(x=830, y=800)
+        self.proficient_label.place(x=980, y=260)
+        self.experience1.place(x=1110, y=310)
+        self.experience1.tkraise()
+        self.switchLabel1.place(x=990, y=310)
+        self.switch1.place(x=980, y=315)
+        self.switch1.tkraise()
+        self.experience2.place(x=1110, y=350)
+        self.experience2.tkraise()
+        self.switchLabel2.place(x=980, y=350)
+        self.switch2.place(x=980, y=355)
+        self.switch2.tkraise()
+        self.experience3.place(x=1110, y=390)
+        self.experience3.tkraise()
+        self.switchLabel3.place(x=975, y=390)
+        self.switch3.place(x=980, y=395)
+        self.switch3.tkraise()
+        self.experience4.place(x=1110, y=430)
+        self.experience4.tkraise()
+        self.switchLabel4.place(x=980, y=430)
+        self.switch4.place(x=980, y=435)
+        self.switch4.tkraise()
+        self.experience5.place(x=1110, y=470)
+        self.experience5.tkraise()
+        self.switchLabel5.place(x=980, y=470)
+        self.switch5.place(x=980, y=475)
+        self.switch5.tkraise()
+        self.experience6.place(x=1110, y=510)
+        self.experience6.tkraise()
+        self.switchLabel6.place(x=990, y=510)
+        self.switch6.place(x=980, y=515)
+        self.switch6.tkraise()
+        self.experience7.place(x=1110, y=550)
+        self.experience7.tkraise()
+        self.switchLabel7.place(x=980, y=550)
+        self.switch7.place(x=980, y=555)
+        self.switch7.tkraise()
+        self.experience8.place(x=1110, y=590)
+        self.experience8.tkraise()
+        self.switchLabel8.place(x=980, y=590)
+        self.switch8.place(x=980, y=595)
+        self.switch8.tkraise()
+        self.experience9.place(x=1110, y=630)
+        self.experience9.tkraise()
+        self.switchLabel9.place(x=980, y=630)
+        self.switch9.place(x=980, y=635)
+        self.switch9.tkraise()
+        self.experience10.place(x=1110, y=670)
+        self.experience10.tkraise()
+        self.switchLabel10.place(x=980, y=670)
+        self.switch10.place(x=980, y=675)
+        self.switch10.tkraise()

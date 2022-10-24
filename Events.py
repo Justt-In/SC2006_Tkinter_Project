@@ -1,56 +1,76 @@
 import tkinter as tk
+import customtkinter
 from tkinter import filedialog
 from tkinter import scrolledtext
 from PIL import ImageTk, Image
 import sqlite3
 
-class Events_page(tk.Frame):
+class Events_page(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#2176FF')
+        super().__init__()
+        customtkinter.set_appearance_mode("System")
+        customtkinter.set_default_color_theme("blue")
+        if customtkinter.get_appearance_mode() == "light" or customtkinter.get_appearance_mode() == "Light":
+            path = "images/toolbar_image2.jpg"
+            main_bg = "#ffe5d9"
+            toolbar_bg = "#e1edfb"
+            accentColour = "#48CAE4"
+            accentColour2 = "#E46248"
+            accentColour3 = "#00b4d8"
+            textColour = "black"
+            backdrop1 = "images/backdropv3_1"
+        else:
+            path = "images/toolbar_image1.png"
+            main_bg = "#464646"
+            toolbar_bg = "#112938"
+            accentColour = "#0077b6"
+            accentColour2 = "#B63F00"
+            accentColour3 = "#00b4d8"
+            textColour = "black"
+            backdrop1 = "images/backdropv3_3"
+        customtkinter.CTkFrame.__init__(self, parent, fg_color=main_bg)
         self.controller = controller
-
         # Toolbar
         # Top Toolbar
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#FDCA40", borderwidth=2, relief='solid')
+        # Create Canvas
+        canvas1 = tk.Canvas(self, width=400, height=250, bd=0, highlightthickness=0)
+        canvas1.pack(fill="x", side='top')
 
-        self.load_recs_image = tk.PhotoImage(file="images/recs_icon.png")
-        self.recs_btn = tk.Button(self, image=self.load_recs_image, bg="#FDCA40", bd="3", height=130, relief="raised",
-                                  command=lambda: controller.show_frame("Recs_page"))
+        # Display image
 
-        self.load_search_image = tk.PhotoImage(file="images/search_icon.png")
-        self.search_btn = tk.Button(self, image=self.load_search_image, bg="#FDCA40", bd="3", height=130,
-                                    relief="raised", command=lambda: controller.show_frame("Search_page"))
-
-        self.load_events_image = tk.PhotoImage(file="images/events_icon.png")
-        self.events_btn = tk.Button(self, image=self.load_events_image, bg="#FDCA40", bd="3", height=130,
-                                    relief="raised", command=lambda: controller.show_frame("Events_page"))
-
-        self.load_contacts_image = tk.PhotoImage(file="images/contacts_icon.png")
-        self.contacts_btn = tk.Button(self, image=self.load_contacts_image, bg="#FDCA40", bd="3", height=130,
-                                      relief="raised", command=lambda: controller.show_frame("Contacts_page"))
-
-        self.load_profile_image = tk.PhotoImage(file="images/profile_icon.png")
-        self.profile_btn = tk.Button(self, image=self.load_profile_image, bg="#FDCA40", bd="3", height=130,
-                                     relief="raised", command=lambda: controller.show_frame("Profile_page"))
-
-        self.load_logout_img = Image.open("images/logout_icon.png")
-        self.logout_img = ImageTk.PhotoImage(self.load_logout_img.resize((128, 128), Image.ANTIALIAS))
-        self.logout_btn = tk.Button(self, image=self.logout_img, bg="#FDCA40", bd="3", relief="raised",
-                                    command=lambda: controller.show_frame("Login"))
+        self.toolbarImg = Image.open(path)
+        self.toolbarImg = ImageTk.PhotoImage(self.toolbarImg.resize((1930, 300), Image.ANTIALIAS))
+        canvas1.create_image(0, 0, image=self.toolbarImg, anchor="nw")
+        self.recs_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='Recommendations',
+                                                text_color=textColour,
+                                                text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                command=lambda: controller.show_frame("Recs_page"))
+        self.search_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='Search Users', text_color=textColour,
+                                                  text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
+                                                  command=lambda: controller.show_frame("Search_page"))
+        self.events_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='View Events', text_color=textColour,
+                                                  text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour2,
+                                                  command=lambda: controller.show_frame("Events_page"))
+        self.contacts_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='My Contacts',
+                                                    text_color=textColour,
+                                                    text_font=['trebuchet MS bold', 12], height=30,
+                                                    fg_color=accentColour,
+                                                    command=lambda: controller.show_frame("Contacts_page"))
+        self.profile_btn = customtkinter.CTkButton(self, bg_color=toolbar_bg, text='My Profile', text_color=textColour,
+                                                   text_font=['trebuchet MS bold', 12], height=30,
+                                                   fg_color=accentColour,
+                                                   command=lambda: controller.show_frame("Profile_page"))
         # End of Toolbar
 
         #Create elements and widgets
         #Top Left backdrop
-        self.load_round_rect = Image.open("images/backdrop_v2.png")
         self.load_main_img1 = Image.open("images/hackathon.png")
-        self.hack_main_img = ImageTk.PhotoImage(self.load_main_img1.resize((250, 150), Image.ANTIALIAS))
-        self.next_img = tk.PhotoImage(file="images/img_login.png")
-
-        self.backdrop_top_left = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.hack_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
-        self.hack_label = tk.Label(self, text='Hackathon', font='Bahnschrift 32 bold underline', bg='#33A1FD')
-        self.hack_img = tk.Label(self, image=self.hack_main_img)
+        self.hack_main_img = ImageTk.PhotoImage(self.load_main_img1.resize((450, 230), Image.ANTIALIAS))
+        self.hack_backdrop = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, corner_radius=20,
+                                                    text="", width=500, height=250)
+        self.hack_label = customtkinter.CTkLabel(self, text='Hackathon', text_font=['Bahnschrift bold', 32],
+                                                 bg_color=accentColour, text_color=textColour)
         #This function opens up a new window and displays all hackathons uploaded into the system by the admin
         def hackathon_view():
             connection = sqlite3.connect('Databases/Event_database.db')
@@ -102,26 +122,30 @@ class Events_page(tk.Frame):
 
             populate(frame)
             connection.close()
-        self.hack_btn = tk.Button(self, image=self.next_img, width=400, command=hackathon_view)
+        self.hack_btn = customtkinter.CTkButton(self, image=self.hack_main_img, text="Click For More!",
+                                                text_color=textColour, text_font=['trebuchet MS bold', 14],
+                                                compound='top', bg_color=accentColour, fg_color=accentColour,
+                                                command=hackathon_view)
+
         # Top Right backdrop
         self.load_main_img2 = Image.open("images/codathon.png")
-        self.code_main_img = ImageTk.PhotoImage(self.load_main_img2.resize((250, 150), Image.ANTIALIAS))
-        self.backdrop_top_right = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.code_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
-        self.code_label = tk.Label(self, text='Codathon', font='Bahnschrift 32 bold underline', bg='#33A1FD')
-        self.code_img = tk.Label(self, image=self.code_main_img)
-
+        self.code_main_img = ImageTk.PhotoImage(self.load_main_img2.resize((450, 230), Image.ANTIALIAS))
+        self.code_backdrop = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, corner_radius=20,
+                                                    text="", width=500, height=250)
+        self.code_label = customtkinter.CTkLabel(self, text='Codathon', text_font=['Bahnschrift bold', 32],
+                                                 bg_color=accentColour, text_color=textColour)
         # This function opens up a new window and displays all codathons uploaded into the system by the admin
         def codathon_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
-            #get data from database
+            # get data from database
             cursor.execute('select (select count() from Events WHERE event_type = ?) as count', ['Codathon'])
             count = cursor.fetchall()
             count = count[0][0]
             cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Codathon'])
             query_data = cursor.fetchall()
-            #This function popualtes a grid with all the events related to the event type
+
+            # This function popualtes a grid with all the events related to the event type
             def populate(newWindow):
                 self.picture = {}
                 self.resized_image = {}
@@ -137,10 +161,13 @@ class Events_page(tk.Frame):
                     filepath = "images/" + query_data[row][1][25:]
                     self.open_image = Image.open(filepath)
                     self.resized_image[row] = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
-                    self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='#33A1FD', relief='solid').grid(row=row, column=0)
-                    info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
-                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row, column=1)
-                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
+                    self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='#33A1FD',
+                                                 relief='solid').grid(row=row, column=0)
+                    info_text = query_data[row][4] + '\n' + query_data[row][3] + '\n' + query_data[row][5]
+                    tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row,
+                                                                                                       column=1)
+                    tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row,
+                                                                                                                column=2)
 
             def onFrameConfigure(canvas):
                 '''Reset the scroll region to encompass the inner frame'''
@@ -164,16 +191,19 @@ class Events_page(tk.Frame):
 
             populate(frame)
             connection.close()
-        self.code_btn = tk.Button(self, image=self.next_img, width=400, command=codathon_view)
+        self.code_btn = customtkinter.CTkButton(self, image=self.code_main_img, text="Click For More!",
+                                                text_color=textColour, text_font=['trebuchet MS bold', 14],
+                                                compound='top', bg_color=accentColour, fg_color=accentColour,
+                                                command=codathon_view)
+
         # Bottom Left backdrop
         self.load_main_img3 = Image.open("images/bug_hunt.jpg")
-        self.bug_main_img = ImageTk.PhotoImage(self.load_main_img3.resize((250, 150), Image.ANTIALIAS))
-        self.backdrop_bottom_left = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.bug_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
-        self.bug_label = tk.Label(self, text='Bug Hunts', font='Bahnschrift 32 bold underline', bg='#33A1FD')
-        self.bug_img = tk.Label(self, image=self.bug_main_img)
+        self.bug_main_img = ImageTk.PhotoImage(self.load_main_img3.resize((450, 230), Image.ANTIALIAS))
+        self.bug_backdrop = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, corner_radius=20,
+                                                    text="", width=500, height=250)
+        self.bug_label = customtkinter.CTkLabel(self, text='Bug Hunts', text_font=['Bahnschrift bold', 32],
+                                                 bg_color=accentColour, text_color=textColour)
 
-        # This function opens up a new window and displays all bug hunts uploaded into the system by the admin
         def bug_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
@@ -223,16 +253,18 @@ class Events_page(tk.Frame):
 
             populate(frame)
             connection.close()
-        self.bug_btn = tk.Button(self, image=self.next_img, width=400, command=bug_view)
+        self.bug_btn = customtkinter.CTkButton(self, image=self.bug_main_img, text="Click For More!",
+                                                text_color=textColour, text_font=['trebuchet MS bold', 14],
+                                                compound='top', bg_color=accentColour, fg_color=accentColour,
+                                                command=bug_view)
+
         # Bottom Right backdrop
         self.load_main_img4 = Image.open("images/seminars.jpg")
-        self.seminar_main_img = ImageTk.PhotoImage(self.load_main_img4.resize((250, 150), Image.ANTIALIAS))
-        self.backdrop_bottom_right = ImageTk.PhotoImage(self.load_round_rect.resize((500, 340), Image.ANTIALIAS))
-        self.seminar_backdrop = tk.Label(self, image=self.backdrop_top_left, bg='#2176FF')
-        self.seminar_label = tk.Label(self, text='Seminar & Events', font='Bahnschrift 32 bold underline', bg='#33A1FD')
-        self.seminar_img = tk.Label(self, image=self.seminar_main_img)
-
-        # This function opens up a new window and displays all seminars or olympiads uploaded into the system by the admin
+        self.seminar_main_img = ImageTk.PhotoImage(self.load_main_img4.resize((450, 230), Image.ANTIALIAS))
+        self.seminar_backdrop = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, corner_radius=20,
+                                                   text="", width=500, height=250)
+        self.seminar_label = customtkinter.CTkLabel(self, text='Seminars and Olympiads', text_font=['Bahnschrift bold', 32],
+                                                bg_color=accentColour, text_color=textColour)
         def SnO_view():
             connection = sqlite3.connect('Databases/Event_database.db')
             cursor = connection.cursor()
@@ -282,40 +314,31 @@ class Events_page(tk.Frame):
 
             populate(frame)
             connection.close()
-        self.seminar_btn = tk.Button(self, image=self.next_img, width=400, command=SnO_view)
+        self.seminar_btn = customtkinter.CTkButton(self, image=self.seminar_main_img, text="Click For More!",
+                                               text_color=textColour, text_font=['trebuchet MS bold', 14],
+                                               compound='top', bg_color=accentColour, fg_color=accentColour,
+                                               command=SnO_view)
 
         # arrange elements & widgets in grid
-        self.space_label1.place(x=0, y=0)
-        self.recs_btn.place(x=370, y=2)
-        self.recs_btn.tkraise()
-        self.search_btn.place(x=505, y=2)
-        self.search_btn.tkraise()
-        self.events_btn.place(x=640, y=2)
-        self.events_btn.tkraise()
-        self.contacts_btn.place(x=775, y=2)
-        self.contacts_btn.tkraise()
-        self.profile_btn.place(x=910, y=2)
-        self.profile_btn.tkraise()
-        self.logout_btn.place(x=100, y=3)
+        self.recs_btn.place(x=2, y=2)
+        self.search_btn.place(x=158, y=2)
+        self.events_btn.place(x=300, y=2)
+        self.contacts_btn.place(x=442, y=2)
+        self.profile_btn.place(x=584, y=2)
+
         # Top-left backdrop
-        self.hack_backdrop.place(x=100, y=150)
-        self.hack_label.place(x=250, y=170)
-        self.hack_img.place(x=230, y=230)
-        self.hack_btn.place(x=150, y=400)
+        self.hack_backdrop.place(x=100, y=190)
+        self.hack_label.place(x=250, y=190)
+        self.hack_btn.place(x=190, y=245)
         # Top-Right backdrop
-        self.code_backdrop.place(x=820, y=150)
-        self.code_label.place(x=980, y=170)
-        self.code_img.place(x=950, y=230)
-        self.code_btn.place(x=870, y=400)
+        self.code_backdrop.place(x=680, y=190)
+        self.code_label.place(x=830, y=190)
+        self.code_btn.place(x=770, y=245)
         # Bottom-left backdrop
-        self.bug_backdrop.place(x=100, y=550)
-        self.bug_label.place(x=250, y=570)
-        self.bug_img.place(x=230, y=630)
-        self.bug_btn.place(x=150, y=800)
+        self.bug_backdrop.place(x=100, y=450)
+        self.bug_label.place(x=250, y=450)
+        self.bug_btn.place(x=190, y=505)
         # Bottom-Right backdrop
-        self.seminar_backdrop.place(x=820, y=550)
-        self.seminar_label.place(x=900, y=570)
-        self.seminar_img.place(x=950, y=630)
-        self.seminar_btn.place(x=870, y=800)
-
-
+        self.seminar_backdrop.place(x=680, y=450)
+        self.seminar_label.place(x=690, y=450)
+        self.seminar_btn.place(x=770, y=505)

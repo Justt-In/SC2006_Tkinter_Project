@@ -2,19 +2,34 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import messagebox
+import customtkinter
 from PIL import ImageTk, Image
 import sqlite3
 
-class Register_confirmation_page(tk.Frame):
+class Register_confirmation_page(customtkinter.CTkFrame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#2176FF')
+        super().__init__()
+        customtkinter.set_appearance_mode("System")
+        customtkinter.set_default_color_theme("blue")
+        if customtkinter.get_appearance_mode() == "light" or customtkinter.get_appearance_mode() == "Light":
+            main_bg = "#ffe5d9"
+            accentColour = "#48CAE4"
+            accentColour2 = "#E46248"
+            textColour = "black"
+        else:
+            main_bg = "#464646"
+            accentColour = "#0077b6"
+            accentColour2 = "#B63F00"
+            textColour = "black"
+        customtkinter.CTkFrame.__init__(self, parent, fg_color=main_bg)
         self.controller = controller
         #Create elements & widgets
-        self.space_label1 = tk.Label(self, width=1000, height=9, bg="#FDCA40", borderwidth=2, relief='solid')
+        self.space_label1 = customtkinter.CTkLabel(self, height=100, width=1280, bg_color=accentColour,
+                                                   text="Let's Setup Your Profile",
+                                                   text_color=textColour, text_font=['trebuchet MS bold', 42])
         self.load_title_img = tk.PhotoImage(file="images/profile_icon.png")
-        self.page_label = tk.Label(self, text="Let's Setup Your Profile", font='Bahnschrift 60 bold', bg="#FDCA40")
-        self.title_img_label1 = tk.Label(self, image=self.load_title_img, bg="#FDCA40")
-        self.title_img_label2 = tk.Label(self, image=self.load_title_img, bg="#FDCA40")
+        self.title_img_label1 = tk.Label(self, image=self.load_title_img, bg=accentColour)
+        self.title_img_label2 = tk.Label(self, image=self.load_title_img, bg=accentColour)
         def open_connection():
             global username
             connection = sqlite3.connect('Databases/User_database.db')
@@ -28,8 +43,10 @@ class Register_confirmation_page(tk.Frame):
             self.username_label['text'] = username
             self.label_block.lower()
 
-        self.label_block = tk.Label(self, bg='#2176FF', width=500, height=500)
-        self.edit_btn = tk.Button(self, text='Click To Start Editing', font='Bahnschrift 20 bold', bg='#FDCA40', relief='solid', width=50, command=open_connection)
+        self.label_block = tk.Label(self, bg=main_bg, width=500, height=500)
+        self.edit_btn = customtkinter.CTkButton(self, text='Click To Start Editing', text_font=['trebuchet MS bold', 30],
+                                                bg_color=main_bg, text_color=textColour, fg_color='#0d9c8c',
+                                                width=50, command=open_connection)
 
         def uploadImage():
             connection = sqlite3.connect('Databases/User_database.db')
@@ -51,15 +68,17 @@ class Register_confirmation_page(tk.Frame):
             self.profile_img_label.configure(image=stgImg)
             self.profile_img_label.image = stgImg
 
-        photo = tk.PhotoImage(file="images/default_profile_img.png")
         self.load_profile_img = tk.PhotoImage(file="images/default_profile_img.png")
-        self.profile_img_label = tk.Label(self, image=self.load_profile_img, bg='#2176FF')
+        self.profile_img_label = tk.Label(self, image=self.load_profile_img, bg=main_bg)
         self.load_upload_img = (Image.open("images/upload_img.png"))
         self.resized_image = self.load_upload_img.resize((30, 30), Image.ANTIALIAS)
         self.new_image = ImageTk.PhotoImage(self.resized_image)
-        self.upload_img_button = tk.Button(self,text="Upload Image",image=self.new_image, command=uploadImage, width=100, relief='raised', bg='#FDCA40')
-        self.username_label = tk.Label(self,text='Test Username', font='Bahnschrift 40 underline', bg='#2176FF')
-        self.title_label2 = tk.Label(self, text="Who would you like to see on your recommended?", font='Bahnschrift 20 bold', bg='#2176FF')
+        self.upload_img_button = customtkinter.CTkButton(self, text="Upload Image",image=self.new_image, text_color=textColour,
+                                                         command=uploadImage, width=100, bg_color=main_bg,
+                                                         fg_color=accentColour, text_font=['trebuchet MS bold', 20])
+        self.username_label = tk.Label(self, font='roboto 30 bold', bg=main_bg, fg=textColour, text='Text Username')
+        self.title_label2 = customtkinter.CTkLabel(self, text="Who would you like to see on your recommended?",
+                                                   text_font=['trebuchet MS bold', 16], bg_color=main_bg, text_color=textColour)
         self.load_backdrop1_img = Image.open("images/backdrop_v2_1.png")
         self.backdrop1 = ImageTk.PhotoImage(self.load_backdrop1_img.resize((450, 600), Image.ANTIALIAS))
         self.backdrop1_label = tk.Label(self, image=self.backdrop1, bg='#2176FF')
@@ -73,82 +92,120 @@ class Register_confirmation_page(tk.Frame):
         var8 = tk.IntVar(self)
         var9 = tk.IntVar(self)
         var10 = tk.IntVar(self)
-        self.proficient1 = tk.StringVar(self)
-        self.proficient1.set("Experience")  # default value
-        self.proficient2 = tk.StringVar(self)
-        self.proficient2.set("Experience")
-        self.proficient3 = tk.StringVar(self)
-        self.proficient3.set("Experience")
-        self.proficient4 = tk.StringVar(self)
-        self.proficient4.set("Experience")
-        self.proficient5 = tk.StringVar(self)
-        self.proficient5.set("Experience")
-        self.proficient6 = tk.StringVar(self)
-        self.proficient6.set("Experience")
-        self.proficient7 = tk.StringVar(self)
-        self.proficient7.set("Experience")
-        self.proficient8 = tk.StringVar(self)
-        self.proficient8.set("Experience")
-        self.proficient9 = tk.StringVar(self)
-        self.proficient9.set("Experience")
-        self.proficient10 = tk.StringVar(self)
-        self.proficient10.set("Experience")
 
-        self.experience1 = tk.OptionMenu(self, self.proficient1, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience1.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience1_menu = self.nametowidget(self.experience1.menuname)
-        experience1_menu.configure(font='Bahnschrift 12 bold')
-        self.check1 = tk.Checkbutton(self, text='Python', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2,
-                                     variable=var1)
-        self.experience2 = tk.OptionMenu(self, self.proficient2, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience2.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience2_menu = self.nametowidget(self.experience2.menuname)
-        experience2_menu.configure(font='Bahnschrift 12 bold')
-        self.check2 = tk.Checkbutton(self, text='C++', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var2)
-        self.experience3 = tk.OptionMenu(self, self.proficient3, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience3.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience3_menu = self.nametowidget(self.experience3.menuname)
-        experience3_menu.configure(font='Bahnschrift 12 bold')
-        self.check3 = tk.Checkbutton(self, text='C#', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var3)
-        self.experience4 = tk.OptionMenu(self, self.proficient4, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience4.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience4_menu = self.nametowidget(self.experience4.menuname)
-        experience4_menu.configure(font='Bahnschrift 12 bold')
-        self.check4 = tk.Checkbutton(self, text='C', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var4)
-        self.experience5 = tk.OptionMenu(self, self.proficient5, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience5.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience5_menu = self.nametowidget(self.experience5.menuname)
-        experience5_menu.configure(font='Bahnschrift 12 bold')
-        self.check5 = tk.Checkbutton(self, text='Java', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var5)
-        self.experience6 = tk.OptionMenu(self, self.proficient6, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience6.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience6_menu = self.nametowidget(self.experience6.menuname)
-        experience6_menu.configure(font='Bahnschrift 12 bold')
-        self.check6 = tk.Checkbutton(self, text='Javascript', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2,
-                                     variable=var6)
-        self.experience7 = tk.OptionMenu(self, self.proficient7, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience7.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience7_menu = self.nametowidget(self.experience7.menuname)
-        experience7_menu.configure(font='Bahnschrift 12 bold')
-        self.check7 = tk.Checkbutton(self, text='PHP', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var7)
-        self.experience8 = tk.OptionMenu(self, self.proficient8, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience8.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience8_menu = self.nametowidget(self.experience8.menuname)
-        experience8_menu.configure(font='Bahnschrift 12 bold')
-        self.check8 = tk.Checkbutton(self, text='SQL', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var8)
-        self.experience9 = tk.OptionMenu(self, self.proficient9, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience9.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience9_menu = self.nametowidget(self.experience9.menuname)
-        experience9_menu.configure(font='Bahnschrift 12 bold')
-        self.check9 = tk.Checkbutton(self, text='HTML', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var9)
-        self.experience10 = tk.OptionMenu(self, self.proficient10, "<1Y", "1Y", "2Y", "3Y", ">3Y")
-        self.experience10.configure(font='Bahnschrift 12 bold', bg='#33A1FD', fg='black', bd=-2)
-        experience10_menu = self.nametowidget(self.experience10.menuname)
-        experience10_menu.configure(font='Bahnschrift 12 bold')
-        self.check10 = tk.Checkbutton(self, text='CSS', font='Bahnschrift 16 bold', bg='#2176FF', bd=-2, variable=var10)
+        self.experience1 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience1.set("Experience")
+        self.experience1.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+        self.switch1 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var1, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel1 = customtkinter.CTkLabel(self, text='Python', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience2 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience2.set("Experience")
+        self.experience2.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
 
+        self.switch2 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var2, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel2 = customtkinter.CTkLabel(self, text='C++', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience3 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience3.set("Experience")
+        self.experience3.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch3 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var3, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel3 = customtkinter.CTkLabel(self, text='C#', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience4 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience4.set("Experience")
+        self.experience4.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch4 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var4, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel4 = customtkinter.CTkLabel(self, text='C', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience5 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience5.set("Experience")
+        self.experience5.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch5 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var5, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel5 = customtkinter.CTkLabel(self, text='Java', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience6 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience6.set("Experience")
+        self.experience6.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch6 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var6, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel6 = customtkinter.CTkLabel(self, text='Javascript', text_font='Bahnschrift 12 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience7 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience7.set("Experience")
+        self.experience7.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch7 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var7, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel7 = customtkinter.CTkLabel(self, text='PHP', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience8 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience8.set("Experience")
+        self.experience8.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch8 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var8, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel8 = customtkinter.CTkLabel(self, text='SQL', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience9 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience9.set("Experience")
+        self.experience9.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                   text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                   dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                   width=100)
+
+        self.switch9 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var9, fg_color='red',
+                                               progress_color='#2BD447')
+        self.switchLabel9 = customtkinter.CTkLabel(self, text='HTML', text_font='Bahnschrift 14 bold',
+                                                   bg_color=main_bg, text_color=textColour)
+        self.experience10 = customtkinter.CTkOptionMenu(self, values=["<1Y", "1Y", "2Y", "3Y", ">3Y"])
+        self.experience10.set("Experience")
+        self.experience10.configure(text_font='Bahnschrift 12 bold', bg_color=main_bg, fg_color=accentColour2,
+                                    text_color=textColour, button_color=accentColour2, dropdown_color=accentColour,
+                                    dropdown_text_color=textColour, dropdown_text_font='Bahnschrift 12 bold',
+                                    width=100)
+
+        self.switch10 = customtkinter.CTkSwitch(self, bg_color=main_bg, text='', variable=var10, fg_color='red',
+                                                progress_color='#2BD447')
+        self.switchLabel10 = customtkinter.CTkLabel(self, text='CSS', text_font='Bahnschrift 14 bold',
+                                                    bg_color=main_bg, text_color=textColour)
+
+        self.title_label3 = customtkinter.CTkLabel(self, text='Short Description of Yourself:', bg_color=main_bg,
+                                                   text_font='Bahnschrift 25 bold', text_color=textColour)
         self.check_area = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=35, height=3, font='Bahnschrift 16 bold')
-        self.title_label3 = tk.Label(self, text='Short Description of Yourself:', font='Bahnschrift 25 bold', bg='#2176FF')
 
         def goto_recs_page():
             msgBox = tk.messagebox.askyesno("Confirmation","Your user preference cannot be changed After submission. "
@@ -248,44 +305,75 @@ class Register_confirmation_page(tk.Frame):
             connection.commit()
             connection.close()
             controller.show_frame('Login')
-        self.submit_button = tk.Button(self, text='Submit', font='Bahnschrift 25 bold', bg='#FDCA40', relief='raised', width=20, command=goto_recs_page)
+
+        submit_img = Image.open("images/submit_icon.png")
+        submit_img = ImageTk.PhotoImage(submit_img.resize((75, 75), Image.ANTIALIAS))
+        self.submit_button = customtkinter.CTkButton(self, text='Create Account', text_font='Bahnschrift 42 bold', text_color=textColour,
+                                                     bg_color=main_bg, fg_color="#0d9c8c", width=20, command=goto_recs_page
+                                                     ,image=submit_img, height=100)
 
         #Place elements & widgets
         self.space_label1.place(x=0, y=0)
-        self.title_img_label1.place(x=150, y=5)
-        self.page_label.place(x=300, y=10)
-        self.title_img_label2.place(x=1150, y=5)
-        self.profile_img_label.place(x=300, y=250)
-        self.upload_img_button.place(x=377, y=525)
-        self.username_label.place(x=700, y=250)
-        self.title_label2.place(x=670, y=320)
-        self.edit_btn.place(x=360, y=150)
+        self.title_img_label1.place(x=350, y=5)
+        self.title_img_label2.place(x=1430, y=5)
+        self.edit_btn.place(x=430, y=120)
+        self.profile_img_label.place(x=460, y=330)
+        self.upload_img_button.place(x=285, y=400)
+        self.username_label.place(x=1050, y=320)
+        self.title_label2.place(x=590, y=270)
 
-        self.experience1.place(x=970, y=375)#x-330, y+140
-        self.check1.place(x=810, y=370)
-        self.experience2.place(x=970, y=405)
-        self.check2.place(x=810, y=400)
-        self.experience3.place(x=970, y=435)
-        self.check3.place(x=810, y=430)
-        self.experience4.place(x=970, y=465)
-        self.check4.place(x=810, y=460)
-        self.experience5.place(x=970, y=495)
-        self.check5.place(x=810, y=490)
-        self.experience6.place(x=970, y=525)
-        self.check6.place(x=810, y=520)
-        self.experience7.place(x=970, y=555)
-        self.check7.place(x=810, y=550)
-        self.experience8.place(x=970, y=585)
-        self.check8.place(x=810, y=580)
-        self.experience9.place(x=970, y=615)
-        self.check9.place(x=810, y=610)
-        self.experience10.place(x=970, y=645)
-        self.check10.place(x=810, y=645)
-
-        self.title_label3.place(x=210, y=575)
-        self.check_area.place(x=210, y=625)
-        self.submit_button.place(x=500, y=780)
-        self.label_block.place(x=50, y=220)
+        self.experience1.place(x=850, y=310)
+        self.experience1.tkraise()
+        self.switchLabel1.place(x=730, y=310)
+        self.switch1.place(x=710, y=315)
+        self.switch1.tkraise()
+        self.experience2.place(x=850, y=350)
+        self.experience2.tkraise()
+        self.switchLabel2.place(x=730, y=350)
+        self.switch2.place(x=710, y=355)
+        self.switch2.tkraise()
+        self.experience3.place(x=850, y=390)
+        self.experience3.tkraise()
+        self.switchLabel3.place(x=735, y=390)
+        self.switch3.place(x=710, y=395)
+        self.switch3.tkraise()
+        self.experience4.place(x=850, y=430)
+        self.experience4.tkraise()
+        self.switchLabel4.place(x=730, y=430)
+        self.switch4.place(x=710, y=435)
+        self.switch4.tkraise()
+        self.experience5.place(x=850, y=470)
+        self.experience5.tkraise()
+        self.switchLabel5.place(x=730, y=470)
+        self.switch5.place(x=710, y=475)
+        self.switch5.tkraise()
+        self.experience6.place(x=850, y=510)
+        self.experience6.tkraise()
+        self.switchLabel6.place(x=730, y=510)
+        self.switch6.place(x=710, y=515)
+        self.switch6.tkraise()
+        self.experience7.place(x=850, y=550)
+        self.experience7.tkraise()
+        self.switchLabel7.place(x=730, y=550)
+        self.switch7.place(x=710, y=555)
+        self.switch7.tkraise()
+        self.experience8.place(x=850, y=590)
+        self.experience8.tkraise()
+        self.switchLabel8.place(x=730, y=590)
+        self.switch8.place(x=710, y=595)
+        self.switch8.tkraise()
+        self.experience9.place(x=850, y=630)
+        self.experience9.tkraise()
+        self.switchLabel9.place(x=730, y=630)
+        self.switch9.place(x=710, y=635)
+        self.switch9.tkraise()
+        self.experience10.place(x=850, y=670)
+        self.experience10.tkraise()
+        self.switchLabel10.place(x=730, y=670)
+        self.switch10.place(x=710, y=675)
+        self.switch10.tkraise()
+        self.title_label3.place(x=180, y=450)
+        self.check_area.place(x=270, y=740)
+        self.submit_button.place(x=170, y=590)
+        self.label_block.place(x=0,y=300)
         self.label_block.tkraise()
-
-        #User preference for recommendation
