@@ -710,7 +710,7 @@ class Profile_page(customtkinter.CTkFrame):
                                                 progress_color='#2BD447')
         self.switchLabel10 = customtkinter.CTkLabel(self, text='CSS', text_font='Bahnschrift 14 bold',
                                                     bg_color=main_bg, text_color=textColour)
-        self.error_label = tk.Label(self, text="",font='Bahnschrift 20 underline', bg=main_bg, bd=3, fg='#a00000')
+        self.error_label = tk.Label(self, text="",font='Bahnschrift 14 underline', bg=main_bg, bd=3, fg='red')
 
         #This function collects the data in all the entry widgets and saves it to the overall user database
         def save_edits():
@@ -867,6 +867,7 @@ class Profile_page(customtkinter.CTkFrame):
         self.profile_btn.place(x=584, y=2)
 
         self.get_details_btn.place(x=360, y=185)
+        self.error_label.place(x=50, y=1000)
         self.profile_pic_label.place(x=580, y=400)
         self.pic_btn.place(x=350, y=415)
 
