@@ -1,4 +1,5 @@
 import tkinter as tk
+import psycopg2
 from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import messagebox
@@ -27,19 +28,24 @@ class Register_confirmation_page(customtkinter.CTkFrame):
         self.space_label1 = customtkinter.CTkLabel(self, height=100, width=1280, bg_color=accentColour,
                                                    text="Let's Setup Your Profile",
                                                    text_color=textColour, text_font=['trebuchet MS bold', 42])
-        self.load_title_img = tk.PhotoImage(file="images/profile_icon.png")
-        self.title_img_label1 = tk.Label(self, image=self.load_title_img, bg=accentColour)
-        self.title_img_label2 = tk.Label(self, image=self.load_title_img, bg=accentColour)
+        self.load_title_img = Image.open("images/profile_icon.png")
+        self.resized_title_image = ImageTk.PhotoImage(self.load_title_img.resize((130, 130), Image.ANTIALIAS))
+        self.title_img_label1 = tk.Label(self, image=self.resized_title_image, bg=accentColour)
+        self.title_img_label2 = tk.Label(self, image=self.resized_title_image, bg=accentColour)
         def open_connection():
             global username
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            data = cursor.execute('SELECT * FROM User')
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users')
+            data = hCursor.fetchall()
             for row in data:
                 print(row)
-            sql = 'SELECT username FROM User ORDER BY creation_date DESC LIMIT 1;'
-            cursor.execute(sql)
-            username = cursor.fetchall()
+            sql = 'SELECT username FROM Users ORDER BY creation_date DESC LIMIT 1;'
+            hCursor.execute(sql)
+            username = hCursor.fetchall()
             self.username_label['text'] = username
             self.label_block.lower()
 
@@ -49,11 +55,14 @@ class Register_confirmation_page(customtkinter.CTkFrame):
                                                 width=50, command=open_connection)
 
         def uploadImage():
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            sql = 'SELECT userid FROM User ORDER BY creation_date DESC LIMIT 1;'
-            cursor.execute(sql)
-            userid = str(cursor.fetchall())
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            sql = 'SELECT userid FROM Users ORDER BY creation_date DESC LIMIT 1;'
+            hCursor.execute(sql)
+            userid = str(hCursor.fetchall())
             num = ''
             for char in userid:
                 if char.isdigit():
@@ -61,9 +70,9 @@ class Register_confirmation_page(customtkinter.CTkFrame):
             filename = filedialog.askopenfilename(initialdir="C:\\", filetypes=(("PNG file", "*.png"), ("JPEG File", "*.jpeg"), ("JPG File", "*.jpg"), ("All File Types", "*.*")))
             if filename == '' or filename == ' ':
                 filename = None
-            cursor.execute("UPDATE User SET profile_pic = ? WHERE userid = ?", [filename, num])
-            connection.commit()
-            connection.close()
+            hCursor.execute("UPDATE Users SET profile_pic = %s WHERE userid = %s", [filename, num])
+            hConn.commit()
+            hConn.close()
             stgImg = ImageTk.PhotoImage(file=filename)
             self.profile_img_label.configure(image=stgImg)
             self.profile_img_label.image = stgImg
@@ -212,23 +221,33 @@ class Register_confirmation_page(customtkinter.CTkFrame):
                                                            "Are you sure with your choices?")
             if msgBox == 'No':
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            sql = 'SELECT username FROM User ORDER BY creation_date DESC LIMIT 1;'
-            cursor.execute(sql)
-            username = cursor.fetchall()[0][0]
-            connection.close()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            sql = 'SELECT username FROM Users ORDER BY creation_date DESC LIMIT 1;'
+            hCursor.execute(sql)
+            username = hCursor.fetchall()[0][0]
+            hConn.close()
             sql = 'Databases/' + username + '_db.db'
-            connection = sqlite3.connect(sql)
-            cursor = connection.cursor()
-            cursor.execute('''CREATE TABLE IF NOT EXISTS Personal(userid INTEGER PRIMARY KEY AUTOINCREMENT, invite_received TEXT, invite_sent TEXT, proggies TEXT, chat_logs TEXT)''')
-            connection.commit()
-            connection.close()
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            sql = 'SELECT userid FROM User ORDER BY creation_date DESC LIMIT 1;'
-            cursor.execute(sql)
-            userid = str(cursor.fetchall())
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            sql = 'CREATE TABLE IF NOT EXISTS ' + username + '(userid SERIAL PRIMARY KEY, invite_received TEXT, invite_sent TEXT, proggies TEXT, chat_logs TEXT)'''
+            hCursor.execute(sql)
+            hConn.commit()
+            hConn.close()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            sql = 'SELECT userid FROM Users ORDER BY creation_date DESC LIMIT 1;'
+            hCursor.execute(sql)
+            userid = str(hCursor.fetchall())
             num = ''
             for char in userid:
                 if char.isdigit():
@@ -237,73 +256,73 @@ class Register_confirmation_page(customtkinter.CTkFrame):
             count = 0
             coding_prof = ''
             if var1.get() == 1:
-                python = self.proficient1.get()
+                python = self.experience1.get()
                 if python == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', Python ' + python
             if var2.get() == 1:
-                c_plus = self.proficient2.get()
+                c_plus = self.experience2.get()
                 if c_plus == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', C++ ' + c_plus
             if var3.get() == 1:
-                c_sharp = self.proficient3.get()
+                c_sharp = self.experience3.get()
                 if c_sharp == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', C# ' + c_sharp
             if var4.get() == 1:
-                c_only = self.proficient4.get()
+                c_only = self.experience4.get()
                 if c_only == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', C ' + c_only
             if var5.get() == 1:
-                java = self.proficient5.get()
+                java = self.experience5.get()
                 if java == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', Java ' + java
             if var6.get() == 1:
-                javascript = self.proficient6.get()
+                javascript = self.experience6.get()
                 if javascript == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', Javascript ' + javascript
             if var7.get() == 1:
-                php = self.proficient7.get()
+                php = self.experience7.get()
                 if php == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', PHP ' + php
             if var8.get() == 1:
-                s_q_l = self.proficient8.get()
+                s_q_l = self.experience8.get()
                 if s_q_l == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', SQL ' + s_q_l
             if var9.get() == 1:
-                html = self.proficient9.get()
+                html = self.experience9.get()
                 if html == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', HTML ' + html
             if var10.get() == 1:
-                css = self.proficient10.get()
+                css = self.experience10.get()
                 if css == 'Experience':
                     count += 1
                 else:
                     coding_prof = coding_prof + ', CSS ' + css
-            cursor.execute("UPDATE User SET user_preference = ? WHERE userid = ?", [coding_prof, num])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET users_preference = %s WHERE userid = %s", [coding_prof, num])
+            hConn.commit()
             shortDesc = self.check_area.get("1.0","end-1c")
             print(shortDesc)
-            cursor.execute("UPDATE User SET short_Desc = ? WHERE userid = ?", [shortDesc, num])
+            hCursor.execute("UPDATE Users SET short_Desc = %s WHERE userid = %s", [shortDesc, num])
             #cursor.execute(sql)
-            connection.commit()
-            connection.close()
+            hConn.commit()
+            hConn.close()
             controller.show_frame('Login')
 
         submit_img = Image.open("images/submit_icon.png")

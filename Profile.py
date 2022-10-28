@@ -1,4 +1,5 @@
 import tkinter as tk
+import psycopg2
 import customtkinter
 from tkinter import filedialog
 from tkinter import scrolledtext
@@ -457,21 +458,24 @@ class Profile_page(customtkinter.CTkFrame):
         #This function allows the user to change their profile picture and updates dynamically upon update, it also
         # saves the image to the database immediately
         def change_pic():
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             file = open("Databases/logs.txt", "r")
             username = file.read()
             file.close()
             username = username[:-1]
-            cursor.execute("SELECT profile_pic FROM User WHERE username = ?", [username])
-            file_path = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT profile_pic FROM Users WHERE username = %s", [username])
+            file_path = str(hCursor.fetchall())[3:-4]
             filename = filedialog.askopenfilename(initialdir="C:\\", filetypes=(
             ("PNG file", "*.png"), ("JPEG File", "*.jpeg"), ("JPG File", "*.jpg"), ("All File Types", "*.*")))
             if filename == None or filename == '':
                 filename = file_path
-            cursor.execute("UPDATE User SET profile_pic = ? WHERE username = ?", [filename, username])
-            connection.commit()
-            connection.close()
+            hCursor.execute("UPDATE Users SET profile_pic = %s WHERE username = %s", [filename, username])
+            hConn.commit()
+            hConn.close()
             #stgImg = ImageTk.PhotoImage(file=filename)
             self.load_prof_image = Image.open(filename)
             self.prof_image = ImageTk.PhotoImage(self.load_prof_image.resize((200, 200), Image.ANTIALIAS))
@@ -488,58 +492,61 @@ class Profile_page(customtkinter.CTkFrame):
         #This function gets the data of the logged in user from the database and displays his/her details on screen
         def start_edits():
             reset_page()
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             file = open("Databases/logs.txt", "r")
             username = file.read()
             file.close()
             username = username[:-1]
             self.username_label["text"] = username
-            cursor.execute("SELECT profile_pic FROM User WHERE username = ?", [username])
-            file_path = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT profile_pic FROM Users WHERE username = %s", [username])
+            file_path = str(hCursor.fetchall())[3:-4]
             print(file_path)
-            file_path = "images/" + file_path[25:]
+            #file_path = "images/" + file_path[25:]
             img2 = ImageTk.PhotoImage(Image.open(file_path))
             self.profile_pic_label.configure(image=img2)
             self.profile_pic_label.image = img2
-            cursor.execute("SELECT short_Desc FROM User WHERE username = ?", [username])
-            for line in cursor.fetchall()[0]:
+            hCursor.execute("SELECT short_Desc FROM Users WHERE username = %s", [username])
+            for line in hCursor.fetchall()[0]:
                 if line == None:
                     continue
                 else:
                     self.user_desc.insert('insert', line)
-            cursor.execute("SELECT fullname FROM User WHERE username = ?", [username])
-            fullname = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT fullname FROM Users WHERE username = %s", [username])
+            fullname = str(hCursor.fetchall())[3:-4]
             self.name_entry.insert('insert', fullname)
-            cursor.execute("SELECT age FROM User WHERE username = ?", [username])
-            age = str(cursor.fetchall()[0][0])
+            hCursor.execute("SELECT age FROM Users WHERE username = %s", [username])
+            age = str(hCursor.fetchall()[0][0])
             self.age_entry.insert('insert', age)
-            cursor.execute("SELECT nationality FROM User WHERE username = ?", [username])
-            nationality = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT nationality FROM Users WHERE username = %s", [username])
+            nationality = str(hCursor.fetchall())[3:-4]
             self.nationality_entry.insert('insert', nationality)
-            cursor.execute("SELECT email FROM User WHERE username = ?", [username])
-            email = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT email FROM Users WHERE username = %s", [username])
+            email = str(hCursor.fetchall())[3:-4]
             self.email_entry.insert('insert', email)
-            cursor.execute("SELECT github FROM User WHERE username = ?", [username])
-            github = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT github FROM Users WHERE username = %s", [username])
+            github = str(hCursor.fetchall())[3:-4]
             self.github_entry.insert('insert', github)
-            cursor.execute("SELECT linkedIn FROM User WHERE username = ?", [username])
-            linkedIn = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT linkedIn FROM Users WHERE username = %s", [username])
+            linkedIn = str(hCursor.fetchall())[3:-4]
             self.linkedIn_entry.insert('insert', linkedIn)
-            cursor.execute("SELECT field_study FROM User WHERE username = ?", [username])
-            field_study = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT field_study FROM Users WHERE username = %s", [username])
+            field_study = str(hCursor.fetchall())[3:-4]
             self.specialize_entry.insert('insert', field_study)
-            cursor.execute("SELECT years_in_field FROM User WHERE username = ?", [username])
-            yrsField = str(cursor.fetchall()[0][0])
+            hCursor.execute("SELECT years_in_field FROM Users WHERE username = %s", [username])
+            yrsField = str(hCursor.fetchall()[0][0])
             self.fieldYrs_entry.insert('insert', yrsField)
-            cursor.execute("SELECT meeting_mode FROM User WHERE username = ?", [username])
-            meet_mode = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT meeting_mode FROM Users WHERE username = %s", [username])
+            meet_mode = str(hCursor.fetchall())[3:-4]
             self.meet_pref_dd.set(meet_mode)
-            cursor.execute("SELECT meeting_region FROM User WHERE username = ?", [username])
-            meet_region = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT meeting_region FROM Users WHERE username = %s", [username])
+            meet_region = str(hCursor.fetchall())[3:-4]
             self.locale_pref_dd.set(meet_region)
-            cursor.execute("SELECT code_lang FROM User WHERE username = ?", [username])
-            code_lang = str(cursor.fetchall())[3:-4]
+            hCursor.execute("SELECT code_lang FROM Users WHERE username = %s", [username])
+            code_lang = str(hCursor.fetchall())[3:-4]
             code_lang = code_lang.split(',')
             for x in code_lang:
                 if x == '':
@@ -575,7 +582,7 @@ class Profile_page(customtkinter.CTkFrame):
                 elif language_year[0] == "CSS":
                     self.switch10.select()
                     self.experience10.set(language_year[1])
-            connection.close()
+            hConn.close()
         self.get_details_btn = customtkinter.CTkButton(self, text='Get Current Profile Details', text_color=textColour,
                                                        text_font=['trebuchet MS bold', 32], bg_color=main_bg,
                                                        fg_color="#0d9c8c", command=start_edits)
@@ -707,29 +714,33 @@ class Profile_page(customtkinter.CTkFrame):
 
         #This function collects the data in all the entry widgets and saves it to the overall user database
         def save_edits():
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            hCursor = hConn.cursor()
             file = open("Databases/logs.txt", "r")
             username = file.read()
             file.close()
             username = username[:-1]
             shortDesc = self.user_desc.get("1.0", "end-1c")
-            cursor.execute("UPDATE User SET short_Desc = ? WHERE username = ?", [shortDesc, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET short_Desc = %s WHERE username = %s", [shortDesc, username])
+            hConn.commit()
             email = self.email_entry.get()
             email = email.strip()
             if email == None or email == '':
                 self.error_label['text'] = "Please check that all required fields are filled"
                 return
-            cursor.execute("UPDATE User SET email = ? WHERE username = ?", [email, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET email = %s WHERE username = %s", [email, username])
+            hConn.commit()
             fullname = self.name_entry.get()
             fullname = fullname.strip()
             if fullname == None or fullname == '':
                 self.error_label['text'] = "Please check that all required fields are filled"
                 return
-            cursor.execute("UPDATE User SET fullname = ? WHERE username = ?", [fullname, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET fullname = %s WHERE username = %s", [fullname, username])
+            hConn.commit()
             age = self.age_entry.get()
             age = age.strip()
             if age == None or age == '':
@@ -738,28 +749,28 @@ class Profile_page(customtkinter.CTkFrame):
             elif not age.isdigit():
                 self.error_label['text'] = "Please ensure your age is an integer"
                 return
-            cursor.execute("UPDATE User SET age = ? WHERE username = ?", [age, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET age = %s WHERE username = %s", [age, username])
+            hConn.commit()
             nationality = self.nationality_entry.get()
             nationality = nationality.strip()
             if nationality == None or nationality == '':
                 self.error_label['text'] = "Please check that all required fields are filled"
                 return
-            cursor.execute("UPDATE User SET nationality = ? WHERE username = ?", [nationality, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET nationality = %s WHERE username = %s", [nationality, username])
+            hConn.commit()
             github = self.github_entry.get()
-            cursor.execute("UPDATE User SET github = ? WHERE username = ?", [github, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET github = %s WHERE username = %s", [github, username])
+            hConn.commit()
             linkedIn = self.linkedIn_entry.get()
-            cursor.execute("UPDATE User SET linkedIn = ? WHERE username = ?", [linkedIn, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET linkedIn = %s WHERE username = %s", [linkedIn, username])
+            hConn.commit()
             specialization = self.specialize_entry.get()
             specialization = specialization.strip()
             if specialization == None or specialization == '':
                 self.error_label['text'] = "Please check that all required fields are filled"
                 return
-            cursor.execute("UPDATE User SET field_study = ? WHERE username = ?", [specialization, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET field_study = %s WHERE username = %s", [specialization, username])
+            hConn.commit()
             years_field = self.fieldYrs_entry.get()
             years_field = years_field.strip()
             if years_field == None or years_field == '':
@@ -768,8 +779,8 @@ class Profile_page(customtkinter.CTkFrame):
             elif not years_field.isdigit():
                 self.error_label['text'] = "Please ensure your age is an integer"
                 return
-            cursor.execute("UPDATE User SET years_in_field = ? WHERE username = ?", [years_field, username])
-            connection.commit()
+            hCursor.execute("UPDATE Users SET years_in_field = %s WHERE username = %s", [years_field, username])
+            hConn.commit()
 
             # coding knowledge
             count = 0
@@ -838,11 +849,11 @@ class Profile_page(customtkinter.CTkFrame):
             if count != 0:
                 self.error_label['text'] = "Please check that all required fields are filled"
                 return
-            cursor.execute("UPDATE User SET code_lang = ? WHERE username = ?", [coding_prof, username])
+            hCursor.execute("UPDATE Users SET code_lang = %s WHERE username = %s", [coding_prof, username])
             self.error_label['text'] = ""
             tk.messagebox.showinfo("Success", "Edits saved successfully!")
-            connection.commit()
-            connection.close()
+            hConn.commit()
+            hConn.close()
         self.save_details_btn = customtkinter.CTkButton(self, text='Save Edits', text_font=['trebuchet MS bold',28],
                                                         text_color=textColour, bg_color=main_bg, fg_color='red',
                                                         command=save_edits)

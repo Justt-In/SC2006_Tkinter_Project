@@ -6,6 +6,7 @@ from tkinter import filedialog
 from tkinter import scrolledtext
 import tkinterwidgets as tkw
 import psycopg2
+from psycopg2 import OperationalError, errorcodes, errors
 # postgresql-globular-06874
 from customtkinter import CTk
 
@@ -21,29 +22,37 @@ from tkcalendar import Calendar
 import sqlite3
 from hashlib import blake2b
 import pylint
-'''
+
+
+hConn = psycopg2.connect(host = "ec2-3-213-66-35.compute-1.amazonaws.com", database = "ddipmu7if1umsi",
+                            user="wfpsdpcxvibamf", password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432" ,
+                            port="5432")
+hCursor = hConn.cursor()
+
+#hCursor.execute('''DROP TABLE Users, Events''')
+#hCursor.execute('''DROP TABLE testing, tester''')
+hCursor.execute('''SELECT * FROM Just_In''')
+print(hCursor.fetchall())
+hCursor.execute('''SELECT * FROM tester''')
+print(hCursor.fetchall())
+hConn.commit()
+hConn.close()
+
 #configure and connect to Postgres
 hConn = psycopg2.connect(host = "ec2-3-213-66-35.compute-1.amazonaws.com", database = "ddipmu7if1umsi",
                             user="wfpsdpcxvibamf", password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432" ,
                             port="5432")
 hCursor = hConn.cursor()
-'''
-#hCursor.execute('''CREATE TABLE IF NOT EXISTS Users(userid SERIAL PRIMARY KEY, profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, password TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT)''')
-'''
+hCursor.execute('''CREATE TABLE IF NOT EXISTS Users(userid SERIAL PRIMARY KEY, profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, password TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT, users_preference TEXT)''')
 hConn.commit()
 hConn.close()
-'''
-
-connection = sqlite3.connect('Databases/User_database.db')
-cursor = connection.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS User(userid INTEGER PRIMARY KEY AUTOINCREMENT, profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, password TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT)''')
-connection.commit()
-connection.close()
-connection = sqlite3.connect('Databases/Event_database.db')
-cursor = connection.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS Events(eventid INTEGER PRIMARY KEY AUTOINCREMENT, event_pic TEXT, creation_date TEXT, event_date TEXT, eventname TEXT, location TEXT, event_type TEXT, short_Desc TEXT)''')
-connection.commit()
-connection.close()
+hConn = psycopg2.connect(host = "ec2-3-213-66-35.compute-1.amazonaws.com", database = "ddipmu7if1umsi",
+                            user="wfpsdpcxvibamf", password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432" ,
+                            port="5432")
+hCursor = hConn.cursor()
+hCursor.execute('''CREATE TABLE IF NOT EXISTS Events(eventid SERIAL PRIMARY KEY, event_pic TEXT, creation_date TEXT, event_date TEXT, eventname TEXT, location TEXT, event_type TEXT, short_Desc TEXT)''')
+hConn.commit()
+hConn.close()
 
 class BinaryApp(customtkinter.CTk):
 
@@ -90,21 +99,21 @@ class Login(customtkinter.CTkFrame):
 
         global bg
         if customtkinter.get_appearance_mode() == "light" or customtkinter.get_appearance_mode() == "Light":
-            bg = Image.open("images/login_bg_light.jpeg")
+            bg = Image.open("images/light_wallpaper.png")
             bg = ImageTk.PhotoImage(bg.resize((1920, 1080), Image.ANTIALIAS))
-            widget_bg = "#00377e"
+            widget_bg = "#a6d6c8"
             toolbar_bg = "#e1edfb"
             #widget_bg = "#05243c"
             accentColour = "#48CAE4"
             accentColour2 = "#E46248"
-            textColour = "white"
+            textColour = "black"
             loginColour = "black"
         else:
-            bg = Image.open("images/login_bg_dark.jpg")
+            bg = Image.open("images/dark_wallpaper.png")
             bg = ImageTk.PhotoImage(bg.resize((1920, 1080), Image.ANTIALIAS))
             #widget_bg = "#001ccf"
             #widget_bg = "#EAE4D9"
-            widget_bg = "#ffd94a"
+            widget_bg = "#94c7e8"
             toolbar_bg = "#112938"
             accentColour = "#0077b6"
             accentColour2 = "#B63F00"
@@ -142,16 +151,24 @@ class Login(customtkinter.CTkFrame):
                                               bg_color=widget_bg,fg_color='white', text_color="black")
 
         def check_login():
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             username = username_box.get()
             password = password_box.get()
             password_hash = password.encode()
             h = blake2b()
             h.update(password_hash)
             password_hash = "[('" + h.hexdigest() + "',)]"
-            cursor.execute("SELECT password FROM User WHERE username = ?", [username])
-            db_password = str(cursor.fetchall())
+            try:
+                hCursor.execute("SELECT password FROM Users WHERE username = %s", [username])
+            except psycopg2.errors.UndefinedColumn:
+                incorrect_password_label_canvas = canvas1.create_window(985, 1000, anchor="center", width=500,
+                                                                        window=incorrect_password_label)
+                return
+            db_password = str(hCursor.fetchall())
             if username == "abc" and password == '123':
                 file = open("Databases/logs.txt", "w")
                 file.write(username + "\n")
@@ -184,7 +201,8 @@ class Login(customtkinter.CTkFrame):
                     ("PNG file", "*.png"), ("JPEG File", "*.jpeg"), ("JPG File", "*.jpg"), ("All File Types", "*.*")))
                     file.write(filename)
                     file.close()
-                    stgImg = ImageTk.PhotoImage(file=filename)
+                    stgImg = Image.open(filename)
+                    stgImg = ImageTk.PhotoImage(stgImg.resize((150,100), Image.ANTIALIAS))
                     newWindow.event_pic_label.configure(image=stgImg)
                     newWindow.event_pic_label.image = stgImg
                 change_pic_btn = customtkinter.CTkButton(newWindow, text="Upload Image", width=20, text_font='Bahnschrift 12 bold',
@@ -226,18 +244,26 @@ class Login(customtkinter.CTkFrame):
                                                                  ,font='Bahnschrift 16 bold', relief='solid')
                 newWindow.short_desc.place(x=20, y=670)
                 def submit_event():
-                    connection = sqlite3.connect('Databases/Event_database.db')
-                    cursor = connection.cursor()
+                    hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                             user="wfpsdpcxvibamf",
+                                             password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                             port="5432")
+                    hCursor = hConn.cursor()
                     file = open("Databases/event.txt", "r")
                     filename = file.read()
                     file.close()
+                    #filename = filename.split("/")
+                    #filename = filename[-1]
+                    print(filename)
                     date_time = str(datetime.now())
+                    #date_time = date_time.split()
+                    #date_time = "/".join(date_time)
+                    #date_time = date_time.replace(':','-')
+                    print(date_time)
                     event_date = str(cal.get_date())
                     event_name = event_name_entry.get()
                     location = newWindow.location_dd.get()
-                    print(location)
                     eventType = newWindow.comboboxEvent.get()
-                    print(eventType)
                     shortDesc = newWindow.short_desc.get("1.0","end-1c")
                     error_count = 0
                     if event_name == '':
@@ -247,14 +273,16 @@ class Login(customtkinter.CTkFrame):
                     if eventType == "Event Type":
                         error_count+=1
                     if error_count == 0:
-                        cursor.execute('INSERT INTO Events(event_pic, creation_date, event_date, eventname, location, event_type, short_Desc) VALUES(?,?,?,?,?,?,?)',
-                            (filename, date_time, event_date, event_name, location, eventType, shortDesc))
-                        connection.commit()
+
+                        sql = 'INSERT INTO Events(event_pic, creation_date, event_date, eventname, location, event_type, short_Desc)' + ' VALUES(' + str(filename) + ',' + date_time + ',' + event_date + ',' + event_name + ',' + location + ',' + eventType + ',' + shortDesc + ')'
+                        print(sql)
+                        hCursor.execute('INSERT INTO Events(event_pic, creation_date, event_date, eventname, location, event_type, short_Desc) VALUES(%s,%s,%s,%s,%s,%s,%s)',(filename, date_time, event_date, event_name, location, eventType, shortDesc))
+                        hConn.commit()
 
                         newWindow.success_label.text = "Successfully submitted"
                         newWindow.success_label.place(x=130, y=650)
                         newWindow.fail_label.destroy()
-                        connection.close()
+                        hConn.close()
                     else:
                         newWindow.fail_label.text = "Ensure fields are filled"
                         newWindow.fail_label.place(x=65, y=650)
@@ -285,10 +313,6 @@ class Login(customtkinter.CTkFrame):
                                                                         window=incorrect_password_label)
 
         def register_page():
-            '''
-            login_username_label.place(x=1175, y=50)
-            login_username_label.lower()
-            '''
             controller.show_frame('Register_page')
 
         loadimage = Image.open("images/login_icon.png")

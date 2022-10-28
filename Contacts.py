@@ -1,6 +1,6 @@
 import tkinter as tk
+import psycopg2
 import customtkinter
-from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import messagebox
 from PIL import ImageTk, Image
@@ -49,22 +49,31 @@ class Contacts_page(customtkinter.CTkFrame):
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
-            refresh_conn1 = sqlite3.connect(sql)
-            refresh_cursor1 = refresh_conn1.cursor()
-            refresh_cursor1.execute('SELECT proggies from Personal')
-            proggies_list = refresh_cursor1.fetchall()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
+            refresh_Cursor.execute("SELECT proggies from {0}".format(username))
+            proggies_list = refresh_Cursor.fetchall()
+            refresh_Conn.close()
             # print(proggies_list[0][0])
-            refresh_conn2 = sqlite3.connect('Databases/User_database.db')
-            refresh_cursor2 = refresh_conn2.cursor()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
             count = 0
             for name in proggies_list:
-                refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
-                picture = refresh_cursor2.fetchall()
-                # print(picture[0][0][25:])
+                refresh_Cursor.execute('SELECT profile_pic FROM Users WHERE username = %s', (name[0],))
+                picture = refresh_Cursor.fetchall()
+                # print(picture[0][0]])
                 try:
                     if count == 0:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
@@ -73,7 +82,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label1['text'] = name[0]
                     elif count == 1:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
@@ -82,7 +91,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label2['text'] = name[0]
                     elif count == 2:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
@@ -91,7 +100,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label3['text'] = name[0]
                     elif count == 3:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
@@ -100,7 +109,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label4['text'] = name[0]
                     elif count == 4:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
@@ -109,7 +118,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label5['text'] = name[0]
                     elif count == 5:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
@@ -118,7 +127,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label6['text'] = name[0]
                     elif count == 6:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
@@ -127,7 +136,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label7['text'] = name[0]
                     elif count == 7:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
@@ -148,22 +157,31 @@ class Contacts_page(customtkinter.CTkFrame):
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
-            refresh_conn1 = sqlite3.connect(sql)
-            refresh_cursor1 = refresh_conn1.cursor()
-            refresh_cursor1.execute('SELECT proggies from Personal')
-            proggies_list = refresh_cursor1.fetchall()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
+            refresh_Cursor.execute("SELECT proggies from {0}".format(username))
+            proggies_list = refresh_Cursor.fetchall()
+            refresh_Conn.close()
             # print(proggies_list[0][0])
-            refresh_conn2 = sqlite3.connect('Databases/User_database.db')
-            refresh_cursor2 = refresh_conn2.cursor()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
             count = 0
             for name in proggies_list:
-                refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
-                picture = refresh_cursor2.fetchall()
-                # print(picture[0][0][25:])
+                refresh_Cursor.execute('SELECT profile_pic FROM Users WHERE username = %s', (name[0],))
+                picture = refresh_Cursor.fetchall()
+                # print(picture[0][0]])
                 try:
                     if count == 0:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
@@ -172,7 +190,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label1['text'] = name[0]
                     elif count == 1:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
@@ -181,7 +199,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label2['text'] = name[0]
                     elif count == 2:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
@@ -190,7 +208,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label3['text'] = name[0]
                     elif count == 3:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
@@ -199,7 +217,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label4['text'] = name[0]
                     elif count == 4:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
@@ -208,7 +226,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label5['text'] = name[0]
                     elif count == 5:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
@@ -217,7 +235,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label6['text'] = name[0]
                     elif count == 6:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
@@ -226,7 +244,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label7['text'] = name[0]
                     elif count == 7:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
@@ -246,22 +264,31 @@ class Contacts_page(customtkinter.CTkFrame):
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
-            refresh_conn1 = sqlite3.connect(sql)
-            refresh_cursor1 = refresh_conn1.cursor()
-            refresh_cursor1.execute('SELECT proggies from Personal')
-            proggies_list = refresh_cursor1.fetchall()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
+            refresh_Cursor.execute("SELECT proggies from {0}".format(username))
+            proggies_list = refresh_Cursor.fetchall()
+            refresh_Conn.close()
             # print(proggies_list[0][0])
-            refresh_conn2 = sqlite3.connect('Databases/User_database.db')
-            refresh_cursor2 = refresh_conn2.cursor()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
             count = 0
             for name in proggies_list:
-                refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
-                picture = refresh_cursor2.fetchall()
-                # print(picture[0][0][25:])
+                refresh_Cursor.execute('SELECT profile_pic FROM Users WHERE username = %s', (name[0],))
+                picture = refresh_Cursor.fetchall()
+                # print(picture[0][0]])
                 try:
                     if count == 0:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
@@ -270,7 +297,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label1['text'] = name[0]
                     elif count == 1:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
@@ -279,7 +306,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label2['text'] = name[0]
                     elif count == 2:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
@@ -288,7 +315,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label3['text'] = name[0]
                     elif count == 3:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
@@ -297,7 +324,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label4['text'] = name[0]
                     elif count == 4:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
@@ -306,7 +333,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label5['text'] = name[0]
                     elif count == 5:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
@@ -315,7 +342,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label6['text'] = name[0]
                     elif count == 6:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
@@ -324,7 +351,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label7['text'] = name[0]
                     elif count == 7:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
@@ -343,22 +370,31 @@ class Contacts_page(customtkinter.CTkFrame):
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
-            refresh_conn1 = sqlite3.connect(sql)
-            refresh_cursor1 = refresh_conn1.cursor()
-            refresh_cursor1.execute('SELECT proggies from Personal')
-            proggies_list = refresh_cursor1.fetchall()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
+            refresh_Cursor.execute("SELECT proggies from {0}".format(username))
+            proggies_list = refresh_Cursor.fetchall()
+            refresh_Conn.close()
             # print(proggies_list[0][0])
-            refresh_conn2 = sqlite3.connect('Databases/User_database.db')
-            refresh_cursor2 = refresh_conn2.cursor()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
             count = 0
             for name in proggies_list:
-                refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
-                picture = refresh_cursor2.fetchall()
-                # print(picture[0][0][25:])
+                refresh_Cursor.execute('SELECT profile_pic FROM Users WHERE username = %s', (name[0],))
+                picture = refresh_Cursor.fetchall()
+                # print(picture[0][0]])
                 try:
                     if count == 0:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
@@ -367,7 +403,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label1['text'] = name[0]
                     elif count == 1:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
@@ -376,7 +412,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label2['text'] = name[0]
                     elif count == 2:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
@@ -385,7 +421,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label3['text'] = name[0]
                     elif count == 3:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
@@ -394,7 +430,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label4['text'] = name[0]
                     elif count == 4:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
@@ -403,7 +439,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label5['text'] = name[0]
                     elif count == 5:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
@@ -412,7 +448,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label6['text'] = name[0]
                     elif count == 6:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
@@ -421,7 +457,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label7['text'] = name[0]
                     elif count == 7:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
@@ -440,22 +476,31 @@ class Contacts_page(customtkinter.CTkFrame):
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
-            refresh_conn1 = sqlite3.connect(sql)
-            refresh_cursor1 = refresh_conn1.cursor()
-            refresh_cursor1.execute('SELECT proggies from Personal')
-            proggies_list = refresh_cursor1.fetchall()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
+            refresh_Cursor.execute("SELECT proggies from {0}".format(username))
+            proggies_list = refresh_Cursor.fetchall()
+            refresh_Conn.close()
             # print(proggies_list[0][0])
-            refresh_conn2 = sqlite3.connect('Databases/User_database.db')
-            refresh_cursor2 = refresh_conn2.cursor()
+            refresh_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            refresh_Cursor = refresh_Conn.cursor()
             count = 0
             for name in proggies_list:
-                refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
-                picture = refresh_cursor2.fetchall()
-                # print(picture[0][0][25:])
+                refresh_Cursor.execute('SELECT profile_pic FROM Users WHERE username = %s', (name[0],))
+                picture = refresh_Cursor.fetchall()
+                # print(picture[0][0]])
                 try:
                     if count == 0:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
@@ -464,7 +509,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label1['text'] = name[0]
                     elif count == 1:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
@@ -473,7 +518,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label2['text'] = name[0]
                     elif count == 2:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
@@ -482,7 +527,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label3['text'] = name[0]
                     elif count == 3:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
@@ -491,7 +536,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label4['text'] = name[0]
                     elif count == 4:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
@@ -500,7 +545,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label5['text'] = name[0]
                     elif count == 5:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
@@ -509,7 +554,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label6['text'] = name[0]
                     elif count == 6:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
@@ -518,7 +563,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label7['text'] = name[0]
                     elif count == 7:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = picture[0][0]
                             self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
@@ -553,14 +598,20 @@ class Contacts_page(customtkinter.CTkFrame):
         def view_requests():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
-            sql = 'Databases/' + username + '_db.db'
-            connection = sqlite3.connect(sql)
-            cursor = connection.cursor()
-            cursor.execute('SELECT invite_received from Personal')
-            received_requests = cursor.fetchall()
+            sql = 'SELECT invite_received from ' + username
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute(sql)
+            received_requests = hCursor.fetchall()
             count = len(received_requests)
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             #this function opens a new window and populates a grid with all the sender's usernames and profile pictures
             def populate(newWindow):
                 noneCounter = 0
@@ -585,22 +636,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 #print(count)
                 for name in range(count):
                     person = received_requests[name][0]
-                    #print(person)
+                    print(person)
                     if person == None:
                         continue
                     #print(person)
-                    cursor.execute('SELECT profile_pic, username FROM User WHERE username = ?', [person])
-                    details = cursor.fetchall()
-                    try:
-                        if details[0][0] == None or details[0][0] == '':
-                            self.open_image[name] = Image.open('images/default_profile_img.png')
-                        else:
-                            filepath = "images/" + details[0][0][25:]
-                            self.open_image[name] = Image.open(filepath)
-                    except:
-                        print("Some error")
-                        tk.Label(newWindow, text='No requests yet, come back again later!', bg='#33A1FD', font='Bahnschrift 24 bold').grid(row=0, column=0)
-                        return
+                    hCursor.execute("SELECT profile_pic, username FROM Users WHERE username = '{0}'".format(person))
+                    details = hCursor.fetchall()
+                    print(details)
+                    #try:
+                    if details[0][0] == None or details[0][0] == '':
+                        self.open_image[name] = Image.open('images/default_profile_img.png')
+                    else:
+                        filepath = details[0][0]
+                        self.open_image[name] = Image.open(filepath)
+                    #except:
+                     #   print("Some error")
+                      #  tk.Label(newWindow, text='No requests yet, come back again later!', bg='#33A1FD', font='Bahnschrift 24 bold').grid(row=0, column=0)
+                       # return
                     self.resized_image[name] = ImageTk.PhotoImage(self.open_image[name].resize((200, 150), Image.ANTIALIAS))
                     self.picture[name] = tk.Label(newWindow, image=self.resized_image[name], bg='#33A1FD', relief='solid').grid(row=name, column=0)
                     user = details[0][1]
@@ -617,38 +669,59 @@ class Contacts_page(customtkinter.CTkFrame):
                             print("btnName: " + str(btnName))
                             adding = user_list[btnName-3]
                             print("adding: " + adding)
+                        print(adding)
                         #for x in user_list:
                             #adding = x
-                        sql = "Databases/" + username + '_db.db'
-                        newConnection1 = sqlite3.connect(sql)
-                        newCursor1 = newConnection1.cursor()
+                        hConn1 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                        hCursor1 = hConn1.cursor()
                         sql = "Databases/" + adding + '_db.db'
-                        newConnection2 = sqlite3.connect(sql)
-                        newCursor2 = newConnection2.cursor()
+                        hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                        hCursor2 = hConn2.cursor()
                         #update logged in user's database
-                        newCursor1.execute('UPDATE Personal SET invite_received = ?, proggies = ? WHERE invite_received = ?', (None, adding, adding,))
-                        newConnection1.commit()
+                        hCursor1.execute("UPDATE {0} SET invite_received = '{1}', proggies = '{2}' WHERE invite_received = '{3}'".format(username, str(None), adding, adding))
+                        hConn1.commit()
                         #update sender's database
-                        newCursor2.execute('UPDATE Personal SET invite_sent = ?, proggies = ? WHERE invite_sent = ?',(None, username, username,))
-                        newConnection2.commit()
+                        hCursor2.execute("UPDATE {0} SET invite_sent = '{1}', proggies = '{2}' WHERE invite_sent = '{3}'".format(adding, str(None), username, username))
+                        hConn2.commit()
                         tk.messagebox.showinfo("New Proggy", "Proggy Request Accepted!")
                     self.accept_button[name] = tk.Button(newWindow, bg='#33A1FD', image=self.resized_accept[name], relief='solid', command= lambda text=name:accept_request(text)).grid(row=name,column=2)
                     self.decline[name] = Image.open('images/delete_icon.png')
                     self.resized_decline[name] = ImageTk.PhotoImage(self.decline[name].resize((150, 150), Image.ANTIALIAS))
                     #This function triggers when the sender declines a request from a sender
                     def decline_request(btnName):
-                        sql = "Databases/" + username + '_db.db'
-                        newConnection1 = sqlite3.connect(sql)
-                        newCursor1 = newConnection1.cursor()
+                        sql = 'DELETE FROM ' + username + 'WHERE invite_received = ' + user_list[btnName]
+                        #'DELETE FROM Personal WHERE invite_received = ?', (user_list[btnName],)
+                        hConn1 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                  database="ddipmu7if1umsi",
+                                                  user="wfpsdpcxvibamf",
+                                                  password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                  port="5432")
+                        hCursor1 = hConn1.cursor()
                         sql = "Databases/" + user_list[btnName] + '_db.db'
-                        newConnection2 = sqlite3.connect(sql)
-                        newCursor2 = newConnection2.cursor()
+                        hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                  database="ddipmu7if1umsi",
+                                                  user="wfpsdpcxvibamf",
+                                                  password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                  port="5432")
+                        hCursor2 = hConn2.cursor()
                         #update logged in user's database
-                        newCursor1.execute('DELETE FROM Personal WHERE invite_received = ?', (user_list[btnName],))
-                        newConnection1.commit()
+                        hCursor1.execute("DELETE FROM {0} WHERE invite_received = '{1}'".format(username, user_list[btnName]))
+                        #hCursor1.execute(sql)
+                        hConn1.commit()
                         # update sender's database
-                        newCursor2.execute('DELETE FROM Personal WHERE invite_sent = ?',(username,))
-                        newConnection2.commit()
+                        sql = 'DELETE FROM ' + user_list[btnName] + ' WHERE invite_sent = ' + username
+                        #'DELETE FROM Personal WHERE invite_sent = ?', (username,)
+                        #hCursor2.execute(sql)
+                        hCursor2.execute("DELETE FROM {0} WHERE invite_received = '{1}'".format(user_list[btnName], username))
+                        hConn2.commit()
                         tk.messagebox.showinfo("Decline Proggy", "Proggy Request Declined")
 
                     self.decline_button[name] = tk.Button(newWindow, bg='#33A1FD', image=self.resized_decline[name], relief='solid', command= lambda text=name:decline_request(text)).grid(row=name, column=3)
@@ -657,7 +730,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
             root = tk.Toplevel()
-            root.geometry("700x500")
+            root.geometry("1000x500")
             canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
             frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
@@ -673,31 +746,39 @@ class Contacts_page(customtkinter.CTkFrame):
             frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
 
             populate(frame)
-            connection.close()
+            hConn.close()
 
         #this function gets all the contacts that are currently friends with the logged in user from the database and
         #displays it on the screen
         def view_proggies():
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
-            sql = 'Databases/' + username + '_db.db'
-            refresh_conn1 = sqlite3.connect(sql)
-            refresh_cursor1 = refresh_conn1.cursor()
-            refresh_cursor1.execute('SELECT proggies from Personal')
-            proggies_list = refresh_cursor1.fetchall()
+            sql = 'SELECT proggies from ' + username
+            refresh_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                      database="ddipmu7if1umsi",
+                                      user="wfpsdpcxvibamf",
+                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                      port="5432")
+            refresh_hCursor = refresh_hConn.cursor()
+            refresh_hCursor.execute(sql)
+            proggies_list = refresh_hCursor.fetchall()
             #print(proggies_list[0][0])
-            refresh_conn2 = sqlite3.connect('Databases/User_database.db')
-            refresh_cursor2 = refresh_conn2.cursor()
+            refresh_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                             database="ddipmu7if1umsi",
+                                             user="wfpsdpcxvibamf",
+                                             password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                             port="5432")
+            refresh_hCursor2 = refresh_hConn2.cursor()
             count = 0
             try:
                 for name in proggies_list:
                     if name[0] == None:
                         continue
-                    refresh_cursor2.execute('SELECT profile_pic FROM User WHERE username = ?', (name[0],))
-                    picture = refresh_cursor2.fetchall()
+                    refresh_hCursor2.execute('SELECT profile_pic FROM Users WHERE username = %s', (name[0],))
+                    picture = refresh_hCursor2.fetchall()
                     if count == 0:
                         if picture[0][0] != None :
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image1 = Image.open(filepath)
                             self.proggy_image1 = ImageTk.PhotoImage(
                                 self.load_proggy_image1.resize((100, 100), Image.ANTIALIAS))
@@ -706,7 +787,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label1['text'] = name[0]
                     elif count == 1:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image2 = Image.open(filepath)
                             self.proggy_image2 = ImageTk.PhotoImage(
                                 self.load_proggy_image2.resize((100, 100), Image.ANTIALIAS))
@@ -715,7 +796,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label2['text'] = name[0]
                     elif count == 2:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image3 = Image.open(filepath)
                             self.proggy_image3 = ImageTk.PhotoImage(
                                 self.load_proggy_image3.resize((100, 100), Image.ANTIALIAS))
@@ -724,7 +805,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label3['text'] = name[0]
                     elif count == 3:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image4 = Image.open(filepath)
                             self.proggy_image4 = ImageTk.PhotoImage(
                                 self.load_proggy_image4.resize((100, 100), Image.ANTIALIAS))
@@ -733,7 +814,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label4['text'] = name[0]
                     elif count == 4:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image5 = Image.open(filepath)
                             self.proggy_image5 = ImageTk.PhotoImage(
                                 self.load_proggy_image5.resize((100, 100), Image.ANTIALIAS))
@@ -742,7 +823,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label5['text'] = name[0]
                     elif count == 5:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image6 = Image.open(filepath)
                             self.proggy_image6 = ImageTk.PhotoImage(
                                 self.load_proggy_image6.resize((100, 100), Image.ANTIALIAS))
@@ -751,7 +832,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label6['text'] = name[0]
                     elif count == 6:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image7 = Image.open(filepath)
                             self.proggy_image7 = ImageTk.PhotoImage(
                                 self.load_proggy_image7.resize((100, 100), Image.ANTIALIAS))
@@ -760,7 +841,7 @@ class Contacts_page(customtkinter.CTkFrame):
                         self.username_label7['text'] = name[0]
                     elif count == 7:
                         if picture[0][0] != None:
-                            filepath = "images/" + picture[0][0][25:]
+                            filepath = str(picture[0][0])
                             self.load_proggy_image8 = Image.open(filepath)
                             self.proggy_image8 = ImageTk.PhotoImage(
                                 self.load_proggy_image8.resize((100, 100), Image.ANTIALIAS))
@@ -795,16 +876,25 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                #'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                #delete_hCursor.execute(sql)
+                delete_hConn.commit()
+                #sql = 'DELETE FROM ' + proggy + ' WHERE proggies = ' + username
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -870,16 +960,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -945,16 +1042,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -1020,16 +1124,24 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                sql = 'DELETE FROM' + username + 'WHERE proggies = ' + proggy
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -1095,16 +1207,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -1170,16 +1289,24 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                sql = 'DELETE FROM ' + proggy + ' WHERE proggies = ' + username
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -1246,16 +1373,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -1321,16 +1455,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 #connect to logged in user's db
                 file = open("Databases/logs.txt", "r").read()
                 username = file[:-1]
-                sql = 'Databases/' + username + '_db.db'
-                delete_conn1 = sqlite3.connect(sql)
-                delete_cursor1 = delete_conn1.cursor()
-                delete_cursor1.execute('DELETE FROM Personal WHERE proggies = ?',(proggy,))
-                delete_conn1.commit()
-                sql = 'Databases/' + proggy + '_db.db'
-                delete_conn2 = sqlite3.connect(sql)
-                delete_cursor2 = delete_conn2.cursor()
-                delete_cursor2.execute('DELETE FROM Personal WHERE proggies = ?',(username,))
-                delete_conn2.commit()
+                # 'DELETE FROM Personal WHERE proggies = %s',(proggy,)
+                delete_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                database="ddipmu7if1umsi",
+                                                user="wfpsdpcxvibamf",
+                                                password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                port="5432")
+                delete_hCursor = delete_hConn.cursor()
+                delete_hCursor.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(username, proggy))
+                delete_hConn.commit()
+                delete_hConn2 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                                 database="ddipmu7if1umsi",
+                                                 user="wfpsdpcxvibamf",
+                                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                                 port="5432")
+                delete_hCursor2 = delete_hConn2.cursor()
+                delete_hCursor2.execute("DELETE FROM {0} WHERE proggies = '{1}'".format(proggy, username))
+                delete_hConn2.commit()
                 tk.messagebox.showinfo("Delete Success", "Proggy Deleted Successfully")
                 count = 0
                 username1 = self.username_label1.cget('text')
@@ -1387,14 +1528,18 @@ class Contacts_page(customtkinter.CTkFrame):
             username = self.username_label1.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                            database="ddipmu7if1umsi",
+                                            user="wfpsdpcxvibamf",
+                                            password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                            port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1404,7 +1549,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1415,7 +1560,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1452,19 +1597,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof2():
             username = self.username_label2.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1474,7 +1623,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1485,7 +1634,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1522,19 +1671,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof3():
             username = self.username_label3.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1544,7 +1697,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1555,7 +1708,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1592,19 +1745,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof4():
             username = self.username_label4.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1614,7 +1771,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1625,7 +1782,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1662,19 +1819,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof5():
             username = self.username_label5.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1684,7 +1845,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1695,7 +1856,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1732,19 +1893,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof6():
             username = self.username_label6.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1754,7 +1919,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1765,7 +1930,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1802,19 +1967,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof7():
             username = self.username_label7.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1824,7 +1993,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1835,7 +2004,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1872,19 +2041,23 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
         def view_proggy_prof8():
             username = self.username_label8.cget('text')
             if username == "Username":
                 return
-            connection = sqlite3.connect('Databases/User_database.db')
-            cursor = connection.cursor()
-            cursor.execute('SELECT * FROM User WHERE username = ?', [username])
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
+            hCursor.execute('SELECT * FROM Users WHERE username = %s', [username])
             newWindow = tk.Toplevel(parent)
             newWindow.title(username + "'s Profile")
             newWindow.geometry("650x1000")
             newWindow.configure(bg='#33A1FD')
-            query_data = cursor.fetchall()
+            query_data = hCursor.fetchall()
             print(query_data)
             newWindow.username = tk.Label(newWindow, text='Username', bg='#33A1FD', fg='black', font='Bahnschrift 24 bold underline')
             newWindow.username.pack(side='top')
@@ -1894,7 +2067,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 if filepath == None or filepath == '':
                     filepath = "images/default_profile_img.png"
                 else:
-                    filepath = "images/" + str(query_data[0][1][25:])
+                    filepath = str(query_data[0][1])
             except TypeError:
                 filepath = "images/default_profile_img.png"
             self.load_prof_image = Image.open(filepath)
@@ -1905,7 +2078,7 @@ class Contacts_page(customtkinter.CTkFrame):
             coding_languages = query_data[0][12]
             coding_languages = coding_languages.split(',')
             code_text = '\n'.join(coding_languages[1:])
-            newWindow.code_lang["text"] = code_text[:-1]
+            newWindow.code_lang["text"] = code_text
             newWindow.short_desc = tk.Label(newWindow, text='', bg='#33A1FD', fg='black', font='Bahnschrift 12 bold', bd=3, relief='solid')
             newWindow.short_desc.pack(side='top', fill='x')
             newWindow.short_desc["text"] = str(query_data[0][18])
@@ -1942,10 +2115,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Years"
             else:
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
-            connection.close()
+            hConn.close()
 
         self.load_send_img = Image.open("images/send_message_icon.png")
-        self.send_img = ImageTk.PhotoImage(self.load_send_img.resize((40, 40), Image.ANTIALIAS))
+        self.send_img = ImageTk.PhotoImage(self.load_send_img.resize((50, 50), Image.ANTIALIAS))
         def message_proggy1():
             username = self.username_label1.cget('text')
             if username == "Username":
@@ -1954,15 +2127,21 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            #'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                     database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
+            #chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -1975,26 +2154,34 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                             database="ddipmu7if1umsi",
+                                             user="wfpsdpcxvibamf",
+                                             password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                             port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                #sql = 'UPDATE ' + username + ' SET chat_logs = ' + str(chat_log) + ' WHERE proggies = ' + username
+                #'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                #chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), username))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + str(chat_log) + ' WHERE proggies = ' + logged_in
+                #'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy2():
             username = self.username_label2.cget('text')
             if username == "Username":
@@ -2003,15 +2190,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2024,26 +2216,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy3():
             username = self.username_label3.cget('text')
             if username == "Username":
@@ -2052,15 +2251,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2073,26 +2277,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy4():
             username = self.username_label4.cget('text')
             if username == "Username":
@@ -2101,15 +2312,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2122,26 +2338,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy5():
             username = self.username_label5.cget('text')
             if username == "Username":
@@ -2150,15 +2373,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2171,26 +2399,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy6():
             username = self.username_label6.cget('text')
             if username == "Username":
@@ -2199,15 +2434,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2220,26 +2460,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy7():
             username = self.username_label7.cget('text')
             if username == "Username":
@@ -2248,15 +2495,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2269,26 +2521,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
         def message_proggy8():
             username = self.username_label8.cget('text')
             if username == "Username":
@@ -2297,15 +2556,20 @@ class Contacts_page(customtkinter.CTkFrame):
             logged_in = file.read()
             file.close()
             logged_in = logged_in[:-1]
-            sql = "Databases/" + logged_in + "_db.db"
-            connection = sqlite3.connect(sql)
-            chat_cursor = connection.cursor()
-            chat_cursor.execute('SELECT chat_logs FROM Personal WHERE proggies = ?', [username])
+            sql = "SELECT chat_logs FROM " + logged_in + "WHERE proggies = " + username
+            # 'SELECT chat_logs FROM Personal WHERE proggies = ?', [username]
+            chat_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                         database="ddipmu7if1umsi",
+                                         user="wfpsdpcxvibamf",
+                                         password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                         port="5432")
+            chat_Cursor = chat_Conn.cursor()
+            chat_Cursor.execute("SELECT chat_logs FROM {0} WHERE proggies = '{1}'".format(logged_in, username))
             openWindow = tk.Toplevel(parent)
             openWindow.title("Chatting with " + username)
-            openWindow.geometry("400x600")
+            openWindow.geometry("600x900")
             openWindow.configure(bg='#33A1FD')
-            chat_log = chat_cursor.fetchall()[0]
+            chat_log = chat_Cursor.fetchall()[0]
             if chat_log == None:
                 chat_log = ""
             openWindow.chat_scrolledtext = scrolledtext.ScrolledText(openWindow, wrap=tk.WORD, width=30, height=20,
@@ -2318,26 +2582,33 @@ class Contacts_page(customtkinter.CTkFrame):
                     openWindow.chat_scrolledtext.insert('insert', line)
             openWindow.chat_scrolledtext.configure(state='disabled')
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
-            openWindow.chat_entry.place(x=10, y=530)
+            openWindow.chat_entry.place(x=10, y=800)
             def send_message():
                 openWindow.chat_scrolledtext.configure(state="normal")
-                sql = 'Databases/' + username + '_db.db'
-                proggy_conn = sqlite3.connect(sql)
-                proggy_cursor = proggy_conn.cursor()
+                proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
+                                               database="ddipmu7if1umsi",
+                                               user="wfpsdpcxvibamf",
+                                               password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                               port="5432")
+                proggy_Cursor = proggy_Conn.cursor()
                 send_text = "\n" + logged_in + ": " + str(openWindow.chat_entry.get())
                 openWindow.chat_entry.delete(0, 'end')
                 chat_log = openWindow.chat_scrolledtext.get("1.0", "end-1c")
                 openWindow.chat_scrolledtext.delete('1.0', 'end')
                 chat_log = chat_log + send_text
                 openWindow.chat_scrolledtext.insert('end', chat_log)
-                chat_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, username])
-                connection.commit()
-                proggy_cursor.execute('UPDATE Personal SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in])
-                proggy_conn.commit()
-                proggy_conn.close()
+                sql = 'UPDATE ' + username + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + username
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?', [chat_log, username]
+                chat_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(username, str(chat_log), logged_in))
+                chat_Conn.commit()
+                sql = 'UPDATE ' + logged_in + ' SET chat_logs = ' + chat_log + 'WHERE proggies = ' + logged_in
+                # 'UPDATE Personal  SET chat_logs = ? WHERE proggies = ?',[chat_log, logged_in]
+                proggy_Cursor.execute("UPDATE {0} SET chat_logs = '{1}' WHERE proggies = '{2}'".format(logged_in, str(chat_log), username))
+                proggy_Conn.commit()
+                proggy_Conn.close()
                 openWindow.chat_scrolledtext.configure(state="disabled")
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
-            openWindow.chat_send.place(x=330, y=527)
+            openWindow.chat_send.place(x=465, y=800)
 
         self.backdrop1 = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, text="",
                                                 corner_radius=20, width=400, height=100)

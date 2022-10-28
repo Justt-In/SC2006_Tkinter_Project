@@ -1,13 +1,13 @@
 import os
 import tkinter as tk
 import customtkinter
+import psycopg2
 from tkinter import filedialog
 from tkinter import scrolledtext
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import sqlite3
 from datetime import datetime
-from random import randint
 import re
 from hashlib import blake2b
 
@@ -31,11 +31,14 @@ class Register_page(customtkinter.CTkFrame):
             backdrop = "images/backdropv3_4.png"
         customtkinter.CTkFrame.__init__(self, parent, fg_color=main_bg)
         self.controller = controller
-        connection = sqlite3.connect('Databases/User_database.db')
-        cursor = connection.cursor()
-        sql = '''CREATE TABLE IF NOT EXISTS User(profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT, user_preference TEXT)'''
-        cursor.execute(sql)
-        connection.commit()
+        hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                 user="wfpsdpcxvibamf",
+                                 password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                 port="5432")
+        hCursor = hConn.cursor()
+        sql = '''CREATE TABLE IF NOT EXISTS Users(profile_pic TEXT, creation_date TEXT, data_protect BOOLEAN, fullname TEXT, age INT, nationality TEXT, username TEXT, email TEXT, github TEXT, linkedIn TEXT, code_lang TEXT, events TEXT, meeting_mode TEXT, meeting_region TEXT, field_study TEXT, years_in_field INT, short_Desc TEXT, users_preference TEXT)'''
+        hCursor.execute(sql)
+        hConn.commit()
 
         #Create elements & widgets
         self.space_label1 = customtkinter.CTkLabel(self, height=100, width=1280, bg_color=accentColour, text='Registration',
@@ -241,10 +244,13 @@ class Register_page(customtkinter.CTkFrame):
             count = 0
             counter = 0
             data_trust = 'Yes'
-            user_conn = sqlite3.connect("Databases/User_database.db")
-            user_cursor = user_conn.cursor()
-            user_cursor.execute("SELECT username FROM User")
-            username_list = user_cursor.fetchall()
+            user_hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            user_hCursor = user_hConn.cursor()
+            user_hCursor.execute("SELECT username FROM Users")
+            username_list = user_hCursor.fetchall()
 
             def isAllPresent(str):
 
@@ -407,16 +413,17 @@ class Register_page(customtkinter.CTkFrame):
             else:
                 ans = tk.messagebox.askquestion("Username Warning","Your Username cannot be changed in tuhe future.\nDo you wish to proceed?")
                 if ans == "yes":
-                    connection.cursor()
-                    cursor.execute(
-                        'INSERT INTO User(creation_date, data_protect, fullname, age, nationality, username, password, email, github, linkedIn, code_lang, meeting_mode, meeting_region, field_study, years_in_field) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    hConn.cursor()
+                    hCursor.execute(
+                        'INSERT INTO Users(creation_date, data_protect, fullname, age, nationality, username, password, email, github, linkedIn, code_lang, meeting_mode, meeting_region, field_study, years_in_field) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
                         (date_time, data_trust, fullname, age, nationality, username, password, email, github, linkedin,
                          coding_prof, meet_pref, locale_pref, field, years_exp))
-                    connection.commit()
-                    data = cursor.execute('SELECT * FROM User')
+                    hConn.commit()
+                    hCursor.execute("SELECT * FROM Users")
+                    data = hCursor.fetchall()
                     for row in data:
                         print(row)
-                    connection.close()
+                    hConn.close()
                     controller.show_frame('Register_confirmation_page')
                 else:
                     return

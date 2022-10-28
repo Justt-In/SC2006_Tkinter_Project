@@ -1,4 +1,5 @@
 import tkinter as tk
+import psycopg2
 import customtkinter
 from tkinter import filedialog
 from tkinter import scrolledtext
@@ -73,17 +74,22 @@ class Events_page(customtkinter.CTkFrame):
                                                  bg_color=accentColour, text_color=textColour)
         #This function opens up a new window and displays all hackathons uploaded into the system by the admin
         def hackathon_view():
-            connection = sqlite3.connect('Databases/Event_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             #get data from database
-            cursor.execute('select (select count() from Events WHERE event_type = ?) as count', ['Hackathon'])
-            count = cursor.fetchall()
+            hCursor.execute("SELECT (SELECT count(*) FROM Events WHERE event_type = '{0}') as count".format('Hackathon'))
+            count = hCursor.fetchall()
             count = count[0][0]
-            cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Hackathon'])
-            query_data = cursor.fetchall()
+            hCursor.execute("SELECT * FROM Events WHERE event_type = '{0}'".format('Hackathon'))
+            query_data = hCursor.fetchall()
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
-                '''Put in some fake data'''
+                self.picture = {}
+                self.resized_image = {}
+                self.open_image = {}
                 for row in range(count):
                     '''
                     print(query_data[row][1])
@@ -92,10 +98,12 @@ class Events_page(customtkinter.CTkFrame):
                     print(query_data[row][5])
                     print(query_data[row][7])
                     '''
-                    filepath = "images/" + query_data[row][1][25:]
+                    #filepath = "images/" + query_data[row][1][25:]
+                    filepath = str(query_data[row][1])
+                    print(filepath)
                     self.open_image = Image.open(filepath)
-                    self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
-                    tk.Label(newWindow, image=self.resized_image, bg='#33A1FD', relief='solid').grid(row=row, column=0)
+                    self.resized_image[row] = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
+                    self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='#33A1FD', relief='solid').grid(row=row, column=0)
                     info_text = query_data[row][4]+ '\n' + query_data[row][3] + '\n' + query_data[row][5]
                     tk.Label(newWindow, text=info_text, font='Bahnschrift 24 bold', bg='#33A1FD').grid(row=row, column=1)
                     tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
@@ -105,7 +113,7 @@ class Events_page(customtkinter.CTkFrame):
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
             root = tk.Toplevel()
-            root.geometry("600x500")
+            root.geometry("1000x500")
             canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
             frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
@@ -121,7 +129,7 @@ class Events_page(customtkinter.CTkFrame):
             frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
 
             populate(frame)
-            connection.close()
+            hConn.close()
         self.hack_btn = customtkinter.CTkButton(self, image=self.hack_main_img, text="Click For More!",
                                                 text_color=textColour, text_font=['trebuchet MS bold', 14],
                                                 compound='top', bg_color=accentColour, fg_color=accentColour,
@@ -136,14 +144,17 @@ class Events_page(customtkinter.CTkFrame):
                                                  bg_color=accentColour, text_color=textColour)
         # This function opens up a new window and displays all codathons uploaded into the system by the admin
         def codathon_view():
-            connection = sqlite3.connect('Databases/Event_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             # get data from database
-            cursor.execute('select (select count() from Events WHERE event_type = ?) as count', ['Codathon'])
-            count = cursor.fetchall()
+            hCursor.execute("SELECT (SELECT count(*) FROM Events WHERE event_type = '{0}') as count".format('Codathon'))
+            count = hCursor.fetchall()
             count = count[0][0]
-            cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Codathon'])
-            query_data = cursor.fetchall()
+            hCursor.execute("SELECT * FROM Events WHERE event_type = '{0}'".format('Codathon'))
+            query_data = hCursor.fetchall()
 
             # This function popualtes a grid with all the events related to the event type
             def populate(newWindow):
@@ -158,7 +169,13 @@ class Events_page(customtkinter.CTkFrame):
                     print(query_data[row][5])
                     print(query_data[row][7])
                     '''
-                    filepath = "images/" + query_data[row][1][25:]
+                    '''
+                    fileLocale = str(query_data[row][1])
+                    fileLocale = fileLocale.split("/")
+                    fileLocale = fileLocale[-1]
+                    filepath = "images/" + fileLocale
+                    '''
+                    filepath = str(query_data[row][1])
                     self.open_image = Image.open(filepath)
                     self.resized_image[row] = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     self.picture[row] = tk.Label(newWindow, image=self.resized_image[row], bg='#33A1FD',
@@ -174,7 +191,7 @@ class Events_page(customtkinter.CTkFrame):
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
             root = tk.Toplevel()
-            root.geometry("600x500")
+            root.geometry("1000x500")
             canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
             frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
@@ -190,7 +207,7 @@ class Events_page(customtkinter.CTkFrame):
             frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
 
             populate(frame)
-            connection.close()
+            hConn.close()
         self.code_btn = customtkinter.CTkButton(self, image=self.code_main_img, text="Click For More!",
                                                 text_color=textColour, text_font=['trebuchet MS bold', 14],
                                                 compound='top', bg_color=accentColour, fg_color=accentColour,
@@ -205,14 +222,17 @@ class Events_page(customtkinter.CTkFrame):
                                                  bg_color=accentColour, text_color=textColour)
 
         def bug_view():
-            connection = sqlite3.connect('Databases/Event_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             #get data from database
-            cursor.execute('select (select count() from Events WHERE event_type = ?) as count', ['Bug Hunt'])
-            count = cursor.fetchall()
+            hCursor.execute("SELECT (SELECT count(*) FROM Events WHERE event_type = '{0}') as count".format('Bug Hunt'))
+            count = hCursor.fetchall()
             count = count[0][0]
-            cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Bug Hunt'])
-            query_data = cursor.fetchall()
+            hCursor.execute("SELECT * FROM Events WHERE event_type = '{0}'".format('Bug Hunt'))
+            query_data = hCursor.fetchall()
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
                 for row in range(count):
@@ -223,7 +243,8 @@ class Events_page(customtkinter.CTkFrame):
                     print(query_data[row][5])
                     print(query_data[row][7])
                     '''
-                    filepath = "images/" + query_data[row][1][25:]
+                    #filepath = "images/" + query_data[row][1][25:]
+                    filepath = str(query_data[row][1])
                     self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     tk.Label(newWindow, image=self.resized_image, bg='#33A1FD', relief='solid').grid(row=row, column=0)
@@ -236,7 +257,7 @@ class Events_page(customtkinter.CTkFrame):
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
             root = tk.Toplevel()
-            root.geometry("600x500")
+            root.geometry("1000x500")
             canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
             frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
@@ -252,7 +273,7 @@ class Events_page(customtkinter.CTkFrame):
             frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
 
             populate(frame)
-            connection.close()
+            hConn.close()
         self.bug_btn = customtkinter.CTkButton(self, image=self.bug_main_img, text="Click For More!",
                                                 text_color=textColour, text_font=['trebuchet MS bold', 14],
                                                 compound='top', bg_color=accentColour, fg_color=accentColour,
@@ -263,17 +284,20 @@ class Events_page(customtkinter.CTkFrame):
         self.seminar_main_img = ImageTk.PhotoImage(self.load_main_img4.resize((450, 230), Image.ANTIALIAS))
         self.seminar_backdrop = customtkinter.CTkLabel(self, bg_color=main_bg, fg_color=accentColour, corner_radius=20,
                                                    text="", width=500, height=250)
-        self.seminar_label = customtkinter.CTkLabel(self, text='Seminars and Olympiads', text_font=['Bahnschrift bold', 32],
+        self.seminar_label = customtkinter.CTkLabel(self, text='Seminars and Olympiads', text_font=['Bahnschrift bold', 30],
                                                 bg_color=accentColour, text_color=textColour)
         def SnO_view():
-            connection = sqlite3.connect('Databases/Event_database.db')
-            cursor = connection.cursor()
+            hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
+                                     user="wfpsdpcxvibamf",
+                                     password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
+                                     port="5432")
+            hCursor = hConn.cursor()
             #get data from database
-            cursor.execute('select (select count() from Events WHERE event_type = ?) as count', ['Seminars & Olympiads'])
-            count = cursor.fetchall()
+            hCursor.execute("SELECT (SELECT count(*) FROM Events WHERE event_type = '{0}') as count".format('Seminars & Olympiads'))
+            count = hCursor.fetchall()
             count = count[0][0]
-            cursor.execute('SELECT * FROM Events WHERE event_type = ?', ['Seminars & Olympiads'])
-            query_data = cursor.fetchall()
+            hCursor.execute("SELECT * FROM Events WHERE event_type = '{0}'".format('Seminars & Olympiads'))
+            query_data = hCursor.fetchall()
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
                 for row in range(count):
@@ -284,7 +308,8 @@ class Events_page(customtkinter.CTkFrame):
                     print(query_data[row][5])
                     print(query_data[row][7])
                     '''
-                    filepath = "images/" + query_data[row][1][25:]
+                    #filepath = "images/" + query_data[row][1][25:]
+                    filepath = str(query_data[row][1])
                     self.open_image = Image.open(filepath)
                     self.resized_image = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
                     tk.Label(newWindow, image=self.resized_image, bg='#33A1FD', relief='solid').grid(row=row, column=0)
@@ -297,7 +322,7 @@ class Events_page(customtkinter.CTkFrame):
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
             root = tk.Toplevel()
-            root.geometry("600x500")
+            root.geometry("1000x500")
             canvas = tk.Canvas(root, borderwidth=0, background="#33A1FD")
             frame = tk.Frame(canvas, background="#33A1FD")
             vsb = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
@@ -313,7 +338,7 @@ class Events_page(customtkinter.CTkFrame):
             frame.bind("<Configure>", lambda event, canvas=canvas: onFrameConfigure(canvas))
 
             populate(frame)
-            connection.close()
+            hConn.close()
         self.seminar_btn = customtkinter.CTkButton(self, image=self.seminar_main_img, text="Click For More!",
                                                text_color=textColour, text_font=['trebuchet MS bold', 14],
                                                compound='top', bg_color=accentColour, fg_color=accentColour,
@@ -340,5 +365,5 @@ class Events_page(customtkinter.CTkFrame):
         self.bug_btn.place(x=190, y=505)
         # Bottom-Right backdrop
         self.seminar_backdrop.place(x=680, y=450)
-        self.seminar_label.place(x=690, y=450)
+        self.seminar_label.place(x=700, y=450)
         self.seminar_btn.place(x=770, y=505)
