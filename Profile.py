@@ -8,8 +8,15 @@ from PIL import ImageTk, Image
 import sqlite3
 
 class Profile_page(customtkinter.CTkFrame):
+
     #Initialises the Tkinter frame
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -51,6 +58,10 @@ class Profile_page(customtkinter.CTkFrame):
         canvas1.create_image(0, 0, image=self.toolbarImg, anchor="nw")
 
         def goto_recs():
+            """
+            Clears and resets page and goes to recommendations page
+            :return: Recommendations page
+            """
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.age_entry.delete(0, 'end')
@@ -111,6 +122,10 @@ class Profile_page(customtkinter.CTkFrame):
                                                 text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
                                                 command=goto_recs)
         def goto_search():
+            """
+            Clears and resets page and goes to Search page
+            :return: Search page
+            """
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.age_entry.delete(0, 'end')
@@ -171,6 +186,10 @@ class Profile_page(customtkinter.CTkFrame):
                                                   command=goto_search)
 
         def goto_events():
+            """
+            Clears and resets page and goes to Events page
+            :return: Events page
+            """
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.age_entry.delete(0, 'end')
@@ -230,6 +249,10 @@ class Profile_page(customtkinter.CTkFrame):
                                                   text_font=['trebuchet MS bold', 12], height=30, fg_color=accentColour,
                                                   command=goto_events)
         def goto_contacts():
+            """
+            Clears and resets page and goes to Contacts page
+            :return: Contacts page
+            """
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.age_entry.delete(0, 'end')
@@ -291,6 +314,10 @@ class Profile_page(customtkinter.CTkFrame):
                                                     fg_color=accentColour,
                                                     command=goto_contacts)
         def goto_profile():
+            """
+            Clears and resets profile page
+            :return: Profile page
+            """
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.age_entry.delete(0, 'end')
@@ -353,6 +380,10 @@ class Profile_page(customtkinter.CTkFrame):
         # End of Toolbar
 
         def reset_page():
+            """
+            Clears and resets page
+            :return:
+            """
             self.username_label['text'] = "Username"
             self.name_entry.delete(0, 'end')
             self.name_entry.configure(state="normal")
@@ -458,6 +489,10 @@ class Profile_page(customtkinter.CTkFrame):
         #This function allows the user to change their profile picture and updates dynamically upon update, it also
         # saves the image to the database immediately
         def change_pic():
+            """
+            Allows the user to change the picture of their account
+            :return: new image replaces default image
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -491,6 +526,11 @@ class Profile_page(customtkinter.CTkFrame):
 
         #This function gets the data of the logged in user from the database and displays his/her details on screen
         def start_edits():
+            """
+            Connects to database and get all the data about the logged-in user except their recommendations preferences
+            and display them on screen
+            :return: gets user data
+            """
             reset_page()
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
@@ -714,6 +754,11 @@ class Profile_page(customtkinter.CTkFrame):
 
         #This function collects the data in all the entry widgets and saves it to the overall user database
         def save_edits():
+            """
+            Connects to database and updates Users table with all the data that the logged-in user has amended. Displays
+            popup message to indicate successfully saved.
+            :return: Success popup message
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                          database="ddipmu7if1umsi",
                                          user="wfpsdpcxvibamf",

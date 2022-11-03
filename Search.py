@@ -9,6 +9,12 @@ import sqlite3
 class Search_page(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -75,6 +81,11 @@ class Search_page(customtkinter.CTkFrame):
         #Gets the username entered into the the search bar and finds that user, returns appropriate messages if no user
         # is found and returns the found user if there exists one
         def search_user():
+            """
+            Searches database for inputted username, returns Error message if no user found or user searches themselves
+            , displays user's data if username is found
+            :return: Displays error message or user's data
+            """
             search_username = self.search_user.get()
             file = open("Databases/logs.txt", "r").read()[:-1]
             if search_username == file:
@@ -141,6 +152,12 @@ class Search_page(customtkinter.CTkFrame):
 
         self.load_add_img = tk.PhotoImage(file='images/add_user_img.png')
         def add_user():
+            """
+            Updates user's dedicated table with an invite sent and updates receiving user's dedicated table with invite
+            received. Checks if invite has been sent before and thus does not send another one, displays error message
+            if does so.
+            :return:Updates both inviter and receiver's tables, or displays error message
+            """
             file = open("Databases/logs.txt", "r").read()
             username = str(file[:-1])
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",

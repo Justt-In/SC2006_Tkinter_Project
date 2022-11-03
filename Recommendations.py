@@ -16,6 +16,7 @@ recsOrfilter = 0
 class Recs_page(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
+
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -76,6 +77,10 @@ class Recs_page(customtkinter.CTkFrame):
                                          fg=textColour)
 
         def Event_Details():
+            """
+            Gets event details of chosen event and displays in popup window
+            :return: Creates pop up window and displays data
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -86,6 +91,11 @@ class Recs_page(customtkinter.CTkFrame):
 
             # This function popualtes a grid with all the event details
             def populate(newWindow):
+                """
+                Populate popup window with gathered data in a grid style manner
+                :param newWindow:
+                :return:
+                """
                 self.picture = {}
                 self.resized_image = {}
                 self.open_image = {}
@@ -101,6 +111,11 @@ class Recs_page(customtkinter.CTkFrame):
                                                                                                             column=2)
 
             def onFrameConfigure(canvas):
+                """
+                Binds scrollbar to x and y axis and resets scroll to encompass the inner frame
+                :param canvas:
+                :return:
+                """
                 '''Reset the scroll region to encompass the inner frame'''
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
@@ -140,6 +155,11 @@ class Recs_page(customtkinter.CTkFrame):
 
 
         def Event_right():
+            """
+            Gets the data of the next event in the list to display, from the database
+            Else resets to first event in the list
+            :return: Returns next event in the list
+            """
             global row
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
@@ -176,6 +196,11 @@ class Recs_page(customtkinter.CTkFrame):
             hConn.close()
 
         def Event_left():
+            """
+            Gets the data of the previous event in the list to display, from the database
+            Else resets to last event in the list
+            :return: Returns next event in the list
+            """
             global row
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
@@ -235,6 +260,10 @@ class Recs_page(customtkinter.CTkFrame):
         self.user_label = tk.Label(self, text='Username', font='Bahnschrift 30 bold', bg=accentColour, fg=textColour)
 
         def view_user_prof():
+            """
+            Gets selected user's data from the database and displays in popup winddow
+            :return: Gets user data and displays it in popup window
+            """
             username = self.user_label.cget('text')
             if username == "Username":
                 return
@@ -304,6 +333,11 @@ class Recs_page(customtkinter.CTkFrame):
         self.user_desc_label = tk.Label(self, text='description...', bg=accentColour, fg='black')
 
         def view_recs():
+            """
+            Gets list of recommended users based on logged-in user's preferences stored in the database
+            Displays first user's data on the page
+            :return: list of recommended users and first user in the list
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -345,6 +379,11 @@ class Recs_page(customtkinter.CTkFrame):
 
         # Popup filter
         def popup_window():
+            """
+            Creates popup window for users to select filters, ranked based on best to worst match (meets the
+            requirements best to worst)
+            :return:
+            """
             window = customtkinter.CTkToplevel()
             window.title("User Filtering")
             window.geometry("350x380")
@@ -405,6 +444,10 @@ class Recs_page(customtkinter.CTkFrame):
             window.locale_dropdown.pack(fill='x', ipady=5, pady=10)
 
             def submit_filter():
+                """
+                Searches the database and returns a list of users, displays the first user's data on screen
+                :return: list of users ranked from best to worst
+                """
                 hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                          user="wfpsdpcxvibamf",
                                          password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -489,6 +532,10 @@ class Recs_page(customtkinter.CTkFrame):
                                                      bg_color=accentColour, fg_color=accentColour2, width=30)
 
         def filter_left():
+            """
+            Gets the next user's data in the list from the database, if end of the list, show first user's data.
+            :return: Next user's data
+            """
             global index
             if recsOrfilter == 0:
                 iteratinglist = RecsList
@@ -542,6 +589,10 @@ class Recs_page(customtkinter.CTkFrame):
                                                       image=loadimage, compound="top", command=filter_left)
 
         def filter_right():
+            """
+            Gets the previous user's data in the list from the database, if end of the list, show last user's data.
+            :return: Previous user's data
+            """
             global index
             if recsOrfilter == 0:
                 iteratinglist = RecsList

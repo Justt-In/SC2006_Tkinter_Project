@@ -9,6 +9,12 @@ import sqlite3
 
 class Register_confirmation_page(customtkinter.CTkFrame):
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -33,6 +39,10 @@ class Register_confirmation_page(customtkinter.CTkFrame):
         self.title_img_label1 = tk.Label(self, image=self.resized_title_image, bg=accentColour)
         self.title_img_label2 = tk.Label(self, image=self.resized_title_image, bg=accentColour)
         def open_connection():
+            """
+            Opens a connection to the HEROKU CLI to get user data
+            :return:
+            """
             global username
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
@@ -55,6 +65,10 @@ class Register_confirmation_page(customtkinter.CTkFrame):
                                                 width=50, command=open_connection)
 
         def uploadImage():
+            """
+            Allows the user to change the picture of their account
+            :return: new image replaces default image
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -217,7 +231,14 @@ class Register_confirmation_page(customtkinter.CTkFrame):
         self.check_area = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=35, height=3, font='Bahnschrift 16 bold')
 
         def goto_recs_page():
-            msgBox = tk.messagebox.askyesno("Confirmation","Your user preference cannot be changed After submission. "
+            """
+            Prompts user to confirm preference selection as cannot be changed.
+            Gets inputted data and updates database with user's inputs about their preferences, profile image and short
+            description
+            Creates a dedicated table for the user to hold 'Contacts' data
+            :return:
+            """
+            msgBox = tk.messagebox.askyesno("Confirmation","Your user preference cannot be changed after submission. "
                                                            "Are you sure with your choices?")
             if msgBox == 'No':
                 return

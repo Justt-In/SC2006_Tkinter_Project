@@ -14,6 +14,12 @@ from hashlib import blake2b
 
 class Register_page(customtkinter.CTkFrame):
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -61,6 +67,11 @@ class Register_page(customtkinter.CTkFrame):
         self.username_entry = customtkinter.CTkEntry(self, text_font=['arial', 16], width=250, bg_color=accentColour,
                                                      fg_color='white', border_color='black', text_color=textColour)
         def handleFocusIn(_):
+            """
+            Changes text entered in password boxes to '*'
+            :param _: text
+            :return: returns *
+            """
             self.password_entry.configure(fg='black', show='*')
             self.retype_password_entry.configure(fg='black', show='*')
         self.password_label = customtkinter.CTkLabel(self, text='Password', text_font='Bahnschrift 20 bold',
@@ -241,6 +252,12 @@ class Register_page(customtkinter.CTkFrame):
                                                    bg_color=accentColour, text_color=textColour)
         self.error_label = tk.Label(self, text="", font='Bahnschrift 14 underline bold', bg=main_bg, fg='red')
         def goto_cfm_page():
+            """
+            Prompts user to confirm username input as username is unique and cannot be changed.
+            Updates the Users table on the cloud through the HEROKU CLI with the account information of the newly created user
+            If successful, the account setup page is displayed, if a missing field is detected, an error message will be shown
+            :return: If successful, displays account setup page, if fault detected an error message will be displayed
+            """
             count = 0
             counter = 0
             data_trust = 'Yes'
@@ -253,6 +270,11 @@ class Register_page(customtkinter.CTkFrame):
             username_list = user_hCursor.fetchall()
 
             def isAllPresent(str):
+                """
+                ReGex to check if a string contains uppercase, lowercase special character & numeric value
+                :param str:
+                :return: yes or no
+                """
 
                 # ReGex to check if a string
                 # contains uppercase, lowercase
@@ -411,7 +433,7 @@ class Register_page(customtkinter.CTkFrame):
                 self.error_label['text'] = 'Please Double Check Your Entries'
                 self.error_label.place(x=50, y=1020)
             else:
-                ans = tk.messagebox.askquestion("Username Warning","Your Username cannot be changed in tuhe future.\nDo you wish to proceed?")
+                ans = tk.messagebox.askquestion("Username Warning","Your Username cannot be changed in the future.\nDo you wish to proceed?")
                 if ans == "yes":
                     hConn.cursor()
                     hCursor.execute(

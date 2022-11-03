@@ -9,6 +9,12 @@ import sqlite3
 class Events_page(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -74,6 +80,11 @@ class Events_page(customtkinter.CTkFrame):
                                                  bg_color=accentColour, text_color=textColour)
         #This function opens up a new window and displays all hackathons uploaded into the system by the admin
         def hackathon_view():
+            """
+            Connects to database and collects all event details for type 'Hackathon' and displays them in a grid style
+            on a popup window.
+            :return: Popup window with details of hackathon events
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -87,18 +98,15 @@ class Events_page(customtkinter.CTkFrame):
             query_data = hCursor.fetchall()
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
+                """
+                Displays data of hackathon events in a grid style manner in the popup window
+                :param newWindow:
+                :return:
+                """
                 self.picture = {}
                 self.resized_image = {}
                 self.open_image = {}
                 for row in range(count):
-                    '''
-                    print(query_data[row][1])
-                    print(query_data[row][4])
-                    print(query_data[row][3])
-                    print(query_data[row][5])
-                    print(query_data[row][7])
-                    '''
-                    #filepath = "images/" + query_data[row][1][25:]
                     filepath = str(query_data[row][1])
                     print(filepath)
                     self.open_image = Image.open(filepath)
@@ -109,6 +117,11 @@ class Events_page(customtkinter.CTkFrame):
                     tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
+                """
+                Binds scrollbar to x and y axis and resets scroll to encompass the inner frame
+                :param canvas:
+                :return:
+                """
                 '''Reset the scroll region to encompass the inner frame'''
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
@@ -144,6 +157,11 @@ class Events_page(customtkinter.CTkFrame):
                                                  bg_color=accentColour, text_color=textColour)
         # This function opens up a new window and displays all codathons uploaded into the system by the admin
         def codathon_view():
+            """
+            Connects to database and collects all event details for type 'Codathon' and displays them in a grid style
+            on a popup window.
+            :return: Popup window with details of codathon events
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -158,23 +176,15 @@ class Events_page(customtkinter.CTkFrame):
 
             # This function popualtes a grid with all the events related to the event type
             def populate(newWindow):
+                """
+                Displays data of codathon events in a grid style manner in the popup window
+                :param newWindow:
+                :return:
+                """
                 self.picture = {}
                 self.resized_image = {}
                 self.open_image = {}
                 for row in range(count):
-                    '''
-                    print(query_data[row][1])
-                    print(query_data[row][4])
-                    print(query_data[row][3])
-                    print(query_data[row][5])
-                    print(query_data[row][7])
-                    '''
-                    '''
-                    fileLocale = str(query_data[row][1])
-                    fileLocale = fileLocale.split("/")
-                    fileLocale = fileLocale[-1]
-                    filepath = "images/" + fileLocale
-                    '''
                     filepath = str(query_data[row][1])
                     self.open_image = Image.open(filepath)
                     self.resized_image[row] = ImageTk.PhotoImage(self.open_image.resize((200, 150), Image.ANTIALIAS))
@@ -187,6 +197,11 @@ class Events_page(customtkinter.CTkFrame):
                                                                                                                 column=2)
 
             def onFrameConfigure(canvas):
+                """
+                Binds scrollbar to x and y axis and resets scroll to encompass the inner frame
+                :param canvas:
+                :return:
+                """
                 '''Reset the scroll region to encompass the inner frame'''
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
@@ -222,6 +237,11 @@ class Events_page(customtkinter.CTkFrame):
                                                  bg_color=accentColour, text_color=textColour)
 
         def bug_view():
+            """
+            Connects to database and collects all event details for type 'Bug Hunts' and displays them in a grid style
+            on a popup window.
+            :return: Popup window with details of bug hunt events
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -235,14 +255,12 @@ class Events_page(customtkinter.CTkFrame):
             query_data = hCursor.fetchall()
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
+                """
+                Displays data of bug hunt events in a grid style manner in the popup window
+                :param newWindow:
+                :return:
+                """
                 for row in range(count):
-                    '''
-                    print(query_data[row][1])
-                    print(query_data[row][4])
-                    print(query_data[row][3])
-                    print(query_data[row][5])
-                    print(query_data[row][7])
-                    '''
                     #filepath = "images/" + query_data[row][1][25:]
                     filepath = str(query_data[row][1])
                     self.open_image = Image.open(filepath)
@@ -253,6 +271,11 @@ class Events_page(customtkinter.CTkFrame):
                     tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
+                """
+                Binds scrollbar to x and y axis and resets scroll to encompass the inner frame
+                :param canvas:
+                :return:
+                """
                 '''Reset the scroll region to encompass the inner frame'''
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
@@ -287,6 +310,11 @@ class Events_page(customtkinter.CTkFrame):
         self.seminar_label = customtkinter.CTkLabel(self, text='Seminars and Olympiads', text_font=['Bahnschrift bold', 30],
                                                 bg_color=accentColour, text_color=textColour)
         def SnO_view():
+            """
+            Connects to database and collects all event details for type 'Seminar & Olympiads' and displays them in a
+            grid style on a popup window.
+            :return: Popup window with details of Seminar & Olympiads events
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -300,14 +328,12 @@ class Events_page(customtkinter.CTkFrame):
             query_data = hCursor.fetchall()
             #This function populates a grid with all the events related to the event type
             def populate(newWindow):
+                """
+                Displays data of seminar and olympiad events in a grid style manner in the popup window
+                :param newWindow:
+                :return:
+                """
                 for row in range(count):
-                    '''
-                    print(query_data[row][1])
-                    print(query_data[row][4])
-                    print(query_data[row][3])
-                    print(query_data[row][5])
-                    print(query_data[row][7])
-                    '''
                     #filepath = "images/" + query_data[row][1][25:]
                     filepath = str(query_data[row][1])
                     self.open_image = Image.open(filepath)
@@ -318,6 +344,11 @@ class Events_page(customtkinter.CTkFrame):
                     tk.Label(newWindow, text=query_data[row][7], font='Bahnschrift 16 bold', bg='#33A1FD').grid(row=row, column=2)
 
             def onFrameConfigure(canvas):
+                """
+                Binds scrollbar to x and y axis and resets scroll to encompass the inner frame
+                :param canvas:
+                :return:
+                """
                 '''Reset the scroll region to encompass the inner frame'''
                 canvas.configure(scrollregion=canvas.bbox("all"))
 

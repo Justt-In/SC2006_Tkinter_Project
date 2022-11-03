@@ -23,20 +23,18 @@ import sqlite3
 from hashlib import blake2b
 import pylint
 
-
+'''
 hConn = psycopg2.connect(host = "ec2-3-213-66-35.compute-1.amazonaws.com", database = "ddipmu7if1umsi",
                             user="wfpsdpcxvibamf", password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432" ,
                             port="5432")
 hCursor = hConn.cursor()
-
+'''
 #hCursor.execute('''DROP TABLE Users, Events''')
 #hCursor.execute('''DROP TABLE testing, tester''')
-hCursor.execute('''SELECT * FROM Just_In''')
-print(hCursor.fetchall())
-hCursor.execute('''SELECT * FROM tester''')
-print(hCursor.fetchall())
+'''
 hConn.commit()
 hConn.close()
+'''
 
 #configure and connect to Postgres
 hConn = psycopg2.connect(host = "ec2-3-213-66-35.compute-1.amazonaws.com", database = "ddipmu7if1umsi",
@@ -57,6 +55,12 @@ hConn.close()
 class BinaryApp(customtkinter.CTk):
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.CTk.__init__(self, *args, **kwargs)
         # the container is where we'll stack a bunch of frames
@@ -83,13 +87,23 @@ class BinaryApp(customtkinter.CTk):
         self.show_frame("Login")
 
     def show_frame(self, page_name):
-        '''Show a frame for the given page name'''
+        """
+        This function will bring forward the chosen frame
+
+        Show a frame for the given page name
+        :return: Returns chosen frame
+        """
         frame = self.frames[page_name]
         frame.tkraise()
 
 class Login(customtkinter.CTkFrame):
-
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.CTkFrame.__init__(self, parent)
         customtkinter.set_appearance_mode("System")
@@ -151,6 +165,16 @@ class Login(customtkinter.CTkFrame):
                                               bg_color=widget_bg,fg_color='white', text_color="black")
 
         def check_login():
+            """
+            This function checks the login credentials based on the username entered
+
+            If the username == abc and password == 123, the user will enter a 'bypass' account to enter the
+            application without creating an account
+            If the username and password == admin, the admin window will appear
+            If the username is neither of the ones mentioned, it will search the database for the same username and
+            determine if the hashed password matches the one inputted by the user (after input password is hashed)
+            :returns: Recommendations page, admin window or login error message
+            """
             hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                      user="wfpsdpcxvibamf",
                                      password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -196,6 +220,11 @@ class Login(customtkinter.CTkFrame):
                 incorrect_password_label.destroy()
 
                 def change_pic():
+                    """
+                    Allows the admin to change the picture of the event
+
+                    :return: new image replaces default image
+                    """
                     file = open("Databases/event.txt", "w")
                     filename = filedialog.askopenfilename(initialdir="C:\\", filetypes=(
                     ("PNG file", "*.png"), ("JPEG File", "*.jpeg"), ("JPG File", "*.jpg"), ("All File Types", "*.*")))
@@ -244,6 +273,12 @@ class Login(customtkinter.CTkFrame):
                                                                  ,font='Bahnschrift 16 bold', relief='solid')
                 newWindow.short_desc.place(x=20, y=670)
                 def submit_event():
+                    """
+                    Gets all the details about the event:
+
+                    Image path, event name, event description, date of event, location and event type
+                    :return: Returns success message if successful else error message to fill missing details
+                    """
                     hConn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com", database="ddipmu7if1umsi",
                                              user="wfpsdpcxvibamf",
                                              password="e8a06a9d3be5c23efeb96f72b24bcf22a213106090e7556d37ba5894ddfb4432",
@@ -313,6 +348,11 @@ class Login(customtkinter.CTkFrame):
                                                                         window=incorrect_password_label)
 
         def register_page():
+            """
+            Requests to show register page
+
+            :return: Displays reguister page to user
+            """
             controller.show_frame('Register_page')
 
         loadimage = Image.open("images/login_icon.png")
@@ -340,6 +380,12 @@ class Login(customtkinter.CTkFrame):
         signup_btn_canvas = canvas1.create_window(990, 870, anchor="center", window=signup_button)
 
         def handleFocusIn(_):
+            """
+            Changes text entered in password box to '*'
+
+            :param _: text
+            :return: returns *
+            """
             password_box.configure(show='*')
 
         password_box.bind('<FocusIn>', handleFocusIn)

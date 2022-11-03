@@ -9,6 +9,12 @@ import sqlite3
 class Contacts_page(customtkinter.CTkFrame):
 
     def __init__(self, parent, controller):
+        """
+        Initialize parent class
+
+        This function will initialize the parent class allowing for subclasses to be built on top of this class
+        :return: parent class
+        """
         super().__init__()
         customtkinter.set_appearance_mode("System")
         customtkinter.set_default_color_theme("blue")
@@ -46,6 +52,10 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function updates the contacts list and changes view to the recommendations page
         def goto_recs():
+            """
+            Gets any newly added contacts details from the updated database and goes to recommendations page
+            :return: Recommendations Page
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
@@ -154,6 +164,10 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function updates the contacts list and changes view to the search page
         def goto_search():
+            """
+            Gets any newly added contacts details from the updated database and goes to search page
+            :return: Search Page
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
@@ -261,6 +275,10 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function updates the contacts list and changes view to the events page
         def goto_events():
+            """
+            Gets any newly added contacts details from the updated database and goes to Events page
+            :return: Events Page
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
@@ -367,6 +385,10 @@ class Contacts_page(customtkinter.CTkFrame):
                                                   command=goto_events)
 
         def goto_contacts():
+            """
+            Gets any newly added contacts details from the updated database and goes to Contacts page (refreshes page)
+            :return: Contacts Page
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
@@ -473,6 +495,10 @@ class Contacts_page(customtkinter.CTkFrame):
                                                     command=goto_contacts)
 
         def goto_profile():
+            """
+            Gets any newly added contacts details from the updated database and goes to Profile page
+            :return: Profile Page
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'Databases/' + username + '_db.db'
@@ -596,6 +622,11 @@ class Contacts_page(customtkinter.CTkFrame):
         #This function allows the user to view all the requests sent to them, it checks their personal database and
         # retrieves the username's of senders and number of invites received
         def view_requests():
+            """
+            View all invite requests sent to logged-in user's dedicated table in the database, and displays username
+            and profile picture of inviters in a popup window
+            :return: Displays inviter's profile picture and usernames in a grid style on a popup window
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'SELECT invite_received from ' + username
@@ -616,7 +647,7 @@ class Contacts_page(customtkinter.CTkFrame):
             def populate(newWindow):
                 noneCounter = 0
                 for name in received_requests:
-                    #print(name[0])
+                    print(name[0])
                     if name[0] == None:
                         noneCounter += 1
                 if noneCounter == count:
@@ -637,7 +668,7 @@ class Contacts_page(customtkinter.CTkFrame):
                 for name in range(count):
                     person = received_requests[name][0]
                     print(person)
-                    if person == None:
+                    if person == None or person == "None":
                         continue
                     #print(person)
                     hCursor.execute("SELECT profile_pic, username FROM Users WHERE username = '{0}'".format(person))
@@ -662,12 +693,18 @@ class Contacts_page(customtkinter.CTkFrame):
                     self.resized_accept[name] = ImageTk.PhotoImage(self.accept[name].resize((150, 150), Image.ANTIALIAS))
                     #This function will trigger when the logged in user accepts a request from the sender
                     def accept_request(btnName):
+                        """
+                        Updates logged-in user's dedicated table with inviter's username and registers them as a 'Proggy'
+                        Displays popup indicating request acceptance
+                        :param btnName:
+                        :return:
+                        """
 
                         if len(user_list) == 1:
                             adding = user_list[0]
                         else:
                             print("btnName: " + str(btnName))
-                            adding = user_list[btnName-3]
+                            adding = user_list[btnName]
                             print("adding: " + adding)
                         print(adding)
                         #for x in user_list:
@@ -697,6 +734,12 @@ class Contacts_page(customtkinter.CTkFrame):
                     self.resized_decline[name] = ImageTk.PhotoImage(self.decline[name].resize((150, 150), Image.ANTIALIAS))
                     #This function triggers when the sender declines a request from a sender
                     def decline_request(btnName):
+                        """
+                        Removes invite request from logged-in user's dedicated table and inviter's dedicated table.
+                        Displays popup message indicating decline success
+                        :param btnName:
+                        :return: Popup window with decline successful
+                        """
                         sql = 'DELETE FROM ' + username + 'WHERE invite_received = ' + user_list[btnName]
                         #'DELETE FROM Personal WHERE invite_received = ?', (user_list[btnName],)
                         hConn1 = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
@@ -727,6 +770,11 @@ class Contacts_page(customtkinter.CTkFrame):
                     self.decline_button[name] = tk.Button(newWindow, bg='#33A1FD', image=self.resized_decline[name], relief='solid', command= lambda text=name:decline_request(text)).grid(row=name, column=3)
             #This function resets the scrollbar to the top of the page
             def onFrameConfigure(canvas):
+                """
+                Binds scrollbar to x and y axis and resets scroll to encompass the inner frame
+                :param canvas:
+                :return:
+                """
                 canvas.configure(scrollregion=canvas.bbox("all"))
 
             root = tk.Toplevel()
@@ -751,6 +799,11 @@ class Contacts_page(customtkinter.CTkFrame):
         #this function gets all the contacts that are currently friends with the logged in user from the database and
         #displays it on the screen
         def view_proggies():
+            """
+            Displays on page all proggies of the logged-in user, displays profile picture and various buttons to
+            interact with
+            :return: profile picture of proggy
+            """
             file = open("Databases/logs.txt", "r").read()
             username = file[:-1]
             sql = 'SELECT proggies from ' + username
@@ -866,6 +919,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         #This function allows the logged in user to remove a friend from their contacts list - friend 1
         def remove_proggy1():
+            """
+            Deletes the first proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label1.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',icon='warning')
@@ -949,6 +1007,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 2
         def remove_proggy2():
+            """
+            Deletes the second proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label2.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1031,6 +1094,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 3
         def remove_proggy3():
+            """
+            Deletes the third proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label3.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1113,6 +1181,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 4
         def remove_proggy4():
+            """
+            Deletes the fourth proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label4.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1196,6 +1269,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 5
         def remove_proggy5():
+            """
+            Deletes the fifth proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label5.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1278,6 +1356,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 6
         def remove_proggy6():
+            """
+            Deletes the sixth proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label6.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1362,6 +1445,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 7
         def remove_proggy7():
+            """
+            Deletes the seventh proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label7.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1444,6 +1532,11 @@ class Contacts_page(customtkinter.CTkFrame):
 
         # This function allows the logged in user to remove a friend from their contacts list - friend 8
         def remove_proggy8():
+            """
+            Deletes the eighth proggy from the user's contacts list, updates both user's dedicated databases. Prompts
+            user confirmation and displays success message if prompt is confirmed
+            :return: Removes user from page and prompts user with popup messages
+            """
             if self.username_label8.cget("text") == "Username":
                 return
             MsgBox = tk.messagebox.askyesno('Delete Proggy', 'Are you sure you want to delete this proggy?',
@@ -1525,6 +1618,10 @@ class Contacts_page(customtkinter.CTkFrame):
                     self.username_label8['text'] = 'Username'
 
         def view_proggy_prof1():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label1.cget('text')
             if username == "Username":
                 return
@@ -1599,6 +1696,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof2():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label2.cget('text')
             if username == "Username":
                 return
@@ -1673,6 +1774,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof3():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label3.cget('text')
             if username == "Username":
                 return
@@ -1747,6 +1852,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof4():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label4.cget('text')
             if username == "Username":
                 return
@@ -1821,6 +1930,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof5():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label5.cget('text')
             if username == "Username":
                 return
@@ -1895,6 +2008,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof6():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label6.cget('text')
             if username == "Username":
                 return
@@ -1969,6 +2086,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof7():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label7.cget('text')
             if username == "Username":
                 return
@@ -2043,6 +2164,10 @@ class Contacts_page(customtkinter.CTkFrame):
                 newWindow.fieldYrs["text"] = "Years in field/Specialization: " + str(query_data[0][17]) + " Year"
             hConn.close()
         def view_proggy_prof8():
+            """
+            Gets the user data of the first proggy from the database and displays it in a popup window
+            :return: Popup window with user's data
+            """
             username = self.username_label8.cget('text')
             if username == "Username":
                 return
@@ -2120,6 +2245,10 @@ class Contacts_page(customtkinter.CTkFrame):
         self.load_send_img = Image.open("images/send_message_icon.png")
         self.send_img = ImageTk.PhotoImage(self.load_send_img.resize((50, 50), Image.ANTIALIAS))
         def message_proggy1():
+            """
+            Opens a popup window and displays all previous chat histories with the first proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label1.cget('text')
             if username == "Username":
                 return
@@ -2156,6 +2285,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                              database="ddipmu7if1umsi",
@@ -2183,6 +2316,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy2():
+            """
+            Opens a popup window and displays all previous chat histories with the second proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label2.cget('text')
             if username == "Username":
                 return
@@ -2218,6 +2355,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
@@ -2244,6 +2385,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy3():
+            """
+            Opens a popup window and displays all previous chat histories with the third proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label3.cget('text')
             if username == "Username":
                 return
@@ -2279,6 +2424,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
@@ -2305,6 +2454,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy4():
+            """
+            Opens a popup window and displays all previous chat histories with the fourth proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label4.cget('text')
             if username == "Username":
                 return
@@ -2340,6 +2493,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
@@ -2366,6 +2523,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy5():
+            """
+            Opens a popup window and displays all previous chat histories with the fifth proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label5.cget('text')
             if username == "Username":
                 return
@@ -2401,6 +2562,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
@@ -2427,6 +2592,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy6():
+            """
+            Opens a popup window and displays all previous chat histories with the sixth proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label6.cget('text')
             if username == "Username":
                 return
@@ -2462,6 +2631,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
@@ -2488,6 +2661,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy7():
+            """
+            Opens a popup window and displays all previous chat histories with the seventh proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label7.cget('text')
             if username == "Username":
                 return
@@ -2523,6 +2700,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
@@ -2549,6 +2730,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_send = tk.Button(openWindow, image=self.send_img, bg="#FDCA40", bd="3", relief="raised", command=send_message)
             openWindow.chat_send.place(x=465, y=800)
         def message_proggy8():
+            """
+            Opens a popup window and displays all previous chat histories with the eighth proggy
+            :return: Creates pop up window with chat log
+            """
             username = self.username_label8.cget('text')
             if username == "Username":
                 return
@@ -2584,6 +2769,10 @@ class Contacts_page(customtkinter.CTkFrame):
             openWindow.chat_entry = tk.Entry(openWindow, font='Bahnschrift 20', bd='3', relief='solid', width=20)
             openWindow.chat_entry.place(x=10, y=800)
             def send_message():
+                """
+                Appends message to display and updates dedicated table of both logged-in user and proggy
+                :return: Sent message is displayed on screen
+                """
                 openWindow.chat_scrolledtext.configure(state="normal")
                 proggy_Conn = psycopg2.connect(host="ec2-3-213-66-35.compute-1.amazonaws.com",
                                                database="ddipmu7if1umsi",
